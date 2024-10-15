@@ -1,0 +1,5964 @@
+Introduction to 0011#openshift plateau loglarını gördüğümüz loglake.uatisbank çalışmıyor:
+_Detaylar:_|  
+Gündeme getiren:  
+|  
+Tarih:  
+---|---|---
+UAT ortamda loglake.uatisbank üzerinden log göremiyoruz.
+** _Notlar / Gelişmeler:_**
+1-|
+| Not ekleyen: Berkay Başoz | Tarih: //20 May 2024
+Introduction to 0012#Servisler arası isteklerin trace edilmesi + Uçtan uca Consumer takibi:
+_Detaylar:_|  
+Gündeme getiren:  
+Berkay Başoz  
+|  
+Tarih: 20 May 2024  
+---|---|---  
+Capera ile Kredi kartları arasında isteklerin durumunu trace edemiyoruz.
+Zipkin zorunlu olmalı mı? yoksa genel bir SIID ya da correlationId konulması
+ve loglara yazılması konusunda hem fikir olmalıyız  
+**Şu madde ile birleştirildi** : "Kim kimi kullaniyor zipkinde gözükebiliyor
+fakat loglake gibi yerlerde servisi provide eden beni kim tüketiyor
+consumercode mantığı olmadığı için bulamıyor."  
+** _Notlar / Gelişmeler:_**
+1-|  
+Kim kimi kullaniyor zipkinde gözükebiliyor fakat loglake gibi yerlerde servisi
+provide eden beni kim tüketiyor consumercode mantığı olmadığı için bulamıyor.  
+* consumer code mantığı yeni dünyada nasıl adreslenecek?
+* IAM token auth. yapılarına dayalı bir çözüm olabilir mi? -> **değerlendirme: Çözüm token'a dayandırılmamalı.**
+* Consumer code ile ilgili bt mimari ile birlikte alınmış bir karar var. Bir de baas tarafında bir karar var. 2 karar var (Halil İbrahim Sünter)
+* IDEA Headerlarının kullanımı - Plateau - Türkiye İş Bankası - Confluence (jira.isbank)
+* (baas kararı linki)
+* BT mimari servislerin içinde ConsumerCode a göre business mantığı uygulanmasına karşı çıkıyor. Biz de sakıncaları görüyoruz.
+* Sube izlemesi ihtiyaçları bakış açısından -> Consumer code yeterli kırılımı da sağlamıyor
+* opentelemetry için bir lib örneği linki: https://docs.honeycomb.io/get-started/start-building/web/ client web sayfası izlenebilirlik için hedeflenecek yaklaşıma referans olabilmesi açısından
+* Berkay'ı da dinleyelim
+* Haftaya Berkay'ı da davet ederek karar noktasına götürelim. Arada ekiplerle de değerlendirme yapalım. TB mimari'de konuşulsun örneğin.
+* Browser kaynaklı tetiklemeler için , izlenebilirliği opentelemetry protokolüne uygun yapabileceğini iddia eden örnek bir npm paketi : https://www.npmjs.com/package/@opentelemetry/web  
+|  
+Not ekleyen: Ufuk Öktemer  
+|  
+Tarih: 27 May 2024
+Introduction to 0013#Mevcut soap servislere Plateau uygulamalarından erişim yöntemi.:
+_Detaylar:_|  
+Gündeme getiren: Mehmet Ethem Sulan Cahit Kalkan  
+|  
+Tarih: 17 May 2024  
+---|---|---
+Mevcut soap servislere plateau uygulamalarından erişim yöntemi. 1- wsdl import
+2- soap → plateau dönüşümü 3- rest wrapper service
+** _Notlar / Gelişmeler:_**
+1-|  
+*     * Quick'ten soap servis tüketimi
+* Mevcutta soap wsdl import ediliyor, adapter oluşturuluyor, karşı tarafta soap servisle "konuşuluyor"
+* Template printing için gündeme geldi
+* Provider ekip rest ucunu sunsun.
+* Symphony kullanılan çözümler
+* Rest yazan bir ekip SOAP sunan servisten REst proxy beklemek diye bir hakları yok. (Güncel durum) Öte yandan SOAP sunan ekiplerden de Plateau dönüşümü bekleniyor. (hedef) Ancak zorlayıcı değil.
+* Bu dönüşüm için geçerli proxy oluşturma yöntemleri çeşitli.
+* Proxy'nn arkası zaman içinde gerçek plateau bak-end'i ile doldurulabilir.
+* "Zorunluluk" veya teşvik konusunda adımlarımızı netleştirebiliriz, gelişimi izleyebiliriz.
+* Wrapper servis oluşturmanın maliyeti vs. Rest Proxy oluşturmanın Maliyeti
+* "Merkezi" rest wrapper?
+* Belli uygulamaların rest uç açmasını ekstradan takip edebilir, teşvik edebiliriz. Bu nedenle bu tip servisleri bilmeliyiz.
+* Rest proxy açma yöntemleri best practice'leri.
+* Senfoni konusunda teknik destek bekliyor ekipler.
+* Direct/Welder modeli bir çatı mikroservisi use case'i (consumer tarafında) bu use case çalışılabilir.
+* Banka Framework ekibi bu konuda geliştirici ekiplere ne oranda destek verecek? Legacy sistemler / servisler açısından Framework ekibi talepleri değerlendiriyor  
+|  
+Not ekleyen: Ufuk Öktemer  
+|  
+Tarih: 20 May 2024
+Introduction to 0014#CentralizedParameter uygulamasının ReferansData  yerine konumlandırılması ve geçiş aşamasında veri yönetimi:
+_Detaylar:_|  
+Gündeme getiren: Cahit Kalkan  
+|  
+Tarih: 17 May 2024  
+---|---|---
+CentralizedParameter uygulamasının ReferansData yerine konumlandırılması ve
+geçiş aşamasında veri yönetimi
+** _Notlar / Gelişmeler:_**
+1-|  
+* Legacy merkezi servislerin Plateau dünyasında adaptasyonu konusu. Genlleştirilebilir.
+* CentralizedParameter'ın sahipliği (Nazlı Elif Çakıroğlu)
+* RefData - CentParam feature olarak gap nedir bilebilmek lazım.
+* Data migration konusu
+* Aynı hizmetin iki ayrı altyapıdan sunulması sorunu var.
+* RefData ile ilgili sorunumuz ne?
+* Ref data ile SDF jarları üzerinden de kullanım var, Tane'de özel component var.
+* Gap analizinin başlıklarını oluşturup context'i doğru kurmamız gerekiyor. Yönetimi, kullanımı, merkezi kavramı, yaygınlığı ve kullanım use case'leri.
+* Lokalizasyon, enum, key -> value, generic lookup.
+* Kategori & key-value (hata mesajları, endpoint)
+* Metadata da ref data'nın kullanım durumları arasına dahil edilmiş
+* SDF de org unit, message, calendar gibi kullanılan jar altyapılarına da benzer çözümler bulmak lazım.
+* Turis'te ref data diye ayrı bir plateau mikroservisi de yapılmıştı. Şu anda atıl durumda.  
+| Not ekleyen: Ufuk Öktemer |  
+Tarih: 20 May 2024
+Introduction to 0015#PBA toplantılarında Banka Framework ekibinin mevcut backlogunun da konuşulması:
+_Detaylar:_|  
+Gündeme getiren: Lutfu Ulusoy  
+|  
+Tarih: 13 May 2024  
+---|---|---  
+**_Notlar / Gelişmeler:_**
+1-|  
+*     * Banka adaptasyonu çerçevesinde aldığımız/yürüttüğümüz mevcut işler nelerdir, yol haritamız nedir? Bilinmesi faydalı olacaktır.
+* Öznur mevcut konulardan özet geçti:
+* (bu neydi? -tamamlanacak)
+* Loglama support konusunda gereksinimlerin tamamlanması.
+* Dijital kanal common concernlerinin tespit edilmesi ve tamamlanması!  
+| Not ekleyen: Ufuk Öktemer |  
+Tarih: 13 May 2024  
+2-|  
+* Ana gündem maddeleri
+* loglama, izlenebilirlik, şube hsa'sı
+* Req -resp eşleştirmesi
+* Metric exp. Prometheus etkin mi muadili olabilir mi?
+* Haziran sonuna kadar teknik analiz haziran sorası analizin sonucunun tasklarının eritilmesi.
+* Berkay'ın maili, openshift -> cevaplanacak, çalışılıyor.
+* Bu sayfaya bir tablo eklenerek backlog özeti takip edilecek  
+|  
+Ufuk Öktemer  
+|  
+20 May 2024  
+3-|  
+* Plateau IAM one identity rota entegrasyonu
+* Loglama yapısı, DP logları ile Edge geçişi arasındaki gapler, metriklerin izlenmesi
+* BT mimari ile toplantı:
+* Logdan değil metriklerden hsa takibi yapılmalı (Coşku Erdem)
+* opentelemetry gündeme geldi
+* Instana ve diğer uygulamalarla da ilişkilendirerek tool konusuna (tool lisanları konusuna) vurgu yapıldı.
+* Bu konu ile ilgili Plt.Framework - Banka Framework ayrışmasını çözümlemek zor.
+* Standardizasyon (opentelemetry gibi) çözüm olabilir.
+* Legacy boyutu da dikkate alınmalı
+* (Banka gereksinimleri net bir liste olarak ortaya çıkarılmış görünüyor)
+* Endüstri standartları konsunda resim netleştiriliyor.
+* Devops ekibimizden resmi destek isteme, bir araya gelerek hizalanalım, ilerleyelim.
+* Kübra Gökçe (Petra) ile deneyimlerini dinleme verilerini inceleme planı var.
+* İzlenebilirlik gereksinimlerini legacy dünyada çalışan TB ekipleri ile de görüşmekte fayda var. Örnek çalışma grubunda Anıl Cansu Taner / Rabın Dal (Başvuru yönetimi?) yer alıyor.  
+|  
+Ufuk Öktemer  
+|  
+27 May 2024
+BP.0003.Kalite Gereksinimlerinin Dokümantasyonu
+	subsection::
+	sub_subsection:**I. İçindekiler:**:
+* * *  
+* I. İçindekiler:
+* II. Amaç:
+* III. Kalite Gereksinimlerinin Dokümantasyonu:
+BP.0003.Kalite Gereksinimlerinin Dokümantasyonu
+	subsection::
+	sub_subsection:**II. Amaç:**:
+* * *  
+Bu sayfanın amacı, mimari dokümanlarda veya sunumlarda kalite
+gereksinimlerinin nasıl dokümante edilmesi gerektiğini açıklamaktır.
+BP.0003.Kalite Gereksinimlerinin Dokümantasyonu
+	subsection::
+	sub_subsection:**III. Kalite Gereksinimlerinin Dokümantasyonu:**:
+* * *  
+ISO-25010 standartı (https://en.wikipedia.org/wiki/ISO/IEC_9126#Developments)
+bize kullanabileceğimiz kalite özelliklerinin bir kataloğunu sunar.  
+Sistemimize özel olarak gereksinimlerden elde ettiğimiz ve mimari tasarımımızı
+yönlendirecek olan, mimarinin amacına uygun olup olmadığını değerlendirmekte
+kullanabileceğimiz kalite özelliklerini listelediğimiz gösterime ise "spesifik
+kalite ağacı" veya kısaca “kalite ağacı” diyoruz. Bu gösterim ilk olarak SEI
+tarafından önerilmiştir.  
+Kalite ağacını şu şeklide oluşturuyoruz:  
+Tablo olarak da gösterebiliriz.  
+**No.**  
+|  
+**Kalite Özelliği**  
+|  
+**Kalite Alt Özelliği**  
+|  
+**Öncelik**  
+|  
+**Kalite Senaryosu**  
+---|---|---|---|---  
+1  
+|  
+Performance Efficiency  
+|  
+Time Behavior  
+|  
+2  
+|  
+Dosyalar en fazla 5 saniye içinde parse edilmeli  
+2  
+|  
+Resource Utilization  
+|  
+5  
+|  
+Uygulama 1 GB RAM ile çalıştırılabilmeli  
+3  
+|  
+Maintainability  
+|  
+Modifiability  
+|  
+4  
+|  
+Yeni iş kuralları 4 saatten kısa bir süre içinde tanımlanabilmeli  
+Kalite senaryoları 3 türde olabilir (bu kategorileri düşünmek senaryoları
+tespit etmeyi de kolaylaştırabilir):  
+1. Usage senaryoları: Bu tür senaryolar, sistemin normal kullanımda nasıl davranacağını açıklar; çalışma zamanı performansı, bellek tüketimi, verim vb.
+2. Change senaryoları: Sistem içindeki herhangi bir bileşen, ortamı veya operasyonel altyapısı değişmekte veya değiştirilmektedir. Örn: Başka bir veri görselleştirme ürününe geçiş durumunda beklenen geliştirme süresi.
+3. Failure senaryoları: Sistemin bir kısmı, altyapısı veya komşuları arızalanmıştır. Örn: Crash sonrası beklenen recovery süresi.  
+Arc42 formatındaki bir mimari dokümanda (SARB dokümanı)  
+* "1-Giriş ve Amaç" bölümü altındaki "Kalite Hedefleri" başlığında ana paydaşlar açısından en önemli 3 – 5 kalite hedefi bu bölümde açıklanmalıdır.
+* Kalan “mimari açıdan anlamlı” kalite özellikleri "10-Kalite Gereksinimleri" bölümünde, dokümante edilmelidir.  
+.  
+BP0003qualityTree.png2 Dosyalar en fazla 5 saniye icinde parse edilmeli  
+Uygulama 1 GB RAM ile calistiniabilmeli
+Yeni is kurallan 4 saatten kisa bir sire icinde tanmlanabilmeli  
+BP0003iso25010.png  
+image-2024-5-10_16-52-53.pngSunum Formati  
+1. Gris ve Amag (Introduction and Goals) L |.
+2. Miman Kstlamalar (Architecture Constraints) |
+3. Sistem Kapsami ve Baglam (System Scope and Context) | Girig, mag] tay
+i
+|  
+Gereksinimler,
+Kalite Hedefier,
+Paydaslar  
+Context
+dliyagrami  
+“¢ Gozum Stratejai Solution Suategy)
+5. Yapt Tasi Gorunama (Bulding-block View)  
+[2]  
+Gezum  
+vee
+stratejish  
+[P}  
+6.Galigma Ami Gorunuma (Runtime View)  
+Dinemik yap:
+Sequence diagram} 1-nsiax
+velya Flowchart  
+Dagitim yapisi
+Dagitim diyagram:  
+jengen  
+7. Dagitim Gorundma (Deployment View) Ele alinan
+- crosscutting | 1-2s¢
+(| kavramlar
+A  
+{as )  
+=[0)  
+Tasarim
+deployment view. ee vetees
+hardware) ererieri
+8, Kesisen Kavramlar Cross-cutting Cones
+'sTasarim Kararian (Design Decisions) Kelite bss
+| 10.Kalite Gereksinimleri Quality Requirements) Gereksinimleri oer
+11, Riskler ve Tekeik Borclar (Risks and Technical Debts)
+12, Sealak (Glossa
+L Cesey) so wd Riskler
+vetees  
+Teknik Borclar  
+image-2024-5-10_17-3-41.png  
+1. Girls ve Amag (Introduction and Goals)
+2. Mimari Ksstlamalar (Architecture Constraints)
+3. Sister Kapsami ve Balam: (System Scope and Contbst)  
+>.  
+‘4. Cozum Stratejs (Solution Strategy)
+5. Yap Tag! Goronama (uilding-bock View)  
+Sunum Format!  
+B  
+Mimari Calisma Girdileri:  
+Girig,Amac] 1s  
+Gereksinimier,  
+Kelite Hedefieri| 1-251
+Peydeslar
+Context te
+slay.
+diyagrem  
+(Mevcut bilgiler gergevesinde)  
+a}~5] Fikirter:
+| Plantanan
+of~{ ¢ : tae
+| Geatim seats
+aang ek vew, :
+‘Gates | cana stratjisin
+6 Galgma Am Goranamd (Runtime View) | géstermek igin gerek
+L ‘Statik yapr
+aoe | Yapitas: | t-nsax
+[] | geranima
+1) | pinamic yer
+t — | Sequence diagram} 1 -rsia
+aes >) vols Rowena
+7. Dagium Goruname (Deplayment View) | ee
+| Degiom yeps sons
+= | Dagiim diyagram:
+Ll a i
+u lo | Ongeriten
+fi | crosscutting | 1-220
+“ | kavremiar
+ployment view. i L_____]
+hardware) | Temel
+8. Kesigen Kavramlar (Cross-cutting Concepts) | Tasenimksrerien] 5 2a
+‘9. Tasarim Kararlan (Design Decisions) | vebelirginiesen
+10. alte Gereksnimlei (Quay Requirements) | terciier
+11. Rieke ve Tekrik Borclar (Risks and Technical Debts) | Ongératen
+12, Sealak (lossay) | Riskeer 1-2say
+| Teknik Borgiar  
+image-2024-5-10_17-40-33.png  
+Mimari Tasarim  
+Tasarim
+calismasi
+girdileri
+Fikirler  
+image-2024-5-13_14-59-12.pngC D  
+Sagem Bedlam
+Ging amag] sso Giris,amac] tye
+Gereisinimier Gereicinimie
+Kelite Hedefieri, 2 slayt Kalite Hedefieri,|/ 1-2 siayt
+Paycesiar aycasier
+context conte [|
+iysgram: iyegram
+sorunun Sorunun
+Sern sty faces
+Statik yapr Onerilen
+Vapi tas. say (oztimin tart “
+gorunumo
+Sorunu ve gézimia
+Dinar yp ‘acikiayabllmek ign gerekl
+sequence ciagrsm| sor
+velyaFlowenart, Stack yop
+Yeptep ws
+Daigemyaps ue sgerunuma
+Dagtm diyagrern inamicyap
+sequence ciagrem ws
+Etkilenen \velys Flowchart
+crosscuting | 1 2am
+kavremiar Dagium yep 7
+Dagtm dyagrams
+Eeilenen
+crosscutting | 2
+kevremiar
+kerar/ Ete kerar/ Ete
+Alinmast so Alinmast
+Snerilen kerer nerlen kerer
+OngBriiten Ongoriten
+ecier Ricker] 12 Eekler, Reker] 1-2sby
+Teknic Borgia Teknik orcad
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Girdiler:
+	sub_subsection::
+<<girdi dökümanları burada paylaşılacaktır>>  
+<<bir önceki toplantıda açık kalan konular burada paylaşılacaktır>>
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Girdiler:
+	sub_subsection:Toplantı Katılımcıları ::
+Mimari Yönetişim, AILAB Geliştirme Ekibi, Tayfun Gökmen Halaç, Mehmet Taşan,
+Gizem Abalı
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Çıktılar:
+	sub_subsection:Toplantı kayıtları ::
+video1445281520.mp4video1049708683.mp4
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Sonuç:
+	sub_subsection:MOE-SARB:
+#Uyumsuzluk  
+|  
+#İstisna  
+|  
+#Öneri  
+|  
+#Doc  
+---|---|---|---
+8| 0| 3| 12  
+### Döküman Hazırlık  
+01  
+|  
+02  
+|  
+03  
+|  
+04  
+|  
+05  
+|  
+06  
+|  
+07  
+|  
+08  
+|  
+09  
+|  
+10  
+|  
+11  
+|  
+12  
+|  
+13  
+|  
+14  
+|  
+Toplam  
+---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
+1| 0| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 0| 1| 0
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Sonuç:
+	sub_subsection:Uyumsuzluk | Inconsistency:
+* 01# Quality goals somutlaştırılmalı -> ölçülebilir hedefler olmalı
+* 02# Bölüm bulunmamaktadır
+* 03# Context diagram daha static(black-box) bir görünüm olmalı, mevcut çizim building block ve runtime kısmına alınabilir
+* 04# Teknolojik Unsurlar (Technology at a Glance) böümünde eksik versiyonlar eklenecek
+* 07# MSSQL ve MinIO bankadaki kullanımı gösterilecek, (POD gösterimleri ayrı ayrı yapılmalı, standarta uygun hale getirilmeli)
+* 10# Kalite ağacı eklenecek
+* 13# Güvenlik bölümü eksik
+* 14# Teknik Mimari yol haritası detaylı çalışılacak ve dokümana eklenecek
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Sonuç:
+	sub_subsection:İstisna | Exception:
+* Type your task here, using "@" to assign to a user and "//" to select a due date
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Sonuç:
+	sub_subsection:Öneri | Advice:
+* 06# Runtime dinamik çizimlerde backend kısmı detaylandırılabilir
+* 07# İş bankası referans implementasyon olarak eklenebilir
+* 08# Paylaşılan cross-cutting listesi değerlendirilrek gerekli olanlar eklenebilir
+2024.05.22-SARB-GenerativeAI-Maistro
+	subsection:Sonuç:
+	sub_subsection:aCoE Internal:
+* Type your task here, using "@" to assign to a user and "//" to select a due date
+Introduction to 0060#prod ortamı sunucu ayırmasında (ve yeni servis tanımında) int ortamı zorlamasının talep olmadan devreye alınması:
+_Detaylar:_|  
+Gündeme getiren: Aziz Goktepe  
+|  
+Tarih: 21 May 2024  
+---|---|---  
+**_Notlar / Gelişmeler:_**
+1-|  
+Prod ortamı sunucu ayırmasında (ve yeni servis tanımında) int ortamı
+zorlamasının talep olmadan devreye alınması (tüm talepler mimari yönetişimden
+geçecekti ?)  
+* İnt ortamına ihtiyacımız var
+* Int ortamında servislerin çalışır olması zorunluluğu. İnt endpointini talep ediyorlar, endpointin çalışır durumda olması zorunluluğu.
+* Bağımlılılar
+* Servisler (tüketilen servisler)
+* Altyapılar (dekont abm)
+* Shared library
+* Veri
+* Konfigürasyon
+* Burada kod değil konfig belirleyici (%99 iş burada)
+* Burada muhatabımız kim? (Test Ortamları ve Test Yönetimi Grubu + BT mimari??)
+* Yoğun BT desteği gerekiyor (her ekip için) ve birçok destek kalemi eksikliği hissediliyor.
+* İnt ortamındaçalışmanın önündeki engeller konusunda deneyimimiz ve birikimimiz de var. Bunu da görünür kılmalıyız.
+* Test Ortamları ve Test Yönetimi Grubu -> Can Arslan - Betül Devravut Özkan (TB mimari toplantısına davetliler, konuşulacak)
+* Bağımlılıkların sıfırdan tarif edilmesi istenmiş. İnt ortamının uçtan uca çalışması istenmiş. Proddaki sorundan timeline olarak ayrılması kabul edilmemiş (gate olarak koyulmuş).
+* Talebin geliş tarzı da gündeme getirilmeli.
+* Ne yapabiliriz?
+* 16:00 da TB mimari'de konuşulacak.
+* MY cc'de mail dönsün.
+* MY olarak biz eskale girişiminde bulunalım.  
+| Not ekleyen: Ufuk Öktemer |  
+Tarih: 21 May 2024  
+2-|  
+Konunun Mimari Yönetişim ve BT tarafının katılımı ile SMK toplantısı
+formatında görüşülmesi talep edildi  
+| Ufuk Öktemer |  
+21 May 2024
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Girdiler:
+	sub_subsection::
+petra-debitdonusum.pdf
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Girdiler:
+	sub_subsection:Toplantı Katılımcıları ::
+İbrahim Çalışır , Kubra Gokçe , Ömer Çetin , Halil İbrahim Sunter , Volkan
+Kulikoğlu, Aziz Goktepe , Ebru Aksoylu , Yunus Emre Arıturk , Ersan Çelik,
+Niyazi Toytok
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Çıktılar:
+	sub_subsection:Toplantı kayıtları ::
+video1579086875.7zvideo1043977394.mp4
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Sonuç:
+	sub_subsection:MOE-SARB:
+#Uyumsuzluk  
+|  
+#İstisna  
+|  
+#Öneri  
+|  
+#Doc  
+---|---|---|---
+2| 7| 4| 13  
+### Döküman Hazırlık  
+01  
+|  
+02  
+|  
+03  
+|  
+04  
+|  
+05  
+|  
+06  
+|  
+07  
+|  
+08  
+|  
+09  
+|  
+10  
+|  
+11  
+|  
+12  
+|  
+13  
+|  
+14  
+|  
+Toplam  
+---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
+1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 0| 13
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Sonuç:
+	sub_subsection:Uyumsuzluk | Inconsistency:
+* 9\. Tasarım Kararları içinde trade-off'lar yazılmamış. Kararlar hangi bağlamda yazılmış belli değil.
+* 10\. Kalite Gereksinimleri içinde son versiyondaki Softtech kalite gereksinimleri uygulama kalite gereksinimleri ile birleştirilmiş, ayrışmasında fayda var.
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Sonuç:
+	sub_subsection:İstisna | Exception:
+* Kısıtlamalar ve Çözümler'de ARCH-12-C üçe ayrılabilir. Kafka, DB ve uygulama bağlamına göre yazılabilir.
+* 4\. bölümde versiyon bilgilerinin girilmesi beklenmektedir.
+* 6.1. Şube Bankamatik Kart Başvuru Akışı ayrıştırılarak sadeceleştirilebilir.
+* 8\. Cross-cutting concepts içinde, persistance kısmı eksik, oluşturuşmasında fayda var.
+* 11\. Riskler ve Teknik Borçlar'da etkileri ve olasılıkları da yazılması faydalı olur.
+* 10\. Kalite Gereksinimleri içnde kalite gereksinimlerini önceliklendirmesinde fayda var.
+* 14\. Architechtural road map'lerde miro'daki roadmap örnekleri kullanılması uygun olur (https://miro.com/templates/technology-roadmap/).
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Sonuç:
+	sub_subsection:Öneri | Advice:
+* Kısıtlamalar ve Çözümler'de çözümde kullanılan teknolojiler yazılabilir
+* Liquebase ve PowerDesigner kullanımı bilgisi alınmasında fayda var
+* Kalite gereksinimleri kısmında mualak kalan ifadeler netleştirilse iyi olur.
+* 8\. Cross-cutting concepts içine security yedirilmesi faydalı olur.
+2024.05.29-SARB-Petra_Debit_Dönüşüm
+	subsection:Sonuç:
+	sub_subsection:Notlar::
+petra-debitdonusum.pdfPage 1:
+Petra Debit Donusum  
+<
+softtech  
+Page 2:
+1. Giris ve Amac (Introduction and Goals)  
+is Bankasi Debit Kart islevlerinin mikroservis mimarisi ile plateau altyapisi kullanilarak banka
+standartlarina uygun olusturalacak yénetilmesini amaclamaktadir. Bu tirtin tasarim ddékiimani
+UK1838 - Petra Debit trtintiniin altyapisini anlatmak icin yazilmistir.  
+1.1. Gereksinimlere Genel Bakis (Requirements
+Overview)  
+Petra Debit déniistim kapsaminda modiillere gore gereksinimler asagidaki gibi listelenebilir.  
+Gereksinim Alt Gereksinim  
+Kart Basvuru Subeden Basvuru  
+Kart Basvuru internet Subeden Basvuru  
+Kart Basvuru Cagri Merkezinden basvuru  
+Kart Basvuru Aninda Bankamatik Basvurusu-Sube
+Kart Basvuru Toplu Basvuru  
+Kart Basvuru Maximum Mobil Basvuru  
+Kart Basvuru isCep Basvuru  
+Kart Yonetimi Kart Tahsis,Basim ve Kurye, Yenileme Stirecleri
+Kart Yonetimi Kart Portfoy Yonetimi  
+Kart Yonetimi Debit Hesaplarinin Gortintiilenmesi
+Kart Yonetimi MBY Entegrasyonu(miisteri adres,iletisim,yas bilgileri)
+Kart Yonetimi Toplu Bankamatik Kart Agulisi  
+Kart Yonetimi Debit Kart Hesap iliskisi Yonetimi
+Kart Yonetimi Debit Kart Uriin ve Statii Yonetimi
+Kart Yonetimi Debit Hce Kart Yénetimi  
+Kart Yonetimi ikna aramalarinin BOSS ‘a bildirimi
+Kart Yonetimi Kart Ayarlar1 YOnetimi  
+Ucret Yonetimi islem Ucretleri  
+Ucret Yonetimi Kart Basim ve Yenileme Ucretleri
+Kart Basim Basim Dosyasinin Olusturulmasi
+Kart Basim Kart Tahsis  
+Kart Basim Kart Yenileme  
+Kart Basim Chip Expert  
+Kart Dagitim Dagitim Dosyasi Olusturulmasi  
+Page 3:
+Gereksinim
+Kart Dagitim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Kart Kullanim
+Puan/Kampanya  
+Puan/Kampanya  
+Takas / ChargeBack  
+Takas / ChargeBack  
+Muhasebe  
+Alt Gereksinim  
+Kart teslim  
+Satis  
+Para Cekme  
+iade/iptal  
+Para Transferi  
+HCE  
+Sifre islemleri  
+Gunltik Para Cekme- Alisveris Limitleri
+Cashback  
+YP Hesaptan kullanim
+Ek Hesap-SOS kullanimi
+Mevduat Entegrasyonu
+Puan Kazanim  
+Puan Kullanim  
+Takas  
+ChargeBack  
+Muhasebe  
+1.2. Kalite Hedefleri (Quality Goals)  
+1.3. Paydaslar (Stakeholders)  
+Rol  
+Kyymet Girgin
+Hiiseyin Yagiz
+Ebru Aksoylu
+Ktibra Gokce
+Niyazi Toytok  
+Volkan
+Kulikoglu  
+Yunus Emre
+Arittirk  
+Ersan Celik  
+Temmuz
+Ustiiniinal  
+Erisim bilgileri Sirket  
+Uriin Yoneticisi Softtech
+Proje Yoneticisi Softtech
+Uretim Takim Lideri Softtech
+Uriin Mimari Softtech
+Uriin Mimari Softtech
+Uriin Mimari Softtech
+Uriin Mimari Softtech
+Uriin Mimari Softtech
+Uriin Mimari Softtech  
+Page 4:
+1.4. Sorunun veya Gereksinimin Tanimi (Definition of
+Problem or Requirement)  
++ is Bankasi Debit kartlarin yeni altyapida goriintiilenmesini ve yonetilmesini amaclanmaktadir.  
+¢ Mevcut mimari tasarimin scale edilebilmes, bagimliklarin azaltilarak daha _ iyi
+yonetilebilmesi,test edilebilmesi,kurulabilmesi,bakiminin — kolaylastirilmasi gibi kalite
+hedeflerine uyarak déniistiirtilmesi hedeflenmektedir.  
+¢ Bu trtin ile Debit Kart Basvuru,Tahsis,Basim,Kullanim ve ticretlendirme mikroservis mimar1 ile
+daha kolay kurulabilir, yonetibilir ve genisleyebilir olacaktir.  
+¢ Bu urtin ile mevcut monolith sistemin problemleri/ performans ihtiyaclari giderilmesi daha
+modiiler bir altyapi ile daha kullanici dostu 6nyiizlerle gelistirilmesi hedeflenmektedir.  
+1.5. €C6zumiin Tanimi (Definition of Solution)  
+* Petra Debit Déniisiim Uriinii ile:
+° Debit Kart Basvurusu asagidaki sekillerde yapulabilecektir:
+= Subeden Basvuru
+« Internet Subeden Basvuru
+« ATM den basvuru
+= Cagri Merkezinden basvuru
+« Aninda Bankamatik Basvurusu-Sube
+« Toplu Basvuru
+«= Maximum Mobil Basvuru
+« IsCep Basvuru  
+° Debit Kart Yonetimi ile asafidaki islemler yapilabilecektir:  
+Kart Tahsis,Basim ve Kurye, Yenileme Stirecleri  
+Kart Portfoy Yonetimi  
+Debit Hesaplarinin Gortintiilenmesi  
+MBY Entegrasyonu(miisteri adres,iletisim,yas bilgileri)  
+Toplu Bankamatik Kart Agilis1  
+Debit Kart Hesap iliskisi Yonetimi  
+Debit Kart Uriin ve Stati Yonetimi  
+Debit Hce Kart Yonetimi  
+ikna aramalarinin BOSS ‘a bildirimi  
+° Debit Kart basim,kurye dagitim,yenileme stirecleri takip edilebilecektir.  
+e Debit Kartlar asagidaki finansal islemler icin kullanilabilecekler asagidaki islevlere sahip
+olabileceklerdir:  
+Page 5:
+Para Cekme  
+iade/iptal  
+Para Transferi  
+HCE(Temassiz islemler)  
+Sifre islemleri  
+Gunltik Para Cekme- Alisveris Limitleri  
+Cashback  
+YP Hesaptan kullanim  
+Ek Hesap-SOS kullanimi  
+° Debit Kartlardan parametrik olarak asagidaki ticretler alinabilir:
+« Islem Ucretleri
+« Kart Basim ve Yenileme Ucretleri  
+e Debit Kartlardan puan kazanimi ve kullanimi yapulabilir  
+° Debit Kartlardan yapilan islemlerde takas ve chargeback(harcama itirazi stirecleri) akislar1
+saglanacaktir  
+e Debit Kartlardan yapilan islemlerin muhasebe stireci saglanacaktir  
+1.6. Kalite Hedefleri (Quality Goals)  
+performans verimliligi Puan (Score)
+(Performance efficiency)  
+Zamansal davranisi (Time 3
+behaviour)
+Kaynak kullanimi (Resource 3
+utilization)
+Kapasite (Capacity) 4  
+Uyumluluk (Compatibility) Puan (Score)
+Birlikte var olma (Co-existence) 4  
+birlikte calisabilirlik 4
+(Interoperability)  
+Kullanilabilirlik (Usability) Puan (Score)  
+Uygunluk taninabilirlik 5
+(Appropriateness
+recognizability)  
+OBrenilebilirlik (Learnability) 5
+islerlik (Operability) 4  
+Page 6:
+Kullanilabilirlik (Usability) Puan (Score)  
+Kullanici hata korumasi (User 4
+error protection)  
+Kullanici araylizii estetigi (User 4
+interface aesthetics)  
+Ulasulabilirlik (Accessibility) 5  
+Givenilirlik (Reliability) Puan (Score)
+Olgunluk (Maturity) 4
+Erisilebilirlik (Availability)  
+4
+Hata toleransi (Fault tolerance) 4
+4  
+Kurtariabilirlik  
+(Recoverability)  
+Givenlik (Security) Puan (Score)
+Gizlilik (Confidentiality) 4  
+Buttinltik (Integrity) 4  
+inkar edilememezlik (Non- 4
+repudiation)  
+Hesap verebilirlik 4
+(Accountability)  
+Ozgiinliik (Authenticity) 4
+Sirdiriilebilirlik Puan (Score)
+(Maintainability)  
+Modilerlik (Modularity) 4  
+Tekrar Kullaniabilirlik 4
+(Reusability)  
+Analiz edilebilirlik 4
+(Analysability)  
+Test edilebilirlik (Testability) 4
+De®istirilebilirlik (Modifiability) 4  
+Ozgiinliik (Authenticity) 4  
+Tasinabilirlik (Portability) Puan (Score)
+Uyarlanabilirlik (Adaptability) 4
+Kurulabilirlik (Installability) 4
+De®istirilebilirlik 3
+(Replaceability)  
+Page 7:
+2. Mimari Kisitlamalar (Architecture
+Constraints)  
+2.1. Genel Bakis (Overview)  
+2.2. Kisitlamalar ve Coztimler (Contstaints &
+Solutions)  
+Constraints Description  
+ARCH-01-C Microservisler database ttirti bagimsiz
+gelistirilmelidir.  
+ARCH-01-S-1 Database sql islemleri icin liquebase
+kullanilarak database bagimsiz olarak
+gelistirilmistir.  
+ARCH-01-S-2 CodeFirst yaklasimi ile veritabani DDL islemleri  
+init container ile calistirilmaktadir. Oracle ve
+Mssql ile denemeler yapilmistir.  
+ARCH-02-C Gelistirilen ¢dzimler java, spring boot
+framework tercihleri ile uyumlu olmalidir.  
+ARCH-02-S-1 Céziimler Java tist seviye dilini kullanarak
+gelistirilir.  
+ARCH-02-S-2 Céziimler icin java da yazilan Plateau
+kullanilmistir.  
+ARCH-03-C Ekranlar Quick ile uyumlu olmalidir  
+ARCH-03-S Mevcuttaki ekranlarda oldugu gibi yeni
+yazilacak Nar Ekranlari da Quick uyumlu
+yazilacaktir.  
+ARCH-04-C Petra servisleri stirekli erisilebilir olmalidir.  
+ARCH-04-S-1 Kubernetes sisteminde calismali ve otomatik  
+dlceklenebilir durumdadir, mirket entegrasyonu
+ile izlenebilir durumda da olacaktir.  
+ARCH-04-S-2 Céziimler, mikroservis ve konteynir mimarisine
+aykiri olmamaldir.  
+ARCH-04-S-3 Mikroservislerin ayakta olmasi spring actuator
+readiness/livenes uclari ile kontrol edilecektir  
+ARCH-04-S-4 Mikroservislerin stireleri ve verilen hatalar icin
+vakalar tanimlanarak ilgili bildirimlerin
+yapiulmasi saglanacaktir  
+Page 8:
+Constraints  
+ARCH-05-C  
+ARCH-05-S-1  
+ARCH-05-S-2  
+ARCH-05-S-3  
+ARCH-05-S-4  
+ARCH-06-C  
+ARCH-06-S  
+ARCH-07-C  
+ARCH-07-S-1  
+ARCH-07-S-2  
+ARCH-07-S-3  
+ARCH-08-C  
+ARCH-08-S-1  
+ARCH-08-S-2  
+Description  
+Servisler merkezi bir konumdan dagitima agik
+olmalidir  
+is bankasi kanallari servisleri cagirirken plataeu
+api ateway(edge), disardan erisimler s2s vpn ile
+external apigateway ya da apilesme durumunda
+IBM Api Connect kullanilacaktir  
+Rest erisimler Plateau ApiGateway(Edge)
+uzerinden keycloak ve sema validasyonlar1
+kullanilarak agilacaktir  
+Cluster igi rest erisimler kubernetes servis
+nameler tizerinden olacaktir.  
+Servisler arasi asenkron erisimler icin kafka
+tercih edilmistir.  
+Sistem modiiler, parametrik ve dlceklenebilir bir
+yaplya, anlasilir ve agik bir kuruluma sahip
+olmalidir.  
+Plateau frameworku - Spring Boot/Java ile
+microservice mimarisinde ve cloud base -
+OpenShift mimari ile c6ziim saglanmustir.  
+Uygulama yazilim gelistirmelerine hizli bir
+sekilde yanit verebilecek sekilde
+yapulandirulmalidir.  
+Hizh iletisim icin islevler senkron ve asenkron
+yapilacak sekilde tasarlanacaktir.  
+Parametreler distirubuted ve memory cache
+kullanilarak hizlandirulacaktir.  
+Sistem performans1 izlenilerek index,uygulama
+optimizasyonu iyilestirmeleri yapilacaktir.  
+Containerized bir altyapida tim containerlar
+merkezi bir sekilde yonetilebilmelidir.  
+Plateau frameworku kullanilarak
+microserviceler katmanh mimari ile
+tasarlanmistir. Bu sayede bagimsiz kod
+pargaciklari kolayca deistirilebilir ve yeni
+isterler eklenebilmektedir. Hibernate ve
+Liquebase toolu ile de DB bagimsiz hale
+getirilmistir.  
+Veri tabani semalari dahil stirekli entegrasyon /
+surekli teslimat (CI/CD) mekanizmas1
+kurgulanmah ve araclar1 ile birlikte
+saglanmalidir.  
+Page 9:
+Constraints Description  
+ARCH-08-S-3 Deployment CI/CD ile stirekli kurulumu
+destekleyecek sekilde DevOps pratikleri
+uygulanmistir.Teknoloji olarak TFSGit,
+X1Deploy(Sonrasinda banka tercihine gore Argo
+Workflow) ve Nexus tercih edilmistir.  
+ARCH-09-C isletim sistemi bagimliklarindan koparip,
+sanallastiriulmis herhangi bir ortamda yazilimin
+calisabilir halde olmasi saglanabilmelidir.  
+ARCH-09-S Debit tiriint sanallastirma(docker) teknolojisi ile
+kullanilabilecektir.  
+ARCH-10-C Tim iz kayitlarinin (log) merkezi olarak
+tutulabilmesi/sorgulanabilmesi saglanmalidir.  
+ARCH-10-S iz Kayitlari Open Telemetry standardina uygun
+olarak tutulacaktir.(Request Response
+Loglari(Kafka),Metrik
+Loglari(Kafka,Elastik,Graphana(Mirket)),Uygula
+ma Loglari(Elastik,Kibana),Distrubuted
+Tracing(Jeager), Banka Toolu Instana)  
+ARCH-11-C Uygulama yeni 6zellikleri ac kapa ile
+yonetilebilir olacaktir.  
+ARCH-11-S Uygulamada feature toogling kullanilmaktadir.  
+ARCH-12-C Uygulama aktif pasif calisabilmelidir.  
+ARCH-12-S Uygulama pasifik ve atlasa XLRelease ile deploy  
+edilerek glsb ayarlari ile iki ortamada istek
+gonderilmesi saglanacaktir.  
+2.3. Performans hedefleri (Performance Goals)  
+* ig Bankasinin mevcut Debit Kart adedi:
+° Blokesiz kart sayisi 15.336.210
+° Normal statiilii kart sayisi 3.321.921  
+* ig Bankasinin mevcut Debit Kartlarindan gecen giinliik islem hacmi yaklasik 2.478.681
+dir.Dakikada 1715, saniyede 102 istek alabilmektedir.petraprepaid 210bin arada yaklasik 10 kat
+fark var.  
+Dontistim Urtini minimum mevcut kart adetleri ve islem sayisini saglayacak sekilde
+tasarlanacaktir.  
+Page 10:
+Metrik  
+Servis(-lerin) adi (Name(s) of the service(s))  
+istek (kullanici) sayis1 (Number of
+threads(users))  
+Artim stiresi (Ramp-up Period (seconds))  
+Stire (Duration (seconds) )  
+Dongii sayisi (Loop Count)
+TPS
+En az islemce ve bellek (Minimum CPU & RAM)  
+En uzun cevap siiresi (Max Response Time
+(miliseconds) )  
+Servisin hizmet verebilir hale gelmesi icin
+gerekli en uzun siire (Max Service Up Time
+(miliseconds))  
+Method - EndPoint - 1  
+Method - EndPoint - 3  
+Method - EndPoint - 4  
+Method - EndPoint - 5  
+Method - EndPoint - 6  
+10  
+Tanimi  
+/customer-
+service/api/customer/external/inquiry
+(miisteri sorgulama), /debit-card-
+service/api/debitcard/external/application kart
+basvuru , /customer-
+service/api/customer/create-customer-no
+miisteri no olusturma,
+/api/debitcard/external/search kart
+listeleme(customerNo tlsttinden),  
+100 --Jmeter da 100 thread ayaga kaldirarak,
+microservice test islemi gonder.  
+60 seconds — 60 saniyede 100 threade kademeli
+olarak ¢ik.  
+600 seconds — 10 dakika boyunca ¢alissin,
+yukaridaki parametreler ile yorumlaninca 1
+dakika sonunda 100 threade asamali ulas ve 9
+dakika boyunca bu yuki devam ettir.  
+5 — testi 5 kez tekrar et.
+100
+Her bir servis icin 1 Pod, 1 vCPU, 1Gi  
+/api/debitcard/external/application 600 ms
+/api/debitcard/external/search 300 ms
+/api/customer/external/inquiry 300 ms
+/customer-service/api/customer/create-customer-
+no 300 ms  
+60000 ms  
+POST customer-
+service/api/customer/external/inquiry 300 ms
+POST /debit-card-
+service/api/debitcard/external/application 300
+ms  
+POST /customer-service/api/customer/create-
+customer-no 300 ms  
+POST /debit-card-
+service/api/debitcard/external/search 300 ms  
+POST /debit-authorization-
+service/api/debitauthorization/sales 300 ms  
+Page 11:
+Metrik  
+Method - EndPoint - 7  
+Method - EndPoint - 8  
+Method - EndPoint - 9  
+Method - EndPoint - 10  
+Method - EndPoint - 11  
+Tanimi  
+POST /debit-authorization-
+service/api/debitauthorization/cash-withdrawal
+300 ms  
+/debit-authorization-
+service/api/debitauthorization/bill-payment 300
+ms  
+/debit-authorization-
+service/api/debitauthorization/pin/check 300 ms  
+/debit-authorization-
+service/api/debitauthorization/transaction-
+info/transactions 600 ms  
+/ims-conn-service-service/api/imstm/callsync xxx
+ms ims icport CARR/CARP transactionlari ile
+karsilastirma yapuacaktir  
+11  
+Page 12:
+3. Sistem Kapsami ve Baglami (System Scope
+and Context)  
+3.1. Sistem Kapsami ve Baglami Kullanicilar  
+3.1.1. is Bankasi Miisterileri  
+3.1.2. Nar/Sube Kullanicilari  
+PETRA Debit Kart Donusum Context and Scope  
+3.1.3. Akil Back Office Kullanicilari  
+12  
+Page 13:  
+3.2. Sistem Kapsami ve Baglami Petra ve Kanallar  
+13  
+Page 14:
+PETRA Debit Kart Donusum Context and Scope  
+Td
+Akil Back Office
+EOE arT  
+CUCU City MEU Celle  
+Is Bankasi Musterisi ee  
+Akil Back Office Kullanicisi  
+/ \  
+| Debit Kart Kullanimi \ D@bit Kart Kullanimt 'Sube Ekranlari Kullanimi  
+\ rer} IHTTPS|SOAP]  
+Sube Ekraniari Kullanimi
+[HTTPS|SOAP]  
+\ Channels
+\ [system]  
+ree) | ON Ul ete) ONE e eid  
+NIMES eco} Akil Back Office  
+fo--f---  .--
+// RIM para cekmelyatirma hrm para cekmeyatima \\ ATM para cekmelyatitma  
+| TCP TCP-IP]
+--t-
+| Issuer Sistemler  
+Full  
+ROS  
+[ Otorizasyonu Akil Otorizasyonu Akil \ __ Otorizasyonu Aki
+istemine aktarmak uzere jistemine aktarmak uzé ‘Sistemine aktarmak uzere
+gate’e yonlendirir gate’e yonlendirir gate’e yonlendirir  
+| P]  
+| /  
+/  
+| Otorizasyonu petra kartsa_/Otorizasyonu petra kartsa Otorizasyonu petra kartsa
+petra gate’e yonlendirir petra gate’e yonlendirir  
+| petra gate’e yontendirir  
+Petra Gateler  
+\\ Otorizasyonu petra kartsa
+\\ petra gate’e yontendirir  
+\_ ATTPSIRest)  
+\ Petra Debit
+\ [System  
+1
+'
+'
+'
+'
+'
+'
+'
+CUS CLE |
+'
+'
+'
+'
+'
+'
+'
+'  
+EntegrasyonlarA  
+r Dis Sistemler
+em]  
+Petra Debit Diger Dis
+Sug  
+Petra Debit Diger Dis  
+nen eeea
+Cur cus  
+14  
+Page 15:
+3.3. Sistem Kapsami ve Baglami Petra Entegre Olunan
+Sistemler  
+Page 16:
+4.  
+Coztm Stratejisi (Solution Strategy)  
+4.1. Genel Bakis (Overview)  
+Petra Debit Sistemi MSSQL ile gelistirilmistir. Plateau altyapi ile gelistirildiginden Plateau
+commons altyapisinin destekledigi diger veritabanlari ile calisabilecegi 6ngodriilmektedir.  
+Backend gelistirmeleri icin Softtech Plateau Framework yapisi kullanilmistir.  
+Petra Debit Sistemi Backend gelistirme ve paketleri Banka TFSGit Branch’ler ile yonetilmekte ve
+urtin spesifik gelistirilen 6zellikler feature branch,cherry pick,feature toggle yapisi ile commit
+edilmektedir.  
+Sistem OpenShift ve Kubernetes tizerine kurulmustur. Containerlar ortam bagimlligi olmadan
+gelistirme yapilmaktadir.  
+Performans kritik yerlerde ve servisler arasi asenkron Kafka partition yapisi kullanilmaktadir.
+Ayni mesaji tekrar islememek icin rest,soap ve kafka tizerinde idempotency yapisi kurulmustur.  
+Rest ve Soap mesajlarinda hata alma durumunda Compensation(reverse) islem i¢gin Saga yapisi
+kurulmustur.  
+Plateau frameworku (slf4j) ile loglama saglanmaktadir ve ELK ile log izleme saglanmaktadir.  
+Sistem metrikleri kafka tizerinden elastige aktarilmakta graphana tizerine tasarlanmis mirket
+ile takip edilmektedir.  
+Sistem metrikleri servis stiresi/hata orani thresholdlari izlenerek rest endpointleri ve kafka
+topicleri tizerinden vaka olusturulmustur.  
+4.2. Teknolojik Unsurlar (Technology at a Glance)  
+Technology (Technoloji) Tanimi (Description) Versiyon  
+Web Quick ile yazildi.  
+Mobil NA  
+Gecitler (Gateways or BFF) ApiGateway/Edge  
+Giivenlik (Security) Plateau IAM(Keycloak)  
+iletisim (Communication) Rest API,Kafka,Soap,TCP-
+IP,DBLink  
+Onbelek (Cache) Redis,Hazelcast  
+Veritabani (Databases) MSSQL  
+VT betikleri (DB scripts) Liquibase  
+VT Nesne ile iliskisel Hibernate,JPA  
+Haritalama (DB ORM)  
+Yazilim dili (Languages) Java, C#  
+Mesajlasma (Messaging) Kafka  
+16  
+Page 17:
+Technology (Technoloji)  
+Architectural Patterns  
+Tanimi (Description)  
+SAGA Choreography, Circuit
+Breaker  
+Versiyon  
+17  
+Page 18:
+5. Building Block View (Context and Scope)  
+PETRA Debit Kart Donusum Context and Scope  
+i Petra Debit Kart Sistemi
+\ [system]  
+[system]  
+SUP ETAT neg aS
+a7  
+PS TrceUnU KC rrto )  
+eau Ul (Quick)  
+Debit Card Publisher DB Da Rea are  
+Plateau Servisleri
+[System]  
+«plateau»«container» «plateau»«container» «plateau»«container»  
+E. E z  
+Plateau Process Manager Plateau Apigateway Plateau IMS
+[Process Manager] xe DSTA IDUIAS)  
+SURI seem Eloy Plateau Apigateway Plateau IMS  
+«plateau»«container»  
+«db»«container» re:  
+- Plateau Sentinel
+Saari  
+Process_manager DB
+[MSSQL Database] Plateau Sentinel  
+18  
+Page 19:  
+Petra Prepaid Kart Sistemi  
+5.1. Service & Caching Architecture  
+Cache icin kullanilan Mimari asagida referans mimaride anlatilmistir. ilgili link:
+https://wiki.softtech.com.tr/display/MYM/RA.0015.Shared+Cache+-
++Strong+Consistency+Cache+Read+Through  
+19  
+Page 20:
+RA.0015.Shared Cache - Strong Consistency Cache Read Through  
+Reference Architecture  
+Constraint 1: Command service must check entity state by @identity + @version fields.
+If the fields in the database and the fields in the request are not consistent, command service must throw OptimisticLockException  
+L_¥ Command Service  
+=”hUCtC~C2CO!”!”
+CL  
+Client Apps Bo  
+Note: Command and query services might be implemented in the same microservice component.  
+Service Name 1  
+Debit Card Management Service Redis  
+Loyalty Service Redis
+Bin Service Redis
+Customer Service Redis
+Parameter Service Redis  
+20  
+Caching Architecture  
+Client applications call command service to
+change entity state  
+Command service updates entity state in
+the database with every write operation  
+If entity exists in the cache, updates state
+in the cache  
+Meanwhile, client applications call query
+service to retrieve entity state  
+Query service tries to retrieve entity from
+the cache  
+If entity does not exist in the cache, cache
+implementation try to retrieve it from the
+database  
+Cache implementation
+changes cache state if entity exists in the
+database and returns entity  
+Cached Objects  
+AccountFinancialType, Product,
+ProductCode ,
+PRODUCT_BRANCH
+,PRODUCT_ADDITIONAL_INFO  
+PointProfiles
+EFT_CODE, BIN_ONUS
+CUSTOMER_TYPE  
+AccountFinancialType,
+AuthorizationGroupCodes,
+AuthorizationResponseCode,
+MerchantCategoryCodes,Countr
+ys
+Currency,CustomerType, Institut
+ionParameter,MerchantCategor
+yCodes,PetraTransactionCode,T
+rnxDef,TrnxEntry,TrnxSource,T
+rxnStatus  
+Page 21:
+6. Calisma An1 Goruntmt (Runtime View)  
+6.1. Sube Bankamatik Kart Basvuru Akis1  
+(miizeyyene sorulacak) === Maximum Mobil Kanalindan Bankamatik Kart Basvuru
+image::../images/MMKartBasvuru.png[] (mtizeyyene sorulacak) === Kart Basvuru_ Akisi
+image::../images/kartbasvuru.png[]  
+https://jira.isbank/confluence/pages/viewpage.action?pageld=453773937  
+(ustiinden gecilecek) === Debit Authorization Debit Akis1  
+21  
+Page 22:  
+TARO_wiFO_Lock  
+TRANSACTION:  
+‘lanern)| CARO
+eoidon ‘AUTHCARD_WFO
+oeotecs getautharzatonCardin request)
+‘CARD INFO
+eot-cad acwainoroavey "ibreracarefrepacarcacN)
+‘o02K WAN-CARELO aplorapaldcaraprovaiacara caro)
+eldainCardrfotrecues!)
+5
+tak sev, ‘CUSTOMER INFO
+ceggmeyecek | | fpCucomeroireqves
+EVENT
+gsteventaeqvec)
+ty
+onak sve FEELIN
+Segcsone, ||| geetnisrevest  
+Her sens nangiennin kontrol
+{ectp eaimeyecesin tg re  
+fea (uhonzeChecke a9)  
+Ek ser
+sestonattonFervoioRevarcal  
+Exislor
+sadionatlork  
+‘rial lem Dagan
+Ys0 Reverse
+revered  
+Hor cars nangitnancl aga
+gecesi ag te secre
+TrumorcesencFg®)  
+Balve 0K,
+syaimeyecse  
+tak sev,
+caggmeyecek  
+[CARP SARS
+ite acen
+pd
+eegetnecek  
+ecines Atboyed  
+ccesteDeomestrancaetonoTO  
+Transaconabiosunun iting
+geste Ab Debr blabla ¥2 sx
+wrelenebe  
+cremteSusoessTransacbonDTO  
+orale
+rion ack  
+pinata send  
+‘SeaieFraudtaTancacton  
+‘varsactonNotficalonSavice send  
+reatasvaTiansacsongvont  
+ca  
+S5  
+Tianreancae mi “
+opt  
+ep iotpctano  
+Exisior  
+addtonallenomevis  
+‘encevam Sarva sane  
+(GARD _INFO.  
+‘kar State Kontr|
+loacaraoreauest)  
+heekcarastns  
+caRD_sTaTUS_ Cone  
+‘cus_sTaTUS_CODE__Wugter Stata Kontrou  
+enaesEoI Dato  
+sito Kontota|
+chectPin  
+‘CW Kontrol
+creewcve  
+‘eve Konto
+ecko  
+apipersensmventydenanaton  
+|  
+Profi ve Kart Kian cao RESTRICTION
+Konto PRM_CARD_RESTAICTION EXC
+cneeimesreton PaYLPROF ue ResTRictiON
+Wi-Max igiem Toten
+Kontrol
+checkTraneatondmaunt  
+Eskive Kontrola
+checdvelebebaance J 2pirepaidacourtiget balance
+FOS Kontold
+eos  
+Teese  
+ote alee
+70h  
+‘oetnstiuionrarmeiern)  
+INSTITUTION PARAMETER INFO |  
+_piprepadpararetgrinstionparametestid)  
+S  
+Tran Baznds gem Tatar
+ental (ran)
+enecsrransacsonamounerrion  
+Soni Rm Adare Tar) ru oar cer
+checioatyTeatcountandémount  
+Karten Adet ve Tutar a <
+entroly (kan)
+crecxcaraT snCounndAmount  
+art MCC Grup Kis Kontola
+checbfereaniCalenon Crounresncon  
+‘ike Koa Parameteien
+onal
+cnocecouranycadeParameter  
+'FRN_CARD_TRXN AMOUNT,
+Moe GRP_RESTRICTION.  
+PRM_COUNTRY-CODE  
+https://jira.isbank/confluence/display/PDD/Authorization+Debit+Flow  
+6.2. Debit Authorization Debit Akis1 Gateler  
+22  
+Page 23:
+jade
+vepuretuna
+RafincSarvice
+ptc20, pts not in (144)  
+Fatura Odeme
+‘apieil-payment
+BilPaymentService
+pict?  
+Kart Dogrulama
+Japitaccount-vatfication
+AccountverificaionService
+40-182, 40-166  
+Puan Sorgulama
+‘apiloyalty/avaiablo-point
+FomnilnguiryService  
+Puan Kullanim
+‘apinoyaty'use-point
+PontUseSemvice
+10-40  
+Fapiloyatyrefund-point
+PointRetundServica
+2210  
+Puan Yukleme
+‘apitoyatyicad-peint  
+PointLoagservice
+1105-1851  
+‘Sire Balirleme
+lapiipinset
+Pinsetsevvice
+at-ad  
+Site Deqigtime
+“apupinichange
+PinChangeSenice
+ea  
+Sifre Kontrol, Login
+‘apifpiicheck
+PincheckSewvice
+41-40  
+Sitre Yukiome
+‘apupinviogd
+Fink oadService
+aia  
+n Provizyon
+‘apipre-authorization
+PreAuthorizalionService
+pte:30  
+‘On Provizyon Kapama
+‘aplpre-authorizaionypost
+PostPreAutnorzationService
+pic:31  
+Para Gekme
+‘apcasn-ivtnrawal
+CasnWeharanalsenvice  
+12-10, 12-47  
+Kart Ueret TSAR
+(apiffes-charge ‘eplcasnoack
+FeeCnargesorvice casnBackSarvice
+118-10 20-144  
+‘Cashback fade
+‘Jepilcashbackrefund  
+CasnBackRefundService
+1020-184, 1020-148  
+Harcama
+epitsales
+SalesService
+pte-t0  
+PETRA_CARDS tablosuna bakarak OGRestapl yonlenairmes: yapiiyor  
+OcGaevs ‘oGaioNSW ocsiesFR  
+(DOResTADI  
+rato  
+fauthoredlionsenice  
+8 i i i
+KKPT Para Yatrme
+Japilmoney-rensterrecive
+MoneyTransterReceiver
+2itriG, O71
+ara Cake
+lapitmoney transte/send
+iMoney TansferSender  
+10-1790, 12-4710  
+KKPT Alici Kart Isim Sorgulama
+Jagilmoney-treneferirecpient-name-ingury
+MoneyTransterRecipentNamelngulySerice
+40-341, 40-103  
+KKPT Licret Sorgulama
+Jagi/money-iransfericommission-inguity
+Money TransterCommissioninquiyService
+40-340  
+https://jira.isbank/confluence/display/PDD/Authorization+Debit+Inner+Services  
+23  
+Page 24:
+7. Dagitim Goruntimt (Deployment View)  
+7.1. Sistem Topolojisi  
+a 3  
+7.2. Sistem Gereksinimleri  
+Céziimiin calismasi icin ihtiyag duyulan altyapisal 6n gereksinimler asagida yer almaktadir:  
+Asenkron iletisim icin Kafka gereklidir.  
+Altyap1 izleme icin instana,elastik,kibana,prometheus,graphana gereklidir.  
+imaj,jar,nuget gibi artifactlerin tutulmasi icin Nexus gereklidir.  
+Mikro Servis Bilesenlerin kurulumu icin Kubernetes platformu saglanmalidir.  
+Kubernetes platformu olarak RedHat OpenShift tercih sebebidir.  
+Kubernetes Cluster tizerinde en az 6 Worker Node bulunmalidir. (HPA icin pod affinity
+uygulanacaktir bu ytizden 12 ye cikabilir)  
+Memory ve Cpu ihtiyaclari Prepaid Kullaniminin x kati olacak sekilde diisiiniilmektedir. (Kart
+ve islem sayilarina kiyasla gelistirmeler devam edildikce ve stirtimlerle sekillenecektir.)  
+Veritaban1 Sunuculari:  
+¢ Veritabani sunucusu olarak MSSQL giincel stirtimtintin kullanilmasi 6nerilmektedir.  
+¢ Yiiksek erisilebilirlik icin Aktif/Aktif calismak icin Pasifik(Titan) kullanilacaktir. (Pasifik(Titan)
+tarafinda saghkh calismak icin network delaylerinin 6ntine gecilmesi gerekmektedir. Kafka
+Mirroring yapisi ile Kafka Clusterin Pasifik(Titan) tisttinde de calismasi ihtiyaclardan biridir)  
+24  
+Page 25:
+7.3. Ortam Kurulumlar1  
+Misteri Ortamlarina deploymentlar mevcut banka standartlardaki gibi yapilacaktir. INT/UAT/PROD
+ortamlarini kurulma siireci TFS git ile baslayip XLRelease tstiinden akacaktir.  
+Ortam bazh degiskenler XLD tizerinden ve xml konfigurasyonlari ile yénetilmektedir.  
+25  
+Page 26:
+8. Cross-cutting Concepts  
+8.1. User Experience concepts (UX)  
+Web arayiizleri Plateau (Quick) altyapisi ve standartlari dahilinde gelistirilecektir.  
+8.2. Localization  
+Plateau tarafindan saglanmaktadir. Plateau backend tarafindan saglanacaktir  
+RA.0009.Server-Side Localization https://wiki.softtech.com.tr/display/MYM/RA.0009.Server-  
+Side+Localization  
+Server-Side Localization  
+Reference Architecture  
+Quick 2.0 App  
+fu Plateau Metadata | ® Plateau Config  
+8.3. Safety and Security Concepts  
+Plateau Metadata service get list of micro
+services from Plateau Config Server  
+Plateau Metadata get each service
+localization which format is context &
+language  
+Quick 2.0 app get all localization bundle at
+startup  
+Quick 2.0 app make necessary translation
+for each language on UI  
+Hicbir mikroservis dogrudan disariya agik defgildir tek acik olan Plateau Apigateway  
+uzerinden olup  
+Erisim ve yetkilendirme Plateau (IAM) altyapisi ve standartlari dahilindedir.  
+8.4. "Under-the-Hood"  
+Session handling  
+Kullanicilar Plateau/IAM altyapisi tarafindan kurgulanan oturum yonetimini kullanacaktir.  
+Communication and integration  
+26  
+Page 27:
+Onyiiz Sube Nar session yénetimi ile yapilmaktadir. Petrada session yonetimi ayrica yoktur.  
+Exception and error handling  
+Plateau tarafindan saglanan exception handlig yapisi kullanilacaktir  
+8.5. Development Concepts  
+Gelistirme, stirtim y6netimi ve dagitim stirecleri Banka (CI/CD) altyapisi ve standartlari
+dahilinde yonetilecektir.  
+8.6. Operational Concepts  
+Monitoring  
+RA.0001.Centralized+Logging  
+Logging
+RA.0001.Centralized+Logging  
+Tracing
+RA.0001.Centralized+Logging  
+https://wiki.softtech.com.tr/pages/viewpage.action?spaceKey=MYM&
+title=RA.0001.Centralized+Logging  
+Centralized Logging a Mieroservsier loglannt konsola ater  
+Reference Architecture a Mikroservislerin konsola atti tim logllar Fluend araciligy ile toplanur.
+Plateau a Pod bilaleri Prometheus Gzerinden Elastic'e gonderilr.
+6 Fluend topianan logan Elastic'e REST lie gonderit.  
+ra Dr io ge  
+Prometheus ile toplanan Pod bilgleri Gratara ile  
+7 HSA gortntdlee ,
+oO K ‘gOrsellestini.(Log arama Iginde kullaniiabii.)  
+elastic o Prometheus Alert yatay biyime(Yen! Instance agma) sagla.  
+Grafana  
+27  
+Page 28:
+9. Tasarim Kararlar1 (Design Decisions)  
+Imse Akildeki gibi AchManager=Icport tistiinden gitmek yerine Plateau IMS mikroservisi ile rest
+gidilecektir.  
+IMS yogunlugu sorunlari icin IMS mikroservisine giderken Resilience4j ile Circuit Breaker pattern
+kullanilmistir.  
+ocDAuth icerisindeki processing islemleri debit authorizastion servis icgerisinde yonetilmektedir.
+DB tarafinda ortak kullanilan tablolar icin her semada inheritance yoluyla single table olusacaktir.  
+Sube icin Quickle hazirlanan ortak kullanilan ekranlar CardDCI(Kart Tipi) alani eklenerek
+calisabilir hale gelecektir.  
+Nar meniileri Prepaid,Debit olarak béliinecektir  
+Prepaid ve debitin ortak kullandigi mikroservisler i¢gin ayri bir namespace(commons)
+olusturulacaktir.  
+Yeni gelistirilecek mikroservisler MSSQle yazilacaktir.  
+Otorizasyon ve Card icin ortak kontrollerin yapildig1 common paketler olusturulmustur.  
+28  
+Page 29:
+10. Kalite Gereksinimleri (Quality
+Requirements)  
+10.1. ISO 25010 Kalite Oznitelikleri  
+Fonksiyonal Uygunluk As is Debit fonksyionel gereksinimlerin hepsi bu
+urtinle karsilanacaktir.  
+Kullanishhk Hata mesajlari anlamli olacaktir.(plato altyapis1)
+Kullanishhk Ekranlar daha kullanici dostu olacaktir.(Quick)
+Kullanishhk Ekranlar kullanici deneyimine gore daha  
+islevsel hale getirilecektir.(Quick)  
+Kullanishhk Tim islem hareketleri ekranlar ve monitoring
+toollari ile izlenebilir olacaktir.  
+Givenirlik Disardan erisim sadece tokenla apigateway
+uzerinden yapulacaktir.  
+Givenirlik Misteri ve kart bilgileri hsmle sifrelenerek
+tutulmaktadir.(cardtoken,customertoken)  
+Givenirlik Finalsal hareketlerin kaydi saklanmaktadir ve
+izlenebilir haldedir.
+Givenirlik NexusIQ imaj taramalarinda kritik agik  
+bulunmayacaktir. https://devops.softtech/ verisi
+olmali (6rnek: 0 high bulgu ya da veri yok)  
+Performans ims Mikroservisi mevcut achmnagaer > icport
+tpsine yaklasik tpste cevap vermelidir.  
+Performans Servisler bankanin bekledigi sla stirelerine
+uygun stirede cevap vermelidir.  
+Bakim Yapilirlik Veri s6zligii hazirlanmali (6rnek: %50 oraninda
+hazir)
+Bakim Yapilirlik Kaynak kodlari, minimum %80 birim test  
+kapsama oranina sahip olacaktir. (6rnek: %45)  
+Uyumluluk Uygulama gelistiriciler kullanilan teknoloji ve
+yazilim diline hakimdirler.  
+Uyumluluk Banka standartlarina uyumlu gelistirme
+yapulacaktir  
+29  
+Page 30:
+11. Riskler ve Teknik Borclar (Risks and
+Technical Debts)  
+Céziimtin dogru bir sekilde kullanilmasini veya gelistirme siirecini etkileyecek tiim riskler ve
+teknik borclar burada maddeler halinde belirtilmelidir. Bu risklerin nasil azaltilacagina dair plan
+veya aksiyon mutlaka her madde icin agiklanmalidir. Asagida 6rnekler verilmistir.  
+¢ Kafka yedekliligi(atlas/pasifik) projede saglanmamistir.(mirroring)  
+° Bu konuda best practice ler icin kafka admin kaynaklarindan destek alinacaktir
+saglandiginda adapte olunacaktir.  
+¢ IMS mikroservisi ile mevcut icport karsilastirilmasi sonucu degerlendirilecektir.  
+30  
+Page 31:
+12. Sozluk (Glossary)  
+Terim (Term)  
+NAR  
+IAM  
+Application IAM  
+Rota  
+Saga  
+Evam  
+Safir  
+Verim  
+Akil  
+MBY  
+HCE
+ChipExpert
+ADK
+FDS/FraudStar/In-ACT
+PFM
+ABM/Ofsaa  
+Boss  
+Sos  
+Tanim (Definition)  
+Is Bankasi sube kullanicilarinin banka igerisindeki hizmetlere
+erisimi igin kullanilan portal  
+Identity access manager. Plateua tarafindan gelistirilen ve OAuth2
+standartlarinda yetkilendirme ve kimlik denetimi hizmetlerini
+veren microservis  
+Is Bankasi ADK kanalindan gelen istekleri apigateway tizerinden
+ttiketebilmek icin token alinan IAM.  
+Mevcut sistemde NAR ve benzeri uygulamalarin authorization(rol,
+profil ve api kaynagy bilgilerini tutan sistem  
+Servisler arasi transaction yénetimi igin kullanilan bir pattern
+Is Bankasi Kampanya Sistemi  
+Is Bankasi Uye Isyeri Sistemi  
+Is Bankasi Yasal Raporlama Sistemi  
+Akil ig Bankasi Card Issuer Sistemi  
+Is Bankasi Miisteri YOnetim Sistemi  
+Temassiz Kart Altyapisi  
+Kart Basum Uygulamasi(Eskiden Palmaris vardv)
+MM, IsCep gibi Alternatif Dagitim Kanallart  
+Is Bankasi Fraud yazilumlart  
+Is Bankasi miisteri harcama raporlarim sunan Sistem  
+OFSAA, (ABM: Aktivite Bazli Maliyet) basit anlamuyla Is
+Bankasinin triinleri (Nar, Internet Sube, IsCep, Maximum Mobil
+vb.) tizerinden beslenen verilerle takip edilen, karliligin 6lciilmesi,
+maliyet hesaplamasi, raporlama (ABM-Aktivite Bazli Maliyet) gibi
+islevleri olan bir tiriindiir.  
+Bireysel Operasyon Servis Sistemi Kart kapatanlart inceliyip ikna
+ve adrese kart ulasamamasi durumlari gibi islemler igin bildirim
+yapultyor.  
+Suursiz otomatik servis SOS hesap aslinda bir yatirim hesabi SOS
+talimati eger hesapta yeterli para olmazsa bu hesapta bulunan
+fonlarimdan bozabilirsin denilebiliyor. Para Cekme islemlerinde
+hesapta 500 tlm varken 750 ¢ekmek istedigimizde 250 tl lik
+yatirum hesabindan fon bozup otorizasyon veriliyor. Debit
+tarafinda Sos talimatlari tutuluyor Para Cekme islemini Mevduat
+yaptyor.  
+31  
+Page 32:
+13. Security  
+13.1. Deployment and Infrastructure Considerations  
+Petra mikroservisleri instance’lari ve bagli oldugu veritabani, kafka,redis,ui gibi alt yap1 bilesenleri
+ayri pod’larda calismaktadir.  
+13.2. Input validation  
+¢ Inputlar hem 6nytiz hem de servis seviyesinde kontrol ediliyor. Servis seviyesinde ise 6nce
+Plateau Apigateway tizerinde sema validasyonu yapiliyor Spring Boot annotationlari ile ayni
+zamanda da servis icerisinde custom input validasyonlari ile kontrol ediliyor.  
+¢ XSS Check: Petra Api’lerine erisilmeden 6nce Commons Framework’t tarafindan saglanan
+XSSFilter calismaktadir. Bu filter input parametrelerini ve header bilgilerini XSS tehditlerine
+kars1 temizlemektedir.  
+¢ SQL Injection: Petra mikroservislerinde SQL Injection gtivenlik agigini 6nlemek icin Native SQL
+Query’lere yer verilmemektedir. Plateau interceptorleri araya giriyor ve ORM olarak ta Spring
+Data JPA kullandigimiz icin extra bir kontrol yapiulmiyor. Ayirca Checkmarx taramalari stirekli
+kontrol edilip diizenleme yapilmaktadir.  
+13.3. Configuration management  
+Database baglanti ve diger Secret bilgileri sifrelenmis olarak openshift ortamlarinda
+secret.yaml dosyasinda tutulmaktadir.  
+Uygulamaya ait son bilesen stirtimleri ve konfigtirasyonlar1 banka git’i izerinde ki config
+projesinde tutuluyorlar.  
+Hassas bilgiler bankanin XLDictionary aracinda tutuluyor. Git tizerinde ki config projesinde
+ortam bazli bu degerleri okumak icin key tutuyoruz.  
+HTTP GET mesajlarinda hassas veri olmasi durumunda HTTP POST’a doéniistiiriiyoruz.  
+Kart ve misteri hassas verilerini(CardNo,CustomerNo,Pin,CVV gibi) HSM le sifreliyoruz.  
+13.4. Exception Management & Auditing, Logging  
+¢ Exception Handling durumlarinda sekilde loglama yapilmakta bu hatalardaki detaylar mirket
+uzerinden izlenmektedir.  
+32  
+Page 33:
+14. Mimari Yol Haritas1 (Architectural
+RoadMap)  
+14.1. Mimari Yol Haritasi (Architectural RoadMap)  
+¢ Kafka mirroring eklenecektir  
+¢ Petra Common namespace ilk asamada olusmayacak prepaid icinde olacak sonraki asamada
+prepaid ,debit, commmon ayrilacaktir  
+14.2. Gecis Mimarisi (Transition Architecture)  
+¢ Otorizasyon Common ve Debit Common jarlari prepaide gecirilecektir.  
+14.3. Hedef Mimari (Target Architecture)  
+¢ Hedef Mimaride Debit,Prepaid\common ayri namespacelerde common _ kiitiiphanelerini
+kullanacak sekilde olacaktir  
+c Hedef mimaride Pasifik aktif aktif kullanilabilecek sekilde third party bilesenler iki
+openshift clusterinda da calisabilir olacaktir.  
+¢ Puan,Muhasebe gibi Akil bagli kalinan yerlerde déntisittm kapsaminda ilerleyen kisimlarda
+cikarilip entegre olunabilir.  
+¢ Akil sistemi tam déntistigtii durumda ADK kanallariin Petra’ya yonlendirilmesi saglanmaldir.  
+33
+Introduction to 0061#Afet Koordinasyon Uygulaması:
+_Detaylar:_|  
+Gündeme getiren: Lutfu Ulusoy  
+|  
+Tarih: 04 Jun 2024  
+---|---|---
+Afet Koordinasyon Uygulaması konusunda entegre olacak uygulamaların veya
+sağlanacak veriler açısından hangi ekiplerin desteği gerekeceği konusunda BT
+ekibimizi ilgili ekiplere yönlendirmek adına destek talep ediliyor.
+** _Notlar / Gelişmeler:_**
+1-|  
+Afet Komuta Kontrol_Gere…  
+Excel de high level gereksinim iletilmiş. Mustafa Tunca ların ekibi önyüzü
+yapacaklar, verilerin emtegrasyonu konusunda destek olacak ekiplerin
+belirlenmesi gerekiyor.  
+Katılımcılar: Mustafa Tunca, Buğra Öçalan, Koray Yangal, Uluç Bilecen, Ezgi
+Sönmez  
+Proje yöneticisi: Merve  
+İsterler konusunda : Koray Yangal (innovasyon - lokum) ve Mustafa Tunca  
+IKON: Önder Dikbaş  
+Afet anında anlık olarak sistemi kontrol edebilecekleri bir uygulama ihtiyacı
+var.  
+* Veriler var mı? Varsa nerede? İlgili yerden alınabilir mi? Alınabilirse gösterilebilir mi?
+* Maddeler:
+* Şube sürekliliği: İsmail Atalay'ların yönetiminde, Kafka ile veriler alınıyor.
+* Kanal sürekliliği: İsmail Atalay'ların yönetiminde, Kafka ile veriler alınıyor.
+* Harite üzerinden görüntüleme (Şube): İşcep ile aynı şekilde gösterilebilir. LBS üzerinden olabilir
+* Şube Koordinasyon Merkezleri: Şube veritabanınında bu tip kategorizasyon yok. bilgiler iş süreklilği iş biriminden alınabilir (Tonguç Karaağaç olabliir)
+* Harita üzerinde bölge satış müdürlükleri .. : Bilgi sihirbazı üzerinden bakılabilir
+* İş sürekliliği lideri olarak... : Çalışan bilgisi olabilir, İKON'da veri var ama servis yok, entegrasyon yöntemi belirlenmeli.
+* GEnel Müdürlük irtibat bilgileri... : Çalışan bilgisi olabilir, İKON'da veri var ama servis yok, entegrasyon yöntemi belirlenmeli
+* Eşlenik şube bilgileri: Bilgi sihirbazında olabilir
+* İş Bankası arama kurtarma kulubü.. : Lokum içinde arama/kurtarma grubu oluşturulabilir. Verinin tutulduğu yer bulunmalı (afet ve olağanüstü durum koordinatörlüğü)
+* Saha Koordinasyon Liderleri ... : Lokum üzerinden veri girişi olması tercih edilmeli
+* Harita üzerinden depolar, yaşam ... : Geliştirme yapılmalı.
+* Şubelerin günsonu kasa bakiyeleri: Önyüz yapılmalı, verimden dosya olarak alınabilir
+* Depo envanter bilgisi: Envanter uygulaması var mı?
+* YDP Şubeleri envanteri bilgisi: Envanter uygulaması var mı?
+* Yaşam alanı envanter ve kullanıcı bilgisi: yeni geliştirme ihtiyacı
+* Çalışan iletişimminin tetiklenmesi .. : Lokum'da yetkinlik var
+* Emekli ve iştirak çalışanlarımızın ... : Emekli bilgilerinin alınması ve kullanıcı doğrulaması yapılması, Lokum kullanılabilir. İştiraklerdeki çalışan ve emekli bilgileri yok.
+* Çalışanların yardım talepleri: Lokum'da yetkinlik var
+* Çalışanların yardım talepleri (karşılanması): Lokum'da yetkinlik var
+* Yol durumu bilgisi: yeni geliştirme yapılmalı, manuel girilecek bilgi olabilir. Ulaştırma B. ya da Karayolları Genel Müdür. Açık yazılım ekibi repoları olabilir. (https://yol.kgm.gov.tr/kapaliyollar )
+* Çalışan adres bilgilerinin ilçe bazlı ... : IKON'dan veri alınabilir. Lokum içinde çalışan anlık olarak adres paylaşabiliyor.
+* İşim'in çalışanın konum izinnini açması ... : Lokum'da bu yetenek bulunmaktadır. İşim'e gerek olmayabilir.
+* Emekli ve iştirak çalışanlarımızın ... : Lokum karşılayabilir, çatı holding yapısı olabilir  
+BT'ye sorulacaklar excel belgesine işlendi.  
+|  
+Not ekleyen: Lutfu Ulusoy  
+|  
+Tarih: 04 Jun 2024  
+2-|  
+Garden yönlendirmesi; İnsan ve Cana odaklı isterleri en hızlı şekilde hayata
+geçirmek (Bu kapsamda Afet yönetimi isterleri için Lokum uygulaması ek
+geliştirmeleri Ağustos sonuna planlamış Koray Yangal , teknoloji olarak afet
+anında çalışabilirliği olacak alternatif çözüm yöntemleri de düşünülmeli
+-SMS.. vs Lokum da SMS iletişimi de geliştiriliyor ) İş sürekliliği kapsamında
+olan isterlerin ise önceliği biraz daha düşük olup planlaması ona göre
+yapılabilir. İş süreklilği kapsamında mevcut uygulamaların replikasyonu yerine
+entegrasyon yöntemi ile ilerlenmesi daha uygun olacak. Kurumsal Uygulamalar
+liderliğinde iş isterlerini iş birimi ile netleştirilip, uygulamanın çözüm
+mimarisi ortaya çıkınca üzerinden geçilecek. Sabri Bey e de bilgi verilecek.
+Burada teknik tecrübe olarak dışarıdan destek de alınabilir (Turkcell,
+telekom...vs gibi)  
+|  
+Lutfu Ulusoy  
+|  
+11-06-2024  
+Afet Komuta Kontrol_Gereksinimler_25052024.xlsxFailed to read Excel file: Missing optional dependency 'openpyxl'.  Use pip or conda to install openpyxl.
+Introduction to 0062#Jira'ya mimari komitesi aşamasının girmesi:
+_Detaylar:_|  
+Gündeme getiren:  
+Aykut Dizdar  
+|  
+Tarih: 04 Jun 2024  
+---|---|---  
+**_Notlar / Gelişmeler:_**
+1-|  
+* Üretim süreci içine mimarinin de aşama olarak girmesi önerildi (Aykut Dizdar)
+* Mimari değerlendirme onayının Jira’ya eklenmesi için öncelikle tüm Softtech domain mimari komitelerinin efektif olarak çalışması gerekiyor. Bu aşamadan sonra Jira ekibi tarafından tüm Softtech talep akışını etkileyecek şekilde düzenleme yapılabilir.
+* Domain mimari komiteleri aktif çalıştırılması ama bu durum tıkanıklağa neden olur mu?
+* Katılımın önemi olduğu anlatılmalı
+* Mimari etki formu kullanılabilir. Çok sayıda görüş alınması gerek. Ürün mimarları bunu kullanarak mimari değerlendirme ihtiyacı belirlenebilir
+* Onay/Red kayıt altına alınması
+* Gündem konusunda Engin İnal'ların yöntemleri uygulanabilir. Aksaklık noktaları:
+* Moderatör'ün toplantı ve tatil hali moderatörlük ile ilgili sorun oluyor. "Gündemi kim getirdiyse notu o tutsun," çalıştı gibi.
+* Anlaşmazlıklar daha çok geliyor, özellikle sahiplikler. İtirazlarla mimari tasarım sorunları gelebiliyor ama her zaman da gelmeyebiliyor.
+* Mimarlar arası konuşma yapılmadan ürün yöneticileri arasında konuşuyor.
+* Ürün mimarlarına gelen baskı yanlış yönlendirmelere neden olabiliyor.
+* Zoom'un araçları desteği düşünüldüğünde:
+* AI pek işe yaramıyor
+* Web sitesi üzerinden bilgi alınabiliyor
+* note'lar işe yarıyor.
+* İşleyişi önce kendi üzerimizde deneyelim, sonra pilot denemeler yapılması uygun olacak.
+* moderatör isim harf sırasına göre ilerleyecek (1. Aykut Dizdar ... n. Zeynel İbrahim Arslan)  
+| Not ekleyen: İbrahim Çalışır |  
+Tarih: 04 Jun 2024
+Introduction to 0016#imsSequenceNumber ve anasisteme gitmeyen servisler arası uyuşmazlık ve teftiş kaydı:
+_Detaylar:_|  
+Gündeme getiren:  
+|  
+Tarih:  
+---|---|---  
+NAR ve ISCEP isteklerinde ana sisteme gitmeyen servisler için dekont'ta
+basılacak sequenceNumber ne olacak? imsSequenceNumber servis kullanılmadığımız
+iş birimi jiradan olay kaydı yaratıyor. Şubenin bu tellerı böyle bir id'li
+işlem yapmadı şeklinde. Bu durumun ADR'sini yayınlamak ve şube, teftiş
+temsilcilerinin bilgisine sunmak gerekiyor. Berkay Başoz 28 May 2024  
+** _Notlar / Gelişmeler:_**
+1-|  
+* ims-sequence-number-app.kube.isbank : Dijital şube platformları ekibinin bir servisi var , isteğe bağlı ya son imsseq alıyorsun yada alırken increase ediyor
+* Bt-Mimari yeni nesil Plateau dünyasına anasistemde legacy tasarlanmış imsSequenceNumber ile ilgili bir concern girmemesi gerektiğini düşünüyor.
+* Softtech Mimari COE olarakda görüşümüz mümkünse BT-Mimari ile paralel yöndedir.
+* TB Mimaride değerlendirildikten sonra BT Mimari ile görüşülmesine karar verildi. Engin İnal Berkay Başoz  
+|  
+Not ekleyen: Halil İbrahim Sunter  
+|  
+Tarih: 03.06.2024
+Introduction to 2024.06.06 - McKinsey Generative AI Ürünü(CodeManta):
+Konu Başlığı| McKinsey Generative AI Ürünü(CodeManta)
+---|---
+Konu Açıklaması|  
+SDLC süreçleri için AI desteği ile çalışan ürün satın alınmıştır. Ürün hem
+Softtech hem de banka ortamlarına kurulmaktadır. 7 Haziran SDRF’te gözden
+geçirmesi yapılacaktır.  
+Talep Geliş Tarihi| 2024-06-04
+Geliş Amacı|  
+Görüş Alma  
+SMK Sunumu  
+|  
+SMK Video Kayıt|  
+video1626073791.mp4  
+Talep Durumu|  
+Toplantı Notları|  
+Ürün 2 kısımdan oluşuyor.  
+* IDE'lere extension olarak gelen code assistant
+* Jira ile entegra olarak çalışan requirement to code  
+McKinsey ile birlikte çalışılıyor. Banka ortamına kurulumu yapıldı. Ürünü
+Softtech satın aldı. 9 adet code reposu Softtech Github'da oluşturuldu  
+Ağustos sonuna kadar PoC süreci olacak.  
+DEV ortamı Softtech'te INT, UAT ve PROD Banka tarafında olacak  
+IAM hem banka'da hem de Softtech'te ortamlarında kullanılıyor.  
+* IAM entegrasyonları bu nedenle sorun riski doğuruyor.  
+Telemetry servisi postgre'den besleniyor.  
+Pilot ekipleri:  
+* işcep
+* petra (birden fazla ekip) petrabit, petraPay
+* Nays  
+Plateau uyumluluk konusu şu anda dikkate alınmamış durumda.  
+Kendi kodu python, ön yüzü react, üretilen sonuç kod, python olmak sorunda
+değil. Çıkan sonuç java,  
+.net, yani bizim standartlarımızda olacak.  
+Birim test yazma yetenekleri PoC de gözlemlenecek.  
+AI geliştirse de "Push request'i kabul eden geliştirici sorumludur" mantığı
+geçerlidir  
+Developer ve Analistler için bir tool olarak tanıtıldı (analisti ilk kez
+duyuyoruz)  
+Code Manta Mimari çizimleri çıkaracak dendi? -> bizim fiks viewlarımız var,
+bunları isteriz.  
+CodeManta ve CodeMantis'in en iyi özellikleri birleştirilerek tek bir ürün
+olarak kullanmak şeklinde bir plan var  
+Alınan Kararlar|
+Introduction to 0000#Toplantı_moderatörü:
+Moderatörlük:  
+Her hafta salı yapılan Mimari CoE - Yönetişim Hizalanma toplantısının
+yönetimini yapması beklenmektedır.  
+Bu çerçevede:  
+1. Pazartesi günü gündem maddelerin Mimari Yönetişime hatırlatılması
+2. Salı günü Mimari Yönetişim Hizalanma toplantısında gündem maddelerinin sırası ile görüşülmesini sağlamak
+3. Zoom üzerinden paylaşımlı notları açmak ve toplantıda konuşulan konularda alınan kararları, görüşülen içerikleri yazmak (bu noktada diğer katılımcıların da katkı vermesi beklenmektedir)
+4. Notlarda alınana kararları Mimari Yönetişim - Gündem - Mimari Yetkinlik Merkezi - Confluence (softtech.com.tr) altına yazmak
+5. Komisyonların son durumunun sorulmakta ve gelişmeleri not almaktadır.
+6. Görevini yaptıktan sonra kendi isimin yeşil renk yazılmasını sağlamak  
+görevleri arasındadır.  
+Tarih | Moderatör| Yedek Moderatör
+---|---|---  
+11 Jun 2024  
+| Aykut Dizdar| Aziz Göktepe  
+25 Jun 2024  
+| Aziz Göktepe| Cengiz Koç  
+02 Jul 2024  
+| Cengiz Koç| Engin İnal  
+09 Jul 2024  
+| Engin İnal| Halil İbrahim Sünter  
+16 Jul 2024  
+| Köprü izin| Köprü izin  
+23 Jul 2024  
+| Köprü izin| Köprü izin  
+30 Jul 2024  
+| Halil İbrahim Sünter| İbrahim Çalışır  
+06 Aug 2024  
+| İbrahim Çalışır| Hüseyin Kacar  
+13 Aug 2024  
+| Hüseyin Kacar| Ömer Çetin  
+20 Aug 2024  
+| Ömer Çetin| İbrahim Aslan (Z)  
+27 Aug 2024  
+| Rabın Dal| Ufuk Öktemer  
+03 Sep 2024  
+| İbrahim Aslan (Z)| Kübra Gökçe  
+10 Sep 2024  
+| Kübra Gökçe| Mustafa İlker Kutman  
+17 Sep 2024  
+| Mustafa İlker Kutman| Rabın Dal  
+24 Sep 2024  
+| Ufuk Öktemer| Aykut Dizdar  
+01 Oct 2024  
+| Aykut Dizdar| Aziz Göktepe  
+08 Oct 2024  
+| Aziz Göktepe| Cengiz Koç  
+15 Oct 2024  
+| Cengiz Koç| Engin İnal  
+22 Oct 2024  
+| Engin İnal| Halil İbrahim Sünter  
+29 Oct 2024  
+| Halil İbrahim Sünter| Hüseyin Kaçar  
+05 Nov 2024  
+| Hüseyin Kaçar| İbrahim Aslan (Z)  
+12 Nov 2024  
+| İbrahim Aslan (Z)| İbrahim Çalışır  
+19 Nov 2024  
+| İbrahim Çalışır| Kübra Gökçe  
+26 Nov 2024  
+| Kübra Gökçe| Mustafa İlker Kutman  
+03 Dec 2024  
+| Mustafa İlker Kutman| Ömer Çetin  
+10 Dec 2024  
+| Ömer Çetin| Rabın Dal  
+17 Dec 2024  
+| Rabın Dal| Ufuk Öktemer  
+24 Dec 2024  
+| Ufuk Öktemer| Aykut Dizdar  
+31 Dec 2024  
+| Aykut Dizdar| Aziz Göktepe
+Introduction to 0063# /batch/esabat/Batch_Repository/CORESRVC/wsrr-operation-info/ batch uygulama sahipliği:
+_Detaylar:_|  
+Gündeme getiren: Lutfu Ulusoy  
+|  
+Tarih: 11-06-2024  
+---|---|---  
+10.06.2024 portföy toplantısında konuştuğumuz üzere, Kaesabat0* sunucusu
+üzerinde /batch/esabat/Batch_Repository/CORESRVC/wsrr-operation-info/
+sahipliği bulunamamaktadır (YATT, Kartlı Ödemeler ve Kredi İzleme ve Takip
+ekipleriyle iletişime geçildi ancak sahipliğinin bu ekiplerde olmadığı
+iletildi). Sunucu üzerinde kalan son paket olması ve sunucunun kapatılmak
+istenmesi nedeniyle sahipliği konusunda yardımlarınızı rica ederiz.  
+**_Notlar / Gelişmeler:_**
+1-|  
+RE- Kaesabat_ Sunucusu L…  
+|  
+Not ekleyen: Lutfu Ulusoy  
+| Tarih: 11-06-2024
+2-|  
+Bizim ürün mimarlarından Hakan Yıkman’a bu konuda araştırma yapmasını
+söylemiştim.  
+Şöyle bir cevap yazdı : Bu kod scoretfs te yok; clearquestte kalmış taşıması
+da yapılmamış, en son da Arda Doğan ve Vahdet keskin proda çıkmış 2 sene önce.
+Bu sdf’in wsrr yüklemelerinin olduğu portalın arkasında çalışan iş diye
+düşünüyorum. Biz dosya yüklüyoruz. Kapatırsak dp.txt ve servis conf larını
+çıkamayız diyor.  
+Yarın sabah Sebran, Gizem Eker ve Eser Yürüyen’in olduğu bir yazışma
+başlatacak. Bizi de cc’ye ekleyecek. Oradan takip ederiz.  
+|  
+Engin İnal  
+| 11-06-2024
+3-|  
+SDF-WSRR ilişkili bir iş olduğu için konu Plateau Platform - Banka Framework
+ekibi sorumluluğunda ilerlenmesi konusunda karar alınmıştır. Ekip ile de
+görüşüldü, konu ile ilgili maalesef elde herhangi bir bilgi bulunmadığı için
+de devir edilecek bir bilgi de bulunmuyor görünüyor, ilgili ekip konuyu
+inceleyecek alınacak aksiyonları belirleyecek.  
+|  
+Lutfu Ulusoy  
+| 02-07-2024
+2024.06.12-SARB-ProEmtia#3
+	subsection:Girdiler:
+	sub_subsection::
+emtia.pdf
+2024.06.12-SARB-ProEmtia#3
+	subsection:Girdiler:
+	sub_subsection:Toplantı Katılımcıları ::
+Sartuk Can Palamut Serdar Torgan Lutfu Ulusoy Ufuk Öktemer İbrahim Çalışır
+Ömer Çetin İbrahim Aslan , Mustafa İlker Kurtman Melih Yuksel Kaya Kubra Gokçe
+Huseyin Kacar
+2024.06.12-SARB-ProEmtia#3
+	subsection:Çıktılar:
+	sub_subsection:Toplantı kayıtları ::
+video1329485118.mp4
+2024.06.12-SARB-ProEmtia#3
+	subsection:Sonuç:
+	sub_subsection:MOE-SARB:
+#Uyumsuzluk  
+|  
+#İstisna  
+|  
+#Öneri  
+|  
+#Doc  
+---|---|---|---
+2| 1| 2| 14  
+### Döküman Hazırlık  
+01  
+|  
+02  
+|  
+03  
+|  
+04  
+|  
+05  
+|  
+06  
+|  
+07  
+|  
+08  
+|  
+09  
+|  
+10  
+|  
+11  
+|  
+12  
+|  
+13  
+|  
+14  
+|  
+Toplam  
+---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
+1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 1| 14
+2024.06.12-SARB-ProEmtia#3
+	subsection:Sonuç:
+	sub_subsection:Uyumsuzluk | Inconsistency:
+* 04# Technology at a Glance yeni template'e göre düzenlenecek ve eksik versiyonlar eklenecek
+* 10# Quality Requirements bölümü yeni versiyona göre güncellenecek
+2024.06.12-SARB-ProEmtia#3
+	subsection:Sonuç:
+	sub_subsection:İstisna | Exception:
+* 07# MSQL topology resminden çıkartılacak, sistem gereksinimleri güncellenecek
+2024.06.12-SARB-ProEmtia#3
+	subsection:Sonuç:
+	sub_subsection:Öneri | Advice:
+* 1.5# Reusablity puanı daha yüksek verilebilir
+* 13# Güvenlik bölümü Cross-cutting Concepts bölümüne alınacak
+2024.06.12-SARB-ProEmtia#3
+	subsection:Sonuç:
+	sub_subsection:aCoE Internal:
+* Type your task here, using "@" to assign to a user and "//" to select a due date
+2024.06.12-SARB-ProEmtia#3
+	subsection:Sonuç:
+	sub_subsection:Notlar::
+emtia.pdfPage 1:
+emtia  
+table of contents  
+1. Introduction and Goals
+1.1. Requirements Overview
+1.2. Stakeholders
+1.3. Definition of Problem or Requirement
+1.4. Definition of Solution
+1.5. Quality Tree and Goals
+2. Architecture Constraints
+2.1. Overview
+2.2. Contstaints & Solutions
+2.3. Performance Goals
+3. System Scope and Context
+4. Solution Strategy
+4.1. Overview
+4.2. Technology at a Glance
+5. Building Block View (Context and Scope)
+5.1. Whitebox Overall System
+5.2. Building Block View (level 1)
+5.3. Building Block View (level 2)
+5.4. Building Block View (level 3)
+5.5. Service & Caching Architecture
+6. Runtime View
+6.1. <Runtime Scenario 1>
+6.2. <Runtime Scenario 2>
+6.3. <Runtime Scenario 3>
+6.4. <Runtime Scenario 4>
+6.5. <Runtime Scenario 4.1>
+6.6. <Runtime Scenario 4.2>
+6.7. <Runtime Scenario 4.3>
+6.8. <Runtime Scenario 4.4>
+6.9. <Runtime Scenario 4.5>
+6.10. <Runtime Scenario 5>
+7. Deployment View
+7.1. Sistem Topolojisi
+7.2. Sistem Gereksinimleri
+7.3. Ortam Kurulumlar1  
+8. Cross-cutting Concepts  
+DAH AHDP FPF Www wo  
+NNN PB RP RP RB BB BBB RB BB BB Be RB BB BP eB
+NOCH ON NN DRDHAVTHY BP BP PNHNNYNNYNHKPHKRH DOO OO  
+Page 2:
+8.1. Domain concepts
+8.2. User Experience concepts (UX)
+8.3. Safety and security concepts
+8.4. Architecture and design patterns
+8.5. "Under-the-hood"
+8.6. Development Concepts
+8.7. Operational Concepts
+9. Design Decisions
+9.1. ADRs (architecture decision record)
+10. Quality Requirements
+11. Risks and Technical Debts
+12. Glossary
+13. Gtivenlik (Security)
+13.1. Deployment and Infrastructure Considerations
+13.2. Genel sorular
+13.3. Girdi Kontrolu sorulari
+13.4. Konfigiirasyon yénetimi sorular1
+13.5. istisna YOnetimi ve Denetimi, Giinliige Kaydetme Sorular
+14. Architectural RoadMap
+14.1. Architectural Roadmap
+14.2. Transition Architecture  
+14.3. Target Architecture  
+<
+softtech  
+This version of the template contains some help and explanations. It is used
+@ for familiarization with arc42 and the understanding of the concepts. For
+documentation of your own system you use better the plain version.  
+22
+22
+22
+22
+23
+24
+24
+26
+26
+32
+33
+34
+35
+35
+35
+36
+37
+38
+39
+39
+39
+39  
+Page 3:
+1. Introduction and Goals  
+ProEmtia Platformu; Endiistiriyel tirtin tireticileri ve toptancilari olan saticilar ile kiigtik bayi, son
+kullanici olan alicilari dijital bir Pazar yerinde bir araya getirir.  
+1.1. Requirements Overview  
+Satis stirecinde saglanan cesitli finansman olanaklari, hem alici hem de saticiya giivenli alim satim
+imkani veren ortami ve geleneksel bir siireci uctan uca dijital ortama tasimasiyla olusan hiz ve
+rekabetci maliyetler ile piyasaya yeni bir is ve deger modeli 6nermektedir.  
+1.2. Stakeholders  
+Role Erisim bilgileri  
+Saticu Endistiriyel tirtin tireticileri ve
+tedarikcileri  
+Alict insaat firmalari, agir sanayi
+sektorii  
+Lojistik Firma — Lojistik firmalar  
+Platform Sahibi MaxiMarket (is Bankas1)  
+bu rolden beklentiler  
+Uriinlerini paltforma tanimlasistok ve fiyat
+bilgisini girdikten sonra pazaryerine tritinlerini
+sunmas.  
+Ihtiya¢ duydugu tiriinleri, se¢tigi deme yontemi
+ile satin almasu.  
+Sundugu hizmeti platforma tanimlasi sayersinde
+satict deposu ile alici adresi arasindaki lojistik
+hizmeti sunar.  
+Platformda satilabilecek tirtinlerin temel
+bilgilerini tanimlar, platformu kullanacak
+paydaslari tanumlar. Bunun yaninda platformun
+en biiyiik gelir kaynagi olan komisyonlari ve vade
+oranlaruu belirler.  
+1.3. Definition of Problem or Requirement  
+* Satici icin Oncelikler:  
+° Yeni misteri bulmak icin farkli iletisim kanallarina ihtiyag duyulmasi ve bu stirecin zorlugu  
+e Miusteriler ile
+yasanabilmesi  
+iletisimin farkh  
+kanallardan yapilmasi  
+ve operasyonel zorluklar  
+° Aliciya gtiven duymada yasanan zorluklar (6zellikle kii¢tik/orta 6lcekli saticilarda)  
+° Kart ile islemlerde ddenen pos komisyonlar1  
+* Alici icin Oncelikler  
+° Saticiya duyulan giiven problemi (anlasilan zaman ve kalitede trtin teslim edilmemesi gibi)  
+° Tedarikci bulma ve fiyat alma stireclerinin uzunlugu  
+° Thtiyag¢ halinde nakliye bulma ve finansman alma gibi siireclerin uzun ve zor olabilmesi  
+e Finansman stireclerinin dijitallesmesine ve trtinlerin ulasilabilir olmasina duyulan ihtiya¢  
+Page 4:
+1.4. Definition of Solution  
+¢ ProEmtia Paltformu ile
+° Saticilar ve alicilar tek adreste bir araya geldiler.
+° Ticaret uctan uca tiim adimlari ile bu platformdan yapilmaya devam ediyor.  
+° Alici, satic1 ve lojistik firmalar1 ProEmtia Platform’u _ giivencesi
+gerceklestirmektedir.  
+° Alicilar ihtiyag duyduklari finansmana hizli bir sekilde ulasmaktadir.  
+1.5. Quality Tree and Goals  
+Performance efficiency Score
+Time behaviour 4
+Resource utilization 3
+Capacity 3
+Compatibility Score
+Co-existence 5
+Interoperability 5
+Usability Score  
+Appropriateness recognizability 5  
+Learnability 5
+Operability 5
+User error protection 5
+User interface aesthetics 5
+Accessibility 5
+Reliability Score
+Maturity 4
+Availability 4
+Fault tolerance 5
+Recoverability 5
+Security Score
+Confidentiality 5
+Integrity 5
+Non-repudiation 5  
+ile  
+ticareti  
+Page 5:
+Security
+Accountability  
+Authenticity  
+Maintainability
+Modularity
+Reusability
+Analysability
+Testability
+Modifiability  
+Authenticity  
+Portability
+Adaptability
+Installability  
+Replaceability  
+Score  
+Page 6:
+2. Architecture Constraints  
+2.1. Overview  
+2.2. Contstaints & Solutions  
+Constraints  
+ARCH-01-C  
+ARCH-01-S-1
+ARCH-02-C  
+ARCH-02-S-1
+ARCH-03-C  
+ARCH-03-S-1  
+ARCH-04-C  
+ARCH-04-S-1  
+ARCH-05-C
+ARCH-05-S-1  
+2.3. Performance Goals  
+Description  
+Platform’un sirket karari dogrultusunda
+backend’i Plateau framework ile yazilmalidir.  
+Plateau framework’ kullanilmistir.  
+Odeme islemleri icin bir édeme sistemi ile
+entegrasyon yapilmasi gerekmektedir.  
+Moka ile entegrasyon yapilmistir.  
+Odeme sistemleri kullanildigindan audit yapis1
+kullanilmal..  
+PostgreSQL veritabaninin audit extension’1
+kullanilmaktadir. Bunun yaninda db
+tablolarinda audit kolonlari da bulunmaktadir.  
+Gelistirme ortami kaynak kodlari, minimum
+%70 birim test kapsama oranina sahip olacak,
+kodlarin stili taraflarca mutabik kalinarak
+belirlenecek ve kod kalitesi SonarQube ¢iktilari
+goz Ontinde bulundurularak ¢éztimlenecektir.
+SonarQube c¢iktularin derecelendirmesini (A-E)
+yaplyorsa, A derecesi saglanacaktir. Bulgularin
+agirhklari ve kod satir sayisi izerinden bir
+formiilasyonla aracin 6nerdigi “A” derecesi
+saglanacaktir. Araclarda en yiiksek gtivenlik ve
+kalite opsiyonlari secilecektir. Bug, blocker veya
+major bulgu olmayacaktir.  
+Haftahk olarak bulgu kontrolleri dtuizenli bir
+sekilde yapilmaktadir.  
+Performans testlerinden gecer not almali.  
+Prod ¢ikisi zamaninda performans testi yapilmis
+ve cikan sorunlar giderilmistir. Ayrica yapilan
+her yeni gelistirmede performans kontrolii
+yapiulmaktadir.  
+Platformda en cok kullanilacak servislerin performans testi yapilacak. 300 alicr’nin ayni zaman  
+Page 7:
+diliminde pazaryeri sorgusu, sepet olusturma, fiyat hesaplama ve 6deme yapma testi yapilacaktir.  
+Metrics  
+Name(s) of the service(s)
+Number of threads(users)
+Ramp-up Period (seconds)
+Duration (seconds)  
+Loop Count  
+TPS  
+Minimum CPU & RAM  
+Min Response Time (miliseconds)
+Max Response Time (miliseconds)  
+Method - EndPoint - 1  
+Metrics  
+Name(s) of the service(s)
+Number of threads(users)
+Ramp-up Period (seconds)
+Duration (seconds)  
+Loop Count  
+TPS  
+Minimum CPU & RAM  
+Min Response Time (miliseconds)
+Max Response Time (miliseconds)  
+Method - EndPoint - 1  
+Metrics  
+Name(s) of the service(s)
+Number of threads(users)
+Ramp-up Period (seconds)
+Duration (seconds)  
+Loop Count  
+TPS  
+Description
+payment  
+70  
+500 seconds
+600 seconds
+100  
+1000m (milicores) - (1 core = 1 CPU = 1 AWS
+vCPU = 1 GCP Core) 1000 mebibytes(Mi) -
+(1.048.576 megabytes)  
+300 ms
+2000 ms  
+POST /api/v1/payment/creditCard  
+Description
+fafmarket
+100  
+500 seconds
+600 seconds
+100  
+4000m (milicores) - (4 core = 4 CPU = 1 AWS
+vCPU = 1 GCP Core) 1000 mebibytes(Mi) -
+(1.048.576 megabytes)  
+300 ms
+739 ms
+POST /api/fafmarket/addToBasket  
+Description
+fafstore  
+75  
+500 seconds
+600 seconds  
+140  
+Page 8:
+Minimum CPU & RAM  
+Min Response Time (miliseconds)
+Max Response Time (miliseconds)  
+Method - EndPoint  
+Metrics  
+Name(s) of the service(s)
+Number of threads(users)
+Ramp-up Period (seconds)
+Duration (seconds)  
+Loop Count  
+TPS  
+Minimum CPU & RAM  
+Min Response Time (miliseconds)
+Max Response Time (miliseconds)  
+Method - EndPoint  
+1000m (milicores) - (1 core = 1 CPU = 1 AWS
+vCPU = 1 GCP Core) 1000 mebibytes(Mi) -
+(1.048.576 megabytes)  
+900 ms
+2539 ms
+GET fafstore/product/getProductBySellerId  
+Description
+fafmarket
+70  
+500 seconds
+600 seconds
+40  
+4000m (milicores) - (4 core = 4 CPU = 1 AWS
+vCPU = 1 GCP Core) 1000 mebibytes(Mi) -
+(1.048.576 megabytes)  
+288 ms
+803 ms
+GET /api/fafmarket/getBasket  
+Page 9:
+3. System Scope and Context  
+Context and Scope Business for Emtia  
+ry P peewee  
+ea euncela st -
+Raporlama  
+Thon  
+Uranlerini Pazaryerfnde _Sureslerini Yonetiy  
+Yukler,Tezgahin) —_—_Alisveris Yapar
+= DB Erigimi Kollanict Eventleri
+Safrcr ve Alicr
+jaki Mesafe
+lHesabt  
+Cee ere Coe Te Bum
+EURO eee ey CloudOffix Eaten OSes eae
+Google Analytics
+SoogleMaps, Yendex.BasarSc lo reat ae Car err] Posta Guivercini  
+Page 10:
+4. Solution Strategy  
+4.1. Overview  
+¢ ProEmtia platformu micro serivce mimarisi ile hazirlanmistir.  
+¢ Bankend Plateau framework ile gelistirilmistir.  
+¢ Web onytiz Studio Plateau gelistirilmistir.  
+¢ Plateau’nun destekledigi relational db’ler
+gelistirilmistir.  
+(Mysql,Oracle,Postgresql,SqlServer) ile uyumlu  
+¢ Login sonrasi tim istekler Apigateway (Edge) tizerinden uzman ms’lere dagitilmaktadir.  
+¢ Mobil native IOS ve Android olarak gelistirilmistir  
+4.2. Technology at a Glance  
+Technology
+Web  
+Mobil  
+Gateways or BFF
+Security
+Communication  
+Cache  
+Databases
+DB scripts
+DB ORM  
+Languages  
+Messaging  
+10  
+Description  
+Quick ile yazildi.
+Native IOS & Android
+ApiGateway.  
+Plateau IAM.  
+Rest API  
+RA.0012.Shared Cache - Eventual Consistency
+Cache Aside  
+PostgreSql
+Liquibase  
+Hibernate  
+Java  
+NA  
+Page 11:
+5. Building Block View (Context and Scope)  
+System Scope 6 Context Dlagram for Emtia  
+ry pt
+eee aa  
+Percent  
+coy  
+ini Pazarygrinds —_platformun tum Kapiya testi
+Vukiey-Teegahiny Algvortj Yapar sureclerntYonetig “Siparislorde
+“Yonetlr s me at astienie .  
+Co)  
+Oidome Emirers .
+eS  
+‘iii
+Wanvci Eventlei  
+Tallana ve oan
+Sarena
+Rest)  
+infenlert ‘Sap ve ale Blais
+tes) mean  
+Byars —  
+are ees eo}  
+Pata Harita Uygulamalan Pretec og  
+Geer urd  
+eed  
+ee Pood ea coca Sets uy Crea)  
+5.1. Whitebox Overall System  
+Whitebox Overall System of Emtia  
+Emtia Platformu
+system)  
+Peo ce  
+Eee  
+sextemal system» Sasso  
+MOKA are  
+ee — 7 7 7 : stemal system  
+SEEN 7 oR re array f BYE ci  
+Cee] eo Coens Penna Poe Soeur end Pea ci To  
+5.2. Building Block View (level 1)  
+Level 1 of Emtia  
+Sead  
+Emtia Platformu
+[system]  
+stern:
+Perea  
+wet "guaran
+ey nee
+a leer oe Uris)  
+TESTI Fe  
+external system»  
+er wexternal_system> external systenm 7 ene ee “ eee  
+reer aS-W Told eet e ul DIGIKOLAY CloudOffix Harita Uygulamalar: ESE Teg  
+OMe ior COCR eT va SE oo) Cees Se oe  
+a1  
+Page 12:
+5.3. Building Block View (level 2)  
+Level 2 of Emtia  
+eat  
+eect  
+1
+'
+1 Emtia Platformu
+' {system
+' varie
+if ;
+it 1
+it 1
+'
+i :
+|| suhteBoeecentaner | |
+Internal UI :
+peimatoratquy |
+vont a :
+er | nares '
+' po
+a
+| [AwhiteBmecontaner= | | | “WhteBaeasystere
+1 FAFMaterial \
+| _ [Tim gjson Sayfalery | | Native Android JOS  
+exte = ystem>
+DIGIKOLAY Seen  
+Suen  
+eee sic  
+EIN
+oes ira) See ecu  
+Mobil '  
+Pe Ts) EE TIVES ere)  
+ee cis - «external_system»  
+Mail Sunucusu Y Irele ISBANK SANAL POS. Fibabank ‘CloudOffix een EET  
+Bayi Kart Sanal PO! Per ney a oo)  
+5.4. Building Block View (level 3)  
+Level 2 of Emin  
+Emtia Platformu
+system  
+Plateau MS
+isystem  
+' Uzman Ms
+' ‘system  
+ret '
+sah oi ‘
+Tesh
+credo contract ste creed
+© Satie ve Ali
+onsy atta  
+sn Kale lg  
+es privsesrenen Ee Na ord Ciera  
+Bae) esi  
+me ied nda kre rind  
+tems onay|  
+Core  
+5.9. Service & Caching Architecture  
+12  
+Page 13:
+Service Name 1  
+FAFSTORE  
+FAFMARKET  
+FAFPROFILE  
+ERPCODOMAIN  
+Caching Architecture  
+RA.0012.Shared Cache - Eventual Consistency  
+Cache Aside  
+RA.0012.Shared Cache - Eventual Consistency  
+Cache Aside  
+RA.0012.Shared Cache - Eventual Consistency  
+Cache Aside  
+RA.0012.Shared Cache - Eventual Consistency  
+Cache Aside  
+RA.0012.Shared Cache - Eventual Consistency Cache Aside  
+Reference Architecture  
+Constraint 1: Command service must check entity state by @identity + @version fields.
+If the fields in the database and the fields in the request are not consistent, command service must throw OptimisticLockException  
+Constraint 2: TTL(Time to Live) policy must be set in the cache.  
+a
+ann
+a  
+Client Apps  
+PD command Service  
+Database  
+Note: Command and query services might be implemented in the same microservice component.  
+Ooogooos  
+Client applications call command service to
+change entity state  
+Command service updates entity state in
+the database with every write operation  
+Meanwhile, client applications call query
+service to retrieve entity state  
+Query service tries to retrieve entity from
+cache  
+If entity not found in the cache, try to
+retrieve entity from the database  
+If entity is found in the database, persists
+entity to cache and returns entity  
+13  
+Page 14:
+14  
+6. Runtime View  
+6.1. <Runtime Scenario 1>  
+Yeni Uriin Kalemi Olusturma Ekrani| Document FAFITEM  
+_¢  
+| Géresel Yukle |  
+{ Uriin Kalemi Temel Bilgileri Gir |
+WY  
+{ Uriin Yikleme Kurallarini Gir |  
+WN  
+| Uriin Satis Kurallarini Gir |
+a  
+( Uriin Nakliye Kurallarini Gir |
+——————  
+FAFWORKFLOW  
+| PNG Kaydet |  
+a  
+| Uriin Kalemini Olusturma Onay! istegini Olustur |  
+| Onay Siireciniislet |  
+| Onay Durumunda Urin Kalemini Olustur |  
+see pee  
+6.2. <Runtime Scenario 2>  
+Page 15:  
+6.3. <Runtime Scenario 3>  
+ERP ERP-EMTIA Entegrator
+( Gran vakle )
+p
+( Urun Yukleme Servisi Tuket }
+\ )
+a
+(
+Sonucu ERP Sistemine Aktar |
+{>
+vo]  
+{ Urun Yakle |  
+;  
+(  
+istegi Karsila  
+Validasyondan Sonucu Dén |  
+fs  
+7  
+/ .
+\ istegi Karsila  
+{ Tum Bagaril Yuklemeleri Génder  
+FAFEXTERNALINTEGRATOR  
+—————————  
+a ae  
+a  
+a as  
+Se  
+Tezgahim Microsoft Excel FAFSTORE FAFITEM FAFMARKET
+{ Sablon indir |
+; py
+{ Sablona Satis Yapilacak Urunt Gir )
+je
+_ yo
+| Exceli Yukle |
+Y ¥ .
+{ Yaklenen Exceli Ag }
+\ )
+jy
+Uruinleri Valide Et
+fs
+MT
+{ validasyondan Sonucu Dén |
+- ¥ S
+Hatalilar Goster
+:Dizenlenme Gerekenleri Yukle
+ye
+| Yuklenen Exceli Ac |
+\ J
+[ye
+Uriinleri Valide Et
+\ )
+{ validasyondan Sonucu Dén |
+(tam Basarili YUklemeleri Satisa Hazir StatUisUnde Kaydet |
+( Granleri Satisa sun }
+‘ vy
+{ Griinleri Tezgaha Ekle |  
+FAFITEM FAFSTORE FAFMARKET
+/ ¥ .
+{ Uriinleri valide et
+—
+[oy
+| Urdinleri Valide Et )
+\ J
+py
+{ Uriinleri Satisa Hazir StatUisind Kaydet |
+{ Urunleri Satisa Sun )
+———
+py
+Urunleri Tezgaha Ekle  
+15  
+Page 16:
+6.4. <Runtime Scenario 4>  
+Orin Detay =| AMAR eT Sepet Ekrant Contract Odeme sayfast FAFBANKINTEGRATION MoKa  
+6.5. <Runtime Scenario 4.1>  
+FAFMARKET FAFBANKINTEGRATION MOKA  
+6.7. <Runtime Scenario 4.3>  
+16  
+Page 17:
+FAFMARKET  
+FAFBANKINTEGRATION  
+(Geter paravtreerisWokATon ade seni ear  
+(tun testninde nha  
+Platform Sahibi  
+Satie  
+?  
+tutan ger, platform sah onagna nde  
+Platform Sahibi  
+6.10. <Runtime Scenario 5>  
+FAFMARKET  
+FAFMARKET  
+Geten parameter le ANAL POS ade seri tuket  
+Glen ceva stemcye let) [Hate geldyse, messy throw eder  
+Len  
+FAFBANKINTEGRATION  
+Geten parameter le ANAL POS ade seri tuket  
+Hata gléyse, mesay throw ecer  
+FAFBANKINTEGRATION  
+a ave cep are  
+SANAL POS  
+(eta ave cevap boner  
+SANAL POS  
+(eta ave cevap boner  
+17  
+Page 18:
+[ Gelen Cevaptaki Bilgilerla Ekrandaki ilgili Alanlari Doldurur |  
+18  
+Tizel Onboaring Ekrani FAFEXTERNALINTEGRATOR ISNET  
+-  
+(ven Girsi )
+yy  
+{ VKN Kontrol |  
+| istegi Karsila ve ISNET'e ilet,r |
+( VKN Parametresi Ile Firma Bilgisi Déner |  
+(C . »
+| Firma Bilgisini Alir ve Cevap DONER |
+\ }  
+®  
+Page 19:
+7. Deployment View  
+Yaziim ekibi tarafindan gelistirilen uzman ms’lerdeki kod parcasi master’a commitlendiginde,
+devops pipeline’) product reposu sayesinde otomatik olarak int ortamina deploye islemini
+gerceklestirir. Int ortamindaki testleri sonrasi kullanici kabul testlerinin yapiulabilmesi icin solution
+reposu tizerinen demo ortamina kurulum gerceklesir.  
+Deployment View for Emtia  
+'
+Google Container Registry '
+[system] 1
+1
+1
+1
+'  
+Ms's
+Image  
+Kubernetes
+[system]  
+Pod Iamauthorization Pod Iamusers  
+Cen eaes Ponty  
+iamauthorization event oy  
+iene sagt atone ts  
+, 7  
+e c pera
+Claman as (ey eVm roast identityProvider  
+Boney atone ts a iteaes sagt  
+Pod MSSQL  
+r
+\
+\
+1
+'
+1
+'
+\
+1
+\
+1
+1
+\
+\
+'
+'
+1
+'
+: Pod Other Micro-Services Pod FAF X pod IdentityProvider
+\
+\
+'
+'
+1
+'
+\
+1
+\
+1
+1
+'
+1
+'
+\
+1
+'
+\
+1  
+7.1. Sistem Topolojisi  
+19  
+Page 20:
+(a Platform Wt docker Linux  
+spring  
+Kubernetes Hizmetleri
+Anthos vCPU  
+Bellek (GB)
+Disk (TB)
+Diger Sunucular  
+Bellek (GB)  
+Disk (TB)  
+Disk Seviye 2 (TB)
+Yedekleme (TB)
+Yedeklenen Sistem  
+7.3. Ortam Kurulumlar1
+* Uretim icin devops new pipeline hatti kullanilmistir. Product-emtia reposu tizerinden tiretim
+ortami konfigiire edilmistir.  
+¢ Diger projelerde oldugu gibi prod ortamin disaster makineleri de yiiklenici firmadan talep
+edilmistir. Miisteri hentiz yiiklenici firmaya déniis yapmadig1 icin bilgi veremiyorum.  
+* Uretim ortaminda testlerimiz tamamlandiginda DEMO ortamina Solution-EMTIA resposu ve
+Deploye-GKE job’: ile kurulum yapmaktayiz. Product-Emtia’daki ms konfigurasyonlarinin
+biyuk bir béliimtini oldugu gibi kullanmaktayiz. Degistirdigimiz Konfigiirasyonlar;  
+° app_config/application.yaml : identity-provider url’leri
+° app_config/apigateway.yaml : identity-provider url’leri
+e app_config/iamusers.yaml : identity-provider url’leri  
+° app_config/iamauthorization.yaml : identity-provider url’leri  
+20  
+Page 21:
+e app_config/notificaiton.yaml : smtp server bilgileri,sms-provider bilgileri  
+° values/product-values.yaml : ms’lerin release versiyonlari,qui versiyonlar1  
+21  
+Page 22:
+8. Cross-cutting Concepts  
+8.1. Domain concepts  
+¢ Mevzuattaki karmasik stirecler microservis mimarisi ile bir birlerinden ayristirulmistir.  
+¢ Pazaryeri FAFMARKET, anlasma modtilti FAFAGREEMENT, eihale ise procurment ms’leri iginde
+yuritilmektedir.  
+8.2. User Experience concepts (UX)  
+¢ Kullanic1 deneyimi, Softtechte yer alan uzman ekip ile tasarlanmis ve gelismeye devam
+etmektedir.  
+e Alicilara rahat bir kullanim sunabilmek icin kimi zaman performans concern’timiizle
+celisebiliyoruz.  
+8.2.1. user Interface  
+¢ Web: Plateau Quick
+¢ Mobile : Native IOS & Android  
+8.2.2. Ergonomics  
+8.2.3. Internationalization/Localization  
+¢ Plateau RA.0009.Server-Side Localization  
+8.3. Safety and security concepts  
+¢ Plateau - Security
+8.4. Architecture and design patterns
+RA.0021.Microservice Integration Patterns - API Gateway Pattern  
+8.4.1. Initialization and reset.  
+Plateau  
+8.4.2. Memory management.  
+Plateau  
+22  
+Page 23:
+8.5. "Under-the-hood"  
+8.5.1. Persistency
+Plateau (Spring JPA)
+¢ JPA kullanilarak gerceklestirilir  
+Veri saklama (persitency) sorular1  
+Veri saklama ve erisimi icin referans mimari
+kullanilyor mu? Hangisi?  
+Veri yazma ve okuma ayrimini gerektiren hiz
+gereksinimi var m1? Varsa gereksinim nasil
+saglanmis?  
+Ozel nitelikli kisisel veri ya da miisterinin islem
+yapmasini saglayan veri kullaniliyor mu?
+Kullaniltyorsa hangi sifreleme yontemi
+kullanilmaktadir?  
+8.5.2. Transaction Handling  
+Plateau (Spring)  
+8.5.3. Session Handling  
+Plateau  
+8.5.4. Communication and Integration  
+Plateau (REST)  
+8.5.5. Exception and Error Handling  
+Plateau  
+Cevap  
+Proje genelinde anlik olarak veri db’den
+okunmustur fakat sik degismeyen datalarda
+cache yapisi kullanilmistir. Kullanilan mimari;
+RA.0012.Shared Cache - Eventual Consistency
+Cache Aside  
+Ozellikle alisveris sirasinda kullanilan veri
+yazma ve okuma islemlerinde hiz 6nemli bir
+faktordti. Veri okumada performans sorunu
+yasnan servislerde hibernate’in obje tizerinden
+yurttiilen islemler yerine custom query
+yazilmistir.  
+Alici ve satici’nin TCKN veya VEN bilgisi
+tutuluyor. Kredi karti bilgileri ise sistemde
+tutulmuyor ve loglanmiyor.  
+8.5.6. Parallelization and Thread-handling  
+Plateau  
+23  
+Page 24:
+8.5.7. Validation  
+Plateau  
+8.5.8. Batch  
+Plateau  
+8.5.9. Reporting  
+Data Plateau  
+8.6. Development Concepts  
+8.6.1. Build-test-deploy  
+Devops new pipeline  
+8.6.2. Code Generation  
+Plateau,Quick  
+8.6.3. Migration  
+Liquibase  
+8.6.4. Configuration  
+Plateau  
+8.7. Operational Concepts
+8.7.1. Administration  
+8.7.2. Management  
+RA.0002.Load-Balancing Hybrid Services in Kubernates  
+24  
+Page 25:
+Load-Balancing Hybrid Services in Kubernates  
+Reference Architecture  
+Constraint: Service Instances should be deployed with different configuration values  
+but should be accessed via same DNS address.  
+Client Apps  
+Oo  
+t  
+8.7.3. Monitoring  
+Client Applications call service end-points
+via Kubernates Ingress Controller  
+Ingress controller direct the traffic using
+load-balancing feature  
+Query for available service instances for
+routing  
+APIGW redirects traffic to related service
+instance using load-balancing feature  
+Service discovery managed by
+Kubernates. Business Service calls
+endpoint that registered with same DNS
+name on NGINX instance  
+NGINX redirects and load-balance traffic  
+RA.0007.Monitoring: Business & Technical Metric Generation and Alerting  
+Business & Technical Metric Generation and Alerting  
+Reference Architecture  
+(Gi sence je = Prometheus <—— oS Grafana  
+C3 kubernetes  
+8.7.4. Logging  
+RA.0001.Centralized Logging  
+8.7.5. Tracing  
+RA.0008.Monitoring-Tracing  
+Prometheus reads configuration
+Kubernates or a YAML file  
+B Prometheus pulls records
+8 Grafana visualizes metrics  
+Prometheus AlertManager creates and
+manages alerts  
+25  
+Page 26:
+9. Design Decisions  
+9.1. ADRs (architecture decision record)  
+9.1.1. ADRO1 - Kullanilacak Database Secimi  
+Tarih Durum Baglam Karar Sonuclar  
+2022-06-01 = Karar verildi Kullanici ve dba Audit Uriin postgreSQL ile
+islemlerinin auditte kullan calismaktadir.
+loglanmasi gerekmektedir. Imak  
+istendi
+Si icin
+ve bu
+hizeme
+ti
+Postgre
+SQL
+ucretsi
+Z
+sagladi
+B1 icin
+bu db
+ile
+calisil
+maya
+karar
+verilmi
+stir.  
+9.1.2. ADROZ - Satic1 ERP Entegrasyonu  
+26  
+Page 27:
+Tarih Durum Baglam  
+2022-10-01 = Karar verildi Buyiuik saticilar ile erp
+entegrasyonu gereksinimi  
+9.1.3. ADRO3 - Odeme Sistemi  
+Tarih Durum Baglam  
+2022-08-01 _— Karar verildi Siparislarin 6deme adim1
+icin bir 6deme sistemi ile
+entegrasyon
+gerekmektedir.  
+Tarih  
+Durum  
+Baglam  
+Karar  
+Sonuclar  
+2022-09-01  
+Karar verildi  
+Karar  
+ERP
+entegr
+asyonu
+, dis
+firma
+aracilig
+lile
+yapilac
+aktir.
+Softtec
+hbu
+entegr
+asyond
+a api
+verme
+kile
+yukim
+liidiir.  
+Karar  
+Moka
+6deme
+sistemi
+ile
+anlasil
+mistir.  
+Sonuclar  
+Entegrasyonu saglayacak
+dis firma ile calismalar
+surtiyor.  
+Sonuclar  
+Entegrasyon’un kredi karti
+ayag1 tamamlanmistir.
+Havala ve EFT icin
+Moka’nin uyumlanmasi
+beklenmektedir.  
+Vadeli satislarin yapilacagi ProEmtia Bayi Kart icin tanimlanan pos’lar entegrasyon  
+gerekmektedir.
+Payten ile entegrasyon saglanacaktir.  
+Gelstirme tamamland..  
+27  
+Page 28:
+9.1.4. ADRO4 - Harita Servisi  
+Tarih Durum Baglam Karar Sonuclar  
+2022-10-01 _—_ Karar verildi. Nakliye tutar1 Google GoogleMaps ile entegre
+hesaplanirken kullanilacak Maps — olunmustur.
+km hesabi icin bir harita’ veya
+servisine ihtiya¢ Basar
+bulunuyor. Softh  
+(Googl
+eMaps
+servisl
+erini
+tiketiy
+orlar)
+arasin
+da bir
+secim
+yapilac
+ak.  
+9.1.5. ADROS5 - Mobil Uygulama  
+Tarih Durum Baglam Karar Sonuclar  
+2022-10-01 _—_ Karar verildi. Faz 2 de platformun mobil Bityiik Mobil gelistirmeler
+uygulamasi da yapilacak. ihtimal tamamlandi, her sprint
+Native IOS, Android veya le yeni 6zellikler eklenmekte.
+Quick Mobile kullanilacak. Native  
+10S,An
+droid
+kullan.
+lacak,
+ama
+quickte
+incelle
+niyor.  
+9.1.6. ADROG - Fiyat Verisi  
+Tarih Durum Baglam Karar Sonuclar
+2022-06-01 | Devam ediyor Demir,¢elik fiyatlarinin bir SteelRa Herhangi bir entegrasyon
+veri saglayicisindan dar istenmedi, LME verisi
+alinmasi gerekmektedir. sitesi operasyon ekibi tarafindan
+ile gunluk olarak sisteme
+gorusti girilmekte
+liyor.  
+28  
+Page 29:
+9.1.7. ADRO7 - Odeme Kurulusu Yerine Sanal POS Entegrasyonu Yapilmasi  
+Tarih Durum Baglam
+2024-03-01 _iptal edildi MOKA‘nin yiiksek
+komisyonlarindan  
+kurtulmak icin miisteri
+bankalarla direkt
+entegrasyon yapmak
+istemekte.  
+Karar Sonuclar  
+Halk Banka entegrasyonu yerine
+Bank payment gateway hizmeti
+ile pos veren craftgate ve paywall
+gorls  gdrtisiilmesine karar
+mesi _ verildi.  
+yapildi,  
+entegr  
+asyon  
+incelen  
+di.  
+Mister  
+iye  
+entegr  
+asyonu  
+nve  
+bakim1  
+nin  
+maliyet  
+li  
+olacagi  
+bilgisi  
+verildi.  
+9.1.8. ADRO8 - Odeme Kurulusu Yerine Payment Gateway Entegrasyonuna  
+Gecilmesi
+Tarih Durum Baglam
+2024-04-01 _iptal edildi Craftgate firmasi ile  
+toplantilar yapild.,
+entegrasyon incellendi ve
+ilk faz gelistirilmeye
+baslandi.  
+9.1.9. ADRO9 - e-Pay Kolay Entegrasyonu  
+Karar Sonuclar  
+Craftga Musterimiz moka’nin
+te’in ilk birden fazla pos ile
+verdigi calisabildigini 6grenmesi
+fiyatlar ile yola onlarla devam
+in etme karari ald.
+degism  
+esi ile  
+entegr  
+asyond  
+an  
+vazgeci  
+Idi.  
+29  
+Page 30:
+Tarih Durum Baglam  
+2024-04-01 _ Gelistirilmekte is Bankasi’nin ticari
+kredilerinin alicilara
+sunulmas1
+hedeflenmektedir.  
+9.1.10. ADR10 - FibaBank Kredi Entegrasyonu  
+Tarih Durum Baglam  
+2024-04-01 Beklemede Fiba Bankasr’nin ticari
+kredilerinin alicilara
+sunulmas1
+hedeflenmektedir.  
+Karar Sonuclar  
+Softtec -
+hin
+gelistir
+digi
+epayKo
+lay
+urunt
+ile
+entegr
+e
+olunac
+aktir.  
+Karar Sonuclar  
+Banka’ -
+nin
+ilgili
+ekibi
+ile
+toplant
+1
+yapilm
+istir.
+Entegr
+asyona
+baslan
+diysa
+da
+mister
+i
+tarafin
+dan
+beklem
+eye
+alinmis
+tir.  
+9.1.11. ADR11 - FafBankintegration’1n Prosevkiyat tiriniinde kullanilmasi  
+30  
+Page 31:
+Tarih
+2024-05-01  
+Durum  
+Kullanima hazir  
+Baglam  
+ProSevkiyat tirtinti de
+bizimle ayn
+entegrasyonlar1 kuracagi
+icin, Prosevkiyat ekibi
+bizim kuruluslar ile
+entegrasyonu yaptigimiz
+ms’i kullanmak istedi  
+9.1.12. ADR12 - Yeni Lojistik Yapis1  
+Tarih
+2024-04-01  
+Durum  
+Analizler
+tamamland1i  
+Baglam  
+Mevcutta sadece bir lojistik
+firma platformda yer
+aldigindan aliciya lojistik
+firma secimi
+sunulmamaktadir. Yeni
+yapida birden fazla lojistik
+firma ve satici’nin lojistik
+teklifleri alicrya sunulmak
+istenmektedir.  
+Karar  
+FAFBa
+nkinte
+gration
+"mM
+kullan
+ml
+bizim
+icin de
+uygun.
+Sadece
+bazi
+field’la
+rin
+param
+etrik
+hale
+gelmes
+i
+gerekiy
+or.  
+Karar  
+Gelistir
+me icin
+analizl
+er
+yapildi,
+eforlan
+di.
+Gelistir
+meye
+baslan
+acak.  
+Sonuclar  
+Static alanlar parametrik
+hale getirildi. ProSevkiyat
+igin hazir durumdadir.  
+Sonuclar  
+31  
+Page 32:
+10. Quality Requirements  
+To be  
+Kaynak kodlari, minimum %70 birim test
+kapsama oranina sahip olacaktir.  
+SonarQube kod kalitesi derecelendirilmesinde A
+derecesi saglanacaktir  
+Checkmarx taramasinda high bulgu
+bulunmayacaktir.  
+NexusIQ imaj taramalarinda kritik agik
+bulunmayacaktir.  
+Veri s6zliigit hazirlanmali  
+Uygulama gelistiriciler kullanilan teknoloji ve
+yazilim diline hakimdirler.  
+32  
+As is  
+%70 tistti  
+A  
+0  
+Tim backend developerlarimiz Plateau
+framework’iine asinadir, Frontend
+developerlarimiz ise Quick Editor kullunimina
+hakimdir  
+Page 33:
+11. Risks and Technical Debts  
+¢ Yuk yonetimi  
+e Hedeflenen kullanic1 sayisi g6z Oniine alindiginda, kurulan yapinin yeterli olacagi
+diisiiniilse de, ilerde olusabilecek yogunluklar icin fark yOntemler (BFF,Kafka) kurulabilir.  
+33  
+Page 34:
+12. Glossary  
+Term
+PROEMTIA
+MOKA
+Tezgah  
+Pazar Yeri  
+PROSEVKIYAT  
+34  
+Definition  
+Platformun resmi adi  
+Odeme sistemi.  
+Saticinin sisteme tanimladigi ve satisa sundugu kisim.  
+Alicilarin, saticilar tarafindan tezgahina koydugu tirtinleri
+gordiigii ve siparisini olusturdugu sayfa.  
+Miuisterimizin Softteche ile gelistirdigi, yeni lojistik hizmeti bulma
+uygulamast  
+Page 35:
+13. Guvenlik (Security)  
+13.1. Deployment and Infrastructure Considerations  
+External Service  
+13.2. Genel sorular  
+Genel sorular Cevap
+Parcalarin lst diizey * Emtia Platformu Java11 ve Node.Js kullanilabilen herhangi bir
+aciklamasini igeren uygun ortamda ayaga kalkabilir.  
+sekilde belgelenmis bir mimari
+diyagraminiz ve farkl
+bilesenlerin nasil
+yerlestirildigini ve emniyete
+alindigini gésteren bir ag
+baglanti diyagraminiz var mi?
+yazilim bileseninin hangi
+béliimtintin DMZ kiimesinde vb  
+oldugunu belirtin.
+Uygulama icin gerekli * Linux * Docker * Kubernates * Ingress * Herhangi bir relational
+bilesenler: Uygulamay1 database  
+destekleyen isletim sistemi
+nedir, donanim gereksinimi vb.  
+35  
+Page 36:
+Genel sorular  
+Port ve Servis gereksinimi: Bir
+uygulama, diger uygulama ile
+de iletisim kurabilir. Uygulama
+icin hangi baglanti noktalarinin
+ve hizmetlerin acik olmasi
+gerektigini belirleyin.  
+Bilesen Ayrimi: Uygulamanin
+bilesenleri birbirinden
+ayrilmalidir. Ornegin,
+uygulama sunucusu ve
+veritabani sunucusu aynl
+makinede bulunmamalidir.
+Mevcut mimarinizde bunu
+diisiintiyor musunuz?  
+Agik metin protokoliinii devre
+disi birakin: Acik metin
+servislerini calistiran portlar
+(HTTP, FTP vb.) kapatilmalh ve
+uygulamanin hicbir boliumti
+icin kullanilmamalidir. Bu
+gereksinim icin bir kontrol
+noktaniz var m1?  
+Cevap  
+Saticilarin ERP sistemleri uygulamamiza istek atmakta. Bunun
+icin 443 portu kullanilmaktadir.  
+Evet veritabani icin farkli bir sunucu kullanilmakata.  
+Kapalidir.  
+13.3. Girdi Kontrolti sorular1  
+Girdi Kontrolii sorular1  
+Uygulamanin kullanici girisini
+dogrulayip dogrulamadigini
+veya girisi oldugu gibi isleyip
+islemedigini kontrol ediyor
+musunuz?  
+Servislerde bir kullanicinin
+dogrulamayi atlayabilecegi  
+Cevap  
+* Evet, tim servis parametreleri validasyonlara tabi tutulur.  
+*Plateau framework’ti saysinde servis parametreleri XSS
+filtersinden gecmektedir. Checkmarks taramalarinda xss bulgusu  
+herhangi bir giivenlik acigi olup ¢iktig1 durumlarda, servise ek xss filtreleri uygulanmakta.  
+olmadigini kontrol ediyor
+musunuz?  
+36  
+Page 37:
+Girdi Kontrolii sorular1 Cevap  
+En iyi uygulama olarak *Validasyon yuktinti daha cok server tarafina yikmis
+dogrulama tiim katmanlara durumdayiz, On yiizde daha cok gérsel validasyonlar
+yani is katmani, veri katmani — bulunmakta.  
+vb. Uygulanmalidir. Bu agidan  
+degerlendirdiniz mi?  
+Dogrulamanin istemci ve  
+sunucu lizerinde de uygulanip  
+uygulanmadigini kontrol ediyor  
+musunuz?  
+Arka ucta parametrelestirilmis *Native query kullanilmadig1 icin boyle bir risk bulunmuyor.
+sorgu kullanarak uygulamanin  
+SQL Injection gtivenlik acgigina  
+karsi glivenli olup olmadigini  
+kontrol ediyor musunuz?  
+Parametreler tizerinde * Document microservice’nin attachment component’1 ve
+herhangi bir kodlama veya servisleri kullanilmaktayd1. Bulgu testlerinde kullanici
+kriptografik prosedtir kontroliintin yapilmadigi gézlemlenmisti. Biz de bu durum icin
+kullaniyorsaniz (6rn: Bsae64), _ ara bir validasyon servisi yazarak yetki sorunlarinin 6niine
+guivenlik ekibine gectik.  
+uygulamanizin kodlama veya
+kriptografik prosedtirler
+kullandigini bildirdiniz mi?  
+13.4. Konfigiirasyon yonetimi sorular1  
+Konfigtirasyon yonetimi Cevap  
+sorular1  
+Uygulama icin gerekli tim * MS versiyonlarinin ve kullandiklari Plateau kutiiphanelerinin
+bilesenlerin ve paketlerin guncelligi yakindan takip edilmektedir.  
+guncel oldugundan ve bunlara
+en son yamalarin
+uygulandigindan emin misiniz?  
+Veritabani baglanti dizesi, * Bu bilgiler deployment hatti disinda kullaniimamaktadir.
+sifreleme anahtari, yonetici  
+kimlik bilgileri gibi hassas  
+verileriniz veya kodda agik  
+metin olarak saklanmamas1  
+gereken baska herhangi bir sir  
+var m1?  
+37  
+Page 38:
+Konfigtirasyon yonetimi
+sorular1  
+GET protokoli, verileri sorgu
+dizesinde gonderir. Bir GET
+isteginde bulunan hassas
+bilgilere tarayici gecmisinden
+veya giinliiklerinden
+erisilebilir. GET Http Metodu
+kullanan rest API’lerinizi bu
+acgidan kontrol ediyor
+musunuz?  
+Cevap  
+* Hasas bilgi barindiran get servisi yazmamaya dikkat ediyoruz.  
+13.5. istisna Yonetimi ve Denetimi, Ginliize Kaydetme  
+Sorular1  
+istisna Yonetimi ve Denetimi,
+Gunlige Kaydetme Sorular1  
+. Minimum bilginin
+gorunttilendigi merkezi istisna
+yonetiminin yerinde olup
+olmadigini kontrol ediyor
+musunuz?  
+Farkli giinliik diizeyi uygulama
+ve platform diizeyi icin de
+gunllige kaydetmenin
+etkinlestirilip
+etkinlestirilmedigini kontrol
+ediyor musunuz?  
+Uygulamanizin kullanici kimlik
+bilgileri, parola karmalari,
+kredi karti ayrintilari vb. gibi
+hassas verilere sahip oldugunu
+kontrol ediyor musunuz?  
+38  
+Cevaplar  
+* Ms’lerdeki hata mesajlari kullaniciyi en az bilgi ile dogru bir
+sekilde yonlendirecek sekilde hazirlanmistir.  
+* MS’ler icin spesifik log leveli belirlenmemistir. Hibernate
+loglari kapatilmistir.  
+* Log’larda kullanici sifresi veya finansal bilgiler
+bulunmamaktadir.  
+Page 39:
+14. Architectural RoadMap  
+14.1. Architectural Roadmap  
+[roadmap2] | ../images/roadmap2.jpg  
+14.2. Transition Architecture  
+Gecis mimarisi bulunmamaktadir.  
+14.3. Target Architecture  
+Hedef mimari bulunmamaktadir.  
+39
+Introduction to Arşiv(pys.softtech):
+SMK_List.xlsx  
+SMK_List.xlsxFailed to read Excel file: Missing optional dependency 'openpyxl'.  Use pip or conda to install openpyxl.
+Introduction to 2024.07.04 - Generative AI:
+Konu Başlığı| Generative AI
+---|---
+Konu Açıklaması|  
+Genarative AI konusunda gelişmeler ve çalışmalarımız değerlendirilecektir.  
+Talep Geliş Tarihi| 2024-07-02
+Geliş Amacı|  
+Görüş Alma  
+SMK Sunumu  
+|  
+SMK Video Kayıt|  
+video1491264843.mp4  
+Talep Durumu|  
+Toplantı Notları|  
+_Bürke Attila_  
+Şirketimizin OKR'si olarak mühendislik mükemmeliyetini belirledik. Bunu
+desteklemek için LLM'ler ile birlikte herkesin yapay zeka kullanımı imkanı
+oldu. Bu konuda herkesin görüşlerini almak istiyorum  
+_Burak Selman Özmutlu_  
+* Cobol tarafında IBM'in code analyzer ürününü inceledik. Şuanda çok yetenekli değil,
+* Amacımız herhangibir yazılımcıya yapay zeka desteğiyle cobol yazdırabilmek.  
+_Oğuzhan Tortop:_  
+* Data Plateau visialize'da bazı özellikleri deniyoruz. OpenAI'da başarılı olduk. Devin'ın olgunlaşması gerekiyor.
+* OpenAI'da bütçe problemi yaşayınca Azure tarafına yöneldik. Mozaik uygulamamız şu anda çalışıyor
+* https://groq.com/ ile Llama3 kullanım olabilir
+* Stackoverflow'da arama sonucu yeterli olmamaya başladı  
+_Gökhan Dinç_  
+* Belge oluşturma konusunda yetenekli
+* https://document360.com  
+_Kübra Gökçe_  
+* Gen AI'dan code geliştiriken yardım alabiliyoruz. Hata bulmayı kolaylaştırıyor.
+* Code geliştirmeyi hızlandıracağını düşünüyorum. Yazılım eforlarımız düşecektir  
+_Necati Evren Yaşar_  
+* AI ile yazılan code compex oluyor. Bakım zorlukları olabilir  
+_Doğkar Doğruer_  
+* Mevcut complex kodları anlama konusunda ne kadar başarılı olacağını merak ediyorum. Codu daha complex hale getirebilir  
+_Alphan Arslan_  
+* Open AI üzerinde açtığım hesap ile kullandım. Belli kısıtları var. Azure üzerinden kullanım önerildi.
+* Banka verisinin dışarıya çıkmaması için hassasiyet var.  
+_İbrahim Aslan:_  
+* Ekipler üretim bandında hızlı ve agresif kararlala kullanılması değerli olacaktır.
+* Dönüşünü kaçırmamaız için AI'in ürünlere entegre olması gerekiyor  
+_Kadir Türkoğlu:_  
+* Deterministik olmadığı için bir sonuç çıkarmasını beklememek gerek. Yapay bilinç oluşmadığı sürece çok işe yaramayabiir.  
+_Lütfü Ulusoy_  
+* Mimari tasarım ve dokümanların AI destekli asistanları ile daha kolay ve standartlara uygun bir şekilde oluşturulmasını bekliyoruz
+* Azure OpenAI Yetkilendirme Talebi: https://wiki.softtech.com.tr/display/YPZ/Azure+OpenAI+yetkilendirme+talebi
+* Plateau City Assistants: http://city.plateaux.softtech/generativeai  
+_Aziz Göktepe_  
+* Banka kodunu banka'daki verilerle AI'da kullanmak şansımız olabilir mi? (Şu anda kaynak sınırlı, gelecek sene biraz daha elimiz güçlü olabilir)  
+_Kübra Gökçe_  
+* Operasyonel süreçlerde kullanımı da değerli olacaktır.
+* Plateau alt yapılaraını dönüştürmek gerekebilir (Behaviour Driven Arch desteklenebilir)  
+_Bürke Attila_  
+* Azure Open AI ın kullanım imkanlarının bilgilendirilmesi
+* FriAIday duyurusu geniş kitleye aktarılmalı
+* Eylül/Ekim Hackaton —> Open AI, LLM, Prompt Eng, Agent kullanımı
+* Gen AI'ın reasoning yeteneği çok gelişti
+* Sonarcube agent ı yazıldı,
+* Rest API standartları check eden assistant yazıldı
+* Herkes elini kirletmeli, mecburuz
+* deeplearning.ai iyi bir kaynak
+* https://www.deeplearning.ai/short-courses/function-calling-and-data-extraction-with-llms/
+* Yapay zekayı belirli bir ekibin kontrolünde değil, herkes (bölüm, mimar, vs) kendini bir üst seviyeye getirmeli.  
+Alınan Kararlar| Birden fazla SMK'da konuşulabiliecek konu, iki ayda bir
+toplanmak faydalı olacaktır. Eylül sonuna bir session daha planlanması
+kararlaştırıldı.
+Introduction to Örnek Sunumlar:
+Heimdallr.pptx  
+Heimdallr.pptxHeimdallr Giriş ve Amaç Heimdallr, kimlik doğrulama ve işlem güvenliği için sağlanması gereken kriterleri yerine getiren güvenlik ürünüdür.Bilgi Sistemleri ve Elektronik Bankacılık Hizmetleri Hakkında Yönetmeliğin (BSEBY) 34 üncü ve 35 inci maddelerinde elektronik bankacılık hizmet kanallarında kimlik doğrulama ve işlem güvenliğinin nasıl gerçekleştirilmesi gerektiği ve bu kanallar üzerinden gerçekleştirilecek işlemlerde hem banka hem de müşteriler için inkâr edilemezliği ve sorumluluk atamayı mümkün kılacak teknikler belirlenmiştir. Heimdallr ürünü temel olarak bu tekniklerin çizdiği sınırlar üzerine geliştirilmektedir.Heimdallr’ın temel öncelikli sorumlulukları;
+Kimlik doğrulama (Login)
+Yetkilendirme (İşlem/Sözleşme İmzalama)
+Cihaz tanıma
+Sertifika Otoritesi Giriş ve Amaç (Introduction and Goals) Gereksinimlere Genel Bakış (Requirements Overview) Kimlik doğrulama ve yetkilendirme temel amacıyla, gizlilik ve güvenliği tam yerine getirmelidir. Gerçekleştirilecek işlemlerde hem banka hem de müşteriler için inkâr edilemezliği sağlamalıdır. Giriş ve Amaç (Introduction and Goals) Bulunacağı konumu itibariyle, yanıt süresi çok düşük olmalı ve ağır yük altında çalışabilmeli, ölçeklenebilir olmalıdır. Şifreleme ve imzalama gibi yüksek kaynak tüketimine sebep olacak işlemleri, en verimli algoritmalar tercih ederek yerine getirmeli, yeni teknolojiler ile sürekli güncel kalmalıdır. Farklı kimlik doğrulama bileşenlerine entegre olabilecek şekilde esnek olmalıdır. . . . . Kalite Hedefleri (Quality Goals) Giriş ve Amaç (Introduction and Goals) Paydaşlar (Stakeholders) Sistem Kapsamı ve Bağlamı (System Scope and Context) Sistem Kapsamı ve Bağlamı (System Scope and Context) Çözüm Stratejisi (Solution Strategy) Çözüm Stratejisi (Solution Strategy) Spring Boot kullanılarak mikro servis mimarisinde geliştirilmektedir. 1. Multi tenant bir yapıya sahip olacaktır. 2. Mobile ve Intranet olacak şekilde iki modülden oluşacaktır. Public açılacak endpointler Mobile altından hizmet verecektir. Onay alınması, imzalanması gereken işlemlerin server to server istekler ile Intranet’e iletilmesi beklenecektir. 3. Veritabanı olarak Microsoft SQL Server kullanılacaktır. 4. mTLS için cihaz sertifikaları ECDSA, işlem imzalamalar için sertifikalar RSA algoritması kullanılarak üretilecektir. 5. Plateau Commons  sadece ihtiyaç duyulursa monitoring, logging gibi durumlarda modül şeklinde kullanılacaktır. 6. Genel Bakış (Overview)   Çözüm Stratejisi (Solution Strategy) Teknolojik Unsurlar (Technology at a Glance) Yapı Taşı Görünümü (Bağlam ve Kapsam)
+Building Block View (Context and Scope) Yapı Taşı Görünümü (Context and Scope) Çalışma Anı Görünümü(Runtime View) Çalışma Anı Görünümü (Runtime View) Aktif Olmayan Cihazdan Kimlik Doğrulama (Login New Device) Çalışma Anı Görünümü (Runtime View) Cihaz Aktivasyon (Device Activation) Çalışma Anı Görünümü (Runtime View) Aktif Cihazdan Kimlik Doğrulama (Login) Çalışma Anı Görünümü (Runtime View) İşlem İmzalama (Transaction Signing) teşekkürler
+Introduction to 013._A.Genel Kararlar:
+* 013._A.1.Açık sistemde muhasebe - karton veri tutarlılığını sağlamak için miniservis oluşturulması
+Introduction to 013._B.Yapısal Kararlar:
+* 013._B.1.PİMS servisinin yapısı ve bileşimi
+Introduction to 013._C.Entegrasyon Kararları:
+* 013._C.1.PİMS servisinin bazı servislerle "Sıkı Entegrasyon" mantığında entegre olması.
+* 013._C.2.SOS senaryosunun çozumu için PİMS servisinin Likit Fon servisi ile "Sıkı Entegrasyon" mantığında entegre olması.
+* 013._C.3.PİMS mini servisinin iç arayuzlerinin tasarımı.
+* 013._C.4.Sıkı entegrasyon sağlanan servisin izolasyon ve tutarlılık sorumluluğu
+Introduction to 013._E.Sahiplik ve İsimlendirme Kararları:
+* 013._E.1.PİMS mini servisinin isimlendirmesi
+Introduction to 013._D.İşletim Kararları:
+* 013._D.1.PİMS mini servisinin yeni kullanım senaryolarına kontrollu olarak açılması.
+Introduction to 013._A.1.Açık sistemde muhasebe – karton veri tutarlılığını sağlamak için miniservis oluşturulması:
+Date | Tarih : 22 Mar 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+suspended  
+### Context | Bağlam  
+Muhasebe – karton veri tutarlılığı gereksinimi, çoğu finansal domain
+uygulamalarında ihtiyaç duyulan temel bir gereksinimdir. Monolit Anasistem
+uygulamalarında bu hedefe kolaylıkla erişilebilmekteyken dağıtık açık sistem
+ortamında kolay bir çözüm bulunmamakta, trade-off'larla ilerlenmektedir. Bu
+durum Anasistem'den çıkış hedefini olumsuz yönde etkilemektedir.  
+Bu konunun çözümü için dağıtık mimari tasarım prensiplerinden vazgeçip açık
+sistem monoliti oluşturmaya yönelinmesi, gerek uygulamalar gerekse geliştirme
+ekipleri arasında gereksiz bağımlılıklar yaratılması, güncel geliştirme
+modelinden farklı yöntemlere gerek duyulması gibi istenmeyen sonuçlara yol
+açmadan, açık sistem uygulamaları geliştiren ekiplerin işlerini
+kolaylaştıracak, görece sade ve güvenilir bir çözüme ihtiyaç bulunmaktadır.  
+Söz konusu çözüm muhasebe – karton veri tutarlılığı kullanım durumuna (use
+case) özel bir çözüm olmalı, genel bir mimari referans olarak
+değerlendirilmemelidir.  
+### Decision | Karar  
+Açık sistemde muhasebe – karton veri tutarlılığını sağlamak için "Hesap
+Yönetimi", "Muhasebe" ve "Bloke" modüllerinin bir miniservis oluşturacak
+şekilde bir araya getirilmesine karar verilmiştir. Domain servisleri söz
+konusu miniservisle servis bazlı entegrasyon sağlayacaktır.  
+Ayrıca bu mini servisin içine yeni modüllerin eklenmesi Mimari Kurul (SMK ve
+BT Mimari - SDRF) kararı ile gerçekleştirilebilecektir.  
+Benzer şekilde farklı senaryolarda bu tip mini servislerin oluşturulabilmesi
+için Mimari Kurul (SMK ve BT Mimari - SDRF) onayı alınması gereklidir.  
+### Consequences | Sonuçlar  
+Yukarıda açıklanan karar dağıtık mimari tasarım prensiplerinden bir ölçüde
+geri adım anlamına gelmektedir. Benzer çözümlerin kontrolsüz yaygınlaşmaması
+için uygulama mimarilerinin daha sıkı denetlenmesi gereksinimi doğmuş
+olacaktır.  
+Karar söz konusu mini servisin mimari tasarımına başlanması sonucunu
+doğuracaktır. Mini servisi oluşturan ekiplerin bir arada çalışarak mimari
+tasarımı detaylandırmaları ve bu çalışmanın her aşamada kararın belirlediği
+sınırların genişlemesine neden olacak gereksinimlerin ortaya çıkıp çıkmadığını
+değerlendirmeleri beklenecektir.  
+Söz konusu servisin sahiplik konusu çözümlenmelidir.
+Introduction to 013._B.1.PİMS servisinin yapısı ve bileşimi:
+Date | Tarih : 09 Jul 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+proposed | önerildi  
+### Context | Bağlam  
+PİMS mini servisi, belli bir ödünleşme (trade-off) sonucu karar verilen, elde
+edilebileceği öngörülen kazanımlar doğrultusunda, hedef mimari olarak
+belitlenmiş olan mikroservis mimarisinden vazgeçilmesi sonucunda ortaya
+çıkmıştır. Hedef mimariden ne oranda uzaklaşılacağı, ne büyüklükte bir
+"monolit" oluşturulacağı, bu mini servisin içereceği "business" çeşitliliği,
+ekip çeşitliliği vb. konular dikkatle karar verilmesi gereken konulardır.  
+Ayrıca bir modülü veya şemayı sonradan dahil etmek, dahil edilmiş bir modülü
+sonradan çıkartmaktan daha kolay olacaktır.  
+### Decision | Karar  
+PİMS mini servisi, sadece karton bakiye ve hesap hareketleri güncellemelerini,
+muhasebe ve bloke işlemlerini içerecek şekilde "Hesap Yönetimi", "Muhasebe" ve
+"Bloke" modüllerinden oluşacaktır.  
+"Hesap Yönetimi" modülü sadece SCHESAP şemasına erişecektir.
+"Muhasebe" modülü SCMUH şemasına erişecektir.
+"Bloke" modülü sadece SCBLOKE şemasına erişecektir.  
+PİMS mini servisi bu şemalara yetkili ortak bir kullanıcı ile işlem
+yapacaktır.  
+### Consequences | Sonuçlar  
+Bu kısıtlamanın sebebi PİMS'e dahil edilmiş olan modül, business ve şemaların,
+yeni modül, business ve şemaların eklenmesini reddetmeyi zorlaştırması,
+dolayısıyla servisin bir kısır döngü içinde daha da "kalabalıklaşması"
+sonucundan mümkün olduğunca kaçınabilmektir.  
+Mini servis, veri tutarlılığı gerektiren diğer karton güncellemeleri için
+"Sıkı Entegrasyon" prensipleri ile yapılandırılmış servis çağrım(lar)ı
+yapılacaktır.  
+Bu durum kredi kartonları için SCLOAN'u, mevduat kartonları için SCACH'ı da
+kapsamaktadır.  
+Muhasebe modülü referanslı hesaplar için kullanılan SCREFAC şemasına yine aynı
+prensipler ile ulaşacaktır.  
+Bu karar uygulamada her adımda gözden geçirilecek ve dışarıda bırakılan
+şemaların veya modüllerin dahil edilmesini gerektirecek bir zorunluluk
+olduğunda yeniden değerlendirilecektir.  
+image-2024-7-9_17-49-58.png  
+ApiGateway Parasal Isiem Controller
+ee el} Class  
+rod |  
+/Parasal islem Command Service
+Class  
+Parasal islem Servisi  
+[Miniservis)  
+Openshift Namespace
+Introduction to 013._C.1.PİMS servisinin bazı servislerle "Sıkı Entegrasyon" mantığında entegre olması.:
+Date | Tarih : 09 Jul 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+proposed | önerildi  
+### Context | Bağlam  
+PİMS mini servisinin yapısı ve bileşimi kısıtlanmaktadır. Bu durum veri
+tutarlılığı gereksinimi olan ancak transactional bağlama dahil edilemeyen
+şemalar için sorun oluşturmaktadır.  
+Bu sorunu adreslemek için önerilen yapı kısaca "Sıkı Entegrasyon" olarak
+adlandırılmıştır ve şu prensiplere dayanır:  
+* PİMS, hedeflenen şemayı güncelleyecek servis'e servis çağrımı yapar.
+* PİMS bu işlemi kendi güncelleme zinciri için başlattığı trasnaction bağlamı içinde yapar. (çağrının sonucuna göre işleme devam etme veya rolback kararı alabilir)
+* Çağrılan servis dönüş yaptıktan sonra PİMS servisinde commit veya rollback alındığına dair bilgi alabilir ve kendi state'ini "makul" bir süre sonunda tutarlı hale getirebilir.
+* Çağrılan servis nihai state'ine ulaşıncaya kadar update etmesi gereken veriyi izole edebilmelidir.  
+Aşağıdaki çizimlerde servisler arasında ortak kontrol kaydına dayanan bir
+işleyiş önerilmiştir.  
+|  
+---|---  
+### Decision | Karar  
+Güçlü veri tutarlılığına ihtiyaç duyulan ancak PİMS içine dahil edilememiş
+modül ve şemalarla, bağlam bölümünde açıklanan "Sıkı Entegrasyon" yöntemi ile
+entegrasyon sağlanacaktır.  
+Çağrılan servisin PİMS ile uyumlu state'e gelmesi için çalıştırması gereken
+zamanlanmış iş vb. aksiyonları kendi sorumluluğundadır, PİMS veya başka bir
+servisten bu konuda tetikleyici bir aksiyon beklememelidir.  
+### Consequences | Sonuçlar  
+"Sıkı Entegrasyon" olarak tariflenen işleyiş, adı üstünde, "tight coupling"e
+yol açmaktadır. Bu bedel, söz konusu business'ı PİMS içine taşımamak, PİMS'in
+yapısını mümkün olduğunca basit tutabilmek için ödenmektedir.  
+Bağlam bölümünde önerilen (Capera çalışması sonucunda ortaya çıkan) yapı iki
+servis arasında ortak DB-Tablo kullanımına ve db kullanıcısının ek
+yetkilendirilmesine neden olmaktadır. Bu çözüme alternatif yöntemler
+araştırılmalıdır.  
+"Kontrol kaydı insert, delete için hold, servis çağrımı, başarılı işlem kaydı
+insert" adımları utility olarak "paketlenebilir" ve bu tip çağrımlarda
+kullanılabilir.  
+Bu kararın temel uygulama alanı SCHESAP şemasında yer alan çeşitli türdeki
+kartonların SCHESAP dışı güncellemelerini gerçekleştirmektir.  
+Bu karar uygulamada her adımda gözden geçirilecek ve dışarıda bırakılan
+şemaların veya modüllerin dahil edilmesini gerektirecek bir zorunluluk
+olduğunda yeniden değerlendirilecektir.  
+image-2024-7-11_10-8-4.pngParasal islem  
+Mini Servis Gagrilan Servis
+estiseteu escuat  
+Peter eect  
+Due ced CTT
+Pes  
+Cagnilan servis  
+dispatch  
+PIMS
+outbox
+table
+[ _— insert__ 2 Fail
+[ — delete —>l,! Event
+i dispatch
+; Taahhitt
+4 ‘  retum : resp incl. Muhasebe Kalemleri
+Success
+[. — insert — cae
+EventBase
+Publisher
+TDL
+Fail or i f
+Success :
+Event Publish PIMS Akibet  
+‘Sonuclandir
+veya
+Geri Al  
+image-2024-7-9_18-1-1.pngdispatch  
+nea
+Peat)
+lS  
+eran)  
+Poe ee ced
+cone  
+PIMS srv  
+Cer ats
+le
+EACLE  
+Cry  
+Gadlan servis  
+Taahhit
+Introduction to 013._C.2.SOS senaryosunun çözümü için PİMS servisinin Likit Fon servisi ile "Sıkı Entegrasyon" mantığında entegre olması.:
+Date | Tarih : 09 Jul 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+proposed | önerildi  
+### Context | Bağlam  
+PİMS servisinin geliştirilmesi, diğer birçok "ArGe" niteliğindeki geliştirme
+gibi bir masterplan projesi ile sponsorluk bulmaktadır, ve bu proje de
+Capera'dır. BT Mimari servisin kabulü için SOS senaryosunun çözümünü şart
+koşmuştur. Sonuç olarak PİMS servisinin SOS senaryosu içinde çalışması ve açık
+sistemde likit fon satışı ile birlikte hesap virmanları, muhasebeleri ve bloke
+işlemlerini gerçekleştirmesi gerekmektedir.  
+Orkestrasyon (başka bir servisin PİMS ve Likit Fon servislerini sıra ile
+çağırması) şeklinde yönetilmesi durumunda PİMS'in transaction bütünlüğü
+avantajından yeterince yararlanılamamakta, yeterli tutarlılık elde
+edilememektedir.  
+### Decision | Karar  
+PİMS servisi SOS senaryosunun çözümü için Likit Fon servisi ile "Sıkı
+Entegrasyon" yöntemi ile entegrasyon sağlayacaktır.  
+### Consequences | Sonuçlar  
+PİMS içine Likit Fon servisi ile entegrasyon eklemenin, servisin temel
+yetkinlik alanında tutarlılığını (coherence özelliğini) bozduğu düşünülebilir.
+Her ne kadar servisin içine bir modül olarak eklenmese de bu değerlendirmede
+haklılık payı bulunmaktadır.  
+Likit fonlar, ek hesap limiti veya vadeli hesap faiz tutarı gibi, likidite
+açısından hesap serbest bakiyesine oldukça yakın bir seviyededir.  
+PIMS'e "likidifikasyon" servisi gözüyle bakıldığında, hesapların serbest
+bakiyeye en yakın değerlerini işleyen bir servis olarak değerlendirildiğinde,
+Likit Fon servisinin PİMS'e servis olarak entegrasyonu mantıklı görülebilir.
+Introduction to 013._C.3.PİMS mini servisinin iç arayüzlerinin tasarımı.:
+Date | Tarih : 09 Jul 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+proposed | önerildi  
+### Context | Bağlam  
+Her ne kadar PİMS mikroservis prensiplerinden geri adım atmayı gerektirse de
+nesne yönelimli ve modüler programlama prensiplerinden geri adım atmaya gerek
+yoktur. PİMS'e dahil olan modüller, iç detaylarını gizleyerek sadece gerekli
+olan fonksiyonları dışa açmalı, böylece bağımsız ve yeniden kullanılabilir
+bileşenler oluşturmalıdırlar.
+Sonuç olarak, sistemin bakımı ve yönetimi daha kolay olurken,
+ölçeklenebilirlik, esneklik ve sürdürülebilirlik de korunmuş olur.  
+### Decision | Karar  
+PİMS mini servisini oluşturan modüllerin iç arayüzleri dikkatlice tasarlanmış
+olmalıdır. Modüllerin PIMS servisinin kendi kodundan ve diğer modüllerden
+gereksiz ve izinsiz erişimine izin vermemelidir.
+Her modül kendi DB şemasına erişmeli, diğer modülün şemasına doğrudan
+erişmemelidir.  
+### Consequences | Sonuçlar  
+.. PİMS ...
+Introduction to 013._D.1.PİMS mini servisinin yeni kullanım senaryolarına kontrollü olarak açılması.:
+Date | Tarih : 09 Jul 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+proposed | önerildi  
+### Context | Bağlam  
+PİMS mini servisinin işletimi değerlendirilirken, servisin bir anda serbest
+kullanıma açılacağı ve isteyen herkes tarafından, her senaryoda sınırsız ve
+kontrolsüz şekilde kullanılabileceği varsayılmaktadır.
+PİMS yetenekleri açısından "güçlü" bir servistir, bu bakımdan "kontrolsüz güç"
+oluşturma endişesi nedeni ile tasarım aşamasında bu endişeleri gidermek üzere
+fazladan zaman ve kaynak harcanmaktadır.
+Bunun yerine tasarım aşamasında, kullanım senaryolarını ve tüketici servisleri
+kontrol altına alabileceğimizi ve kontrollü şekilde yaygınlaşacağımızı bilmek
+çalışmayı kolaylaştırabilir.  
+### Decision | Karar  
+Özellikle ürün yaşam döngüsünün erken döneminde, PİMS mini servisi "serbest"
+kullanıma açılmayacaktır. Servisin hangi kullanıcılara hangi iş senaryolarında
+hizmet vereceği önceden değerlendirilecek, kullanımın etkileri incelenecek,
+izin verilen kullanım senaryolarında senaryoya özel API açılacak ve bu API'ye
+erişim yetkilendirilerek kontrol edilecektir.  
+### Consequences | Sonuçlar  
+Senaryolara örnek olarak:  
+* MaxVadeli Hesap - ACH virmanı
+* Ek Hesaptan Para Çekme
+* Kıymet Satışı
+* SOS  
+verilebilir.  
+Muhasebe bakış açısından zorluk derecesine göre şu sıralama önerilebilir:  
+muhasebe  
+---  
+borç  
+|  
+alacak  
+muhasebe  
+|  
+muhasebe  
+muhasebe  
+|  
+kasa  
+muhasebe  
+|  
+ach  
+kasa  
+|  
+ach  
+muhasebe  
+|  
+kredi  
+kasa  
+|  
+kredi  
+ach  
+|  
+kredi  
+kredi  
+|  
+kredi  
+muhasebe  
+|  
+yatırım  
+kasa  
+|  
+yatırım  
+ach  
+|  
+yatırım  
+hazine  
+|  
+Bu şekilde izin verilen her iş senaryosunda PİMS servisinin kullanımının
+sonuçları ayrı ayrı gözlemlenecek ve gelecekteki kullanım alanları ve
+şekilleri için yol gösterici olacaktır.  
+İzin verilen kullanım senaryoları basitten karmaşığa, daha düşük
+throughput'tan daha yükseğe, daha az modül entegrasyonundan daha fazla
+entegrasyona ihtiyaç duyana doğru dereceli olarak arttırılabilir.  
+İzin verilen senaryolara "bir anasistem uygulamasını dışarı alma" şartı
+getirilebilir, bu şekilde servis daha amaca yönelik olarak kullanılabilir.
+Introduction to 013._E.1.PİMS mini servisinin isimlendirmesi:
+Date | Tarih : 09 Jul 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+proposed | önerildi  
+### Context | Bağlam  
+İsimlendirme için, servisin temel yetkinliği şu şekilde tanımlanabilir:
+Servisin amacı: (1) farklı türlerdeki ("vadesiz mevduat hesabı", "vadeli
+mevduat hesabı", çeşitli türde kredi hesapları, "yatırım hesabı" gibi)
+hesaplardaki bakiye tutarlarını hesaplar arasında aktarmak, hesap hareketi
+kaydı oluşturmak, (2) muhasebe işlemlerini yapmak ve (3) gerektiği durumlarda
+bu bakiyeler üzerindeki blokeleri kaldırmak veya bloke koymaktır. Bu servisin
+varlık sebebi, 3 madde halinde açıklanmış olan işlemleri aynı transactional
+context içinde veri tutarlılığını tam sağlayacak şekilde yapabilmektir.
+Değerlendirilen alternatifler:
+* CLEAR (Consistent Liquidity Exchange and Account Reconciliation)
+* SEBATT (Serbest Bakiye tutarlı transfer) servisi
+* TEMAS (Tutarlı Entegre Muhasebe ve Aktarım Servisi)
+* ..
+* ..
+(lütfen doldurunuz)  
+### Decision | Karar  
+.. PİMS ...  
+### Consequences | Sonuçlar  
+.. PİMS ...
+Introduction to 013._C.4.Sıkı entegrasyon sağlanan servisin izolasyon ve tutarlılık sorumluluğu:
+Date | Tarih : 11 Jul 2024  
+Applies To | Uygulanabilirlik : İşBank  
+### Status | Durum  
+proposed | önerildi  
+### Context | Bağlam  
+...  
+### Decision | Karar  
+...  
+### Consequences | Sonuçlar  
+...
+Introduction to 2024.07.11 - Plateau .Net:
+Konu Başlığı| Plateau .Net
+---|---
+Konu Açıklaması|  
+Plateau .NET devir çalışmaları kapsamı hakkında bilgi paylaşımı yapılacaktır.  
+Talep Geliş Tarihi| 11.07.2024
+Geliş Amacı|  
+Görüş Alma  
+SMK Sunumu  
+|  
+SMK_Plateau_Net.pptx  
+SMK Video Kayıt|  
+video1801949293.mp4  
+Talep Durumu|  
+Toplantı Notları|  
+Alınan Kararlar|  
+SMK_Plateau_Net.pptxPlateau .Net Devri Amaç Aktarım İle Yapılan İşler Aktarım İle Yapılan İşler Mimari Öncelikli Plateau Java Eşleştirme Taskları Ek Geliştirmeler Plateau Java Eşleştirme Taskları Servis kullanıcıları için refresh token mekanizması geliştirmesi. Teşekkürler
+Introduction to 0064#Kartlı Sistemler c++ uygulamalarında kalıcı istisna konusu onay:
+_Detaylar: ACI02531, ACI02244, ACI02534, ACI01979, ACI02535, ACI01971,
+ACI01972, ACI01953, ACI01990, ACI04967, ACI01952, ACI01948, ACI01950,
+ACI01980, ACI01973 acilerine kalıcı istisna tanımlanması_|  
+Gündeme getiren: Kübra Gökçe  
+|  
+Tarih: 30.07.2024  
+---|---|---
+Bu acilerde c++ ortak kod base kullanan 14 paket bulunmaktadır. bu paketlerde
+çok fazla Improper Null Termination bulgusu bu bulgular makro kodu içi
+görülmediği için oluşmaktadır . Bulgu sayısı çok fazla olduğundan false
+pozitif giriş devopssofttech üstünden yapılamamaktadır her sürüm için bu
+girişler için devops softtech ekibine ulaşılması gerekmekte bu da izin
+sürelerinde ve acil akışlarda kullanıcıya erişim zorluğu sebebi ile sürümü
+zorlaştırmaktadır. bu projeler de dönüşüm kapsamında alınacağı için 2025
+sonuna kadar bu acilerde false pozitifin kalıcı hale getirilmesi talebimiz
+bulunmaktadır.
+**_Notlar / Gelişmeler:_**
+1-|  
+Checkmarx için üstteki C++ ACI’ler bağlamında Mimari İstisna Kaydı girilerek
+kalıcı istisna kaydı oluşturulması sağlanacak.  
+0064#Kartlı Sistemler c++ uygulamalarında kalıcı istisna konusu onay  
+|  
+Not ekleyen: Halil İbrahim Sunter  
+| Tarih: 30-07-2024
+2024.08.07-SARB-SmartFarm#06
+	subsection:Girdiler:
+	sub_subsection::
+Agri.pdf
+2024.08.07-SARB-SmartFarm#06
+	subsection:Girdiler:
+	sub_subsection:Toplantı Katılımcıları ::
+Berke Bal , Fatma Nur Guneri , Sartuk Can Palamut , Öyku Bahşi , Serdar Torgan
+, Serkan Sezer , Lutfu Ulusoy , Ömer Çetin , İbrahim Çalışır , Rabın Dal ,
+Aziz Goktepe , Kubra Gokçe
+2024.08.07-SARB-SmartFarm#06
+	subsection:Çıktılar:
+	sub_subsection:Toplantı kayıtları ::
+video1540071544.mp4
+2024.08.07-SARB-SmartFarm#06
+	subsection:Sonuç:
+	sub_subsection:MOE-SARB:
+#Uyumsuzluk  
+|  
+#İstisna  
+|  
+#Öneri  
+|  
+#Doc  
+---|---|---|---
+0| 0| 3| 0  
+### Döküman Hazırlık  
+01  
+|  
+02  
+|  
+03  
+|  
+04  
+|  
+05  
+|  
+06  
+|  
+07  
+|  
+08  
+|  
+09  
+|  
+10  
+|  
+11  
+|  
+12  
+|  
+13  
+|  
+14  
+|  
+Toplam  
+---|---|---|---|---|---|---|---|---|---|---|---|---|---|---
+0,7| 1| 1| 1| 1| 0,6| 0,8| 0,85| 0,9| 1| 1| 0,3| 1| 1| 12,15
+2024.08.07-SARB-SmartFarm#06
+	subsection:Sonuç:
+	sub_subsection:Öneri | Advice:
+* Performans iyileştirmesi planlanmalı
+* Edge geçişi planlanmalı (4. bölüm)
+* ADR'lerde sonuçlarda alınan kararların beklenen çıktısının yazılmalı
+2024.08.07-SARB-SmartFarm#06
+	subsection:Sonuç:
+	sub_subsection:aCoE Internal:
+* Bir sonraki toplantıda ara yüz hazırlamış olursak içeriklerinde beklenen kısımlarıda güncellemeleri gerekecek.
+* Plateau Studio Mobil kullanımı ve PrcessManager değerlendirmesi tekrar sorgulanabilir
+2024.08.07-SARB-SmartFarm#06
+	subsection:Sonuç:
+	sub_subsection:Notlar::
+Agri.pdfPage 1:
+Smartfarm (Imece Platform)  
+table of contents  
+BR  
+. Introduction and Goals
+1.1. Requirements Overview
+1.2. Stakeholders
+1.3. Definition of Problem or Requirement
+1.4. Definition of Solution
+1.5. Quality Goals
+. Architecture Constraints  
+i)  
+2.1. Overview  
+2.2. Performance Goals  
+~  
+System Scope and Context
+4. Solution Strategy
+4.1. Teknolojik Unsurlar (Technology at a Glance)  
+ul  
+. Building Block View (Context and Scope)
+5.1. Whitebox Overall System (Context and Scope)
+5.2. Building Block View (level 1)
+5.3. Building Block View (level 2)
+5.4. Building Block View (level 3)  
+5.5. Service & Caching Architecture  
+nD  
+. Runtime View
+6.1. Registration
+6.2. Application
+6.3. Disbursement
+6.4. Quota  
+6.5. Profile Authorization  
+I  
+. Deployment View
+7.1. Sistem Topolojisi
+7.2. Sistem Gereksinimleri  
+7.3. Ortam Kurulumlari  
+00  
+. Cross-cutting Concepts
+8.1. Domain concepts
+8.2. User Experience concepts (UX)
+8.3. Safety and security concepts
+8.4. Architecture and design patterns
+8.5. "Under-the-hood"
+8.6. Development Concepts  
+8.7. Operational Concepts  
+OA DHS FF FW WwW wo  
+NNN NY NYNN NN DN BBR RB BB BB BP BRB RB BB Be
+AR WwWNHNHNHNKHDDT OCHO NAN RAH UYHBWBNHYHDNHKER TOO  
+Page 2:
+9. Design Decisions
+9.1. HELP : Cross-cutting Concepts - Design Decision
+9.2. ADRs (architecture decision record)
+10. Quality Requirements
+11. Risks and Technical Debts
+12. Glossary
+13. Gtivenlik (Security)
+13.1. Genel sorular
+13.2. Girdi Kontrolti sorular1
+13.3. Konfigtirasyon yénetimi sorular1
+13.4. istisna YOnetimi ve Denetimi, Giinliige Kaydetme Sorular
+14. Architectural RoadMap
+14.1. Architectural Roadmap
+14.2. Transition Architecture
+14.3. Target Architecture  
+<
+softtech  
+This version of the template contains some help and explanations. It is used
+@ for familiarization with arc42 and the understanding of the concepts. For
+documentation of your own system you use better the plain version.  
+28
+28
+28
+36
+37
+38
+39
+39
+40
+40
+41
+43
+43
+43
+43  
+Page 3:
+1. Introduction and Goals  
+Dijital Tarim Platformu biiytik tarim isletmeleri, kooparatifler, tarm bankalari ve tarima alaninda
+faaliyet gdsteren sivil toplum O6rgiitlerinin “lider firma” olarak konumlandigi sdzlesmeli tarim
+temelinde ve tarim ekosistemi iginde temelde ciftciler olmak tizere tiim paydaslara 6n finansman,
+ayni yardim programlari ve alacak finansmani opsiyonlari ile operasyonel stirdtriilebilirlik
+programlarinin yurutiilmesini saglar. Finansal segeneklerin yani sira iyi tarm uygulamalari ile de
+uretim stirecinde yénetisim temelli iyilestirmler de saglanabilecektir.  
+Paydaslarin sistem tizerinden ilgili destek paketlerine basvurularini takiben banka kanali ile olan
+entegrasyonlar Acik Bankacilik API lari ile kurgulanacaktir.  
+Tiirkiye pazarinda sistemin pazarlama haklari ig bankasi’na devredilmis olup , hosting hizmeti
+finansal sorumlulugu is bankas1 Digital Tarim birimine aittir.  
+ERP sistemlerine entegrasyon istenildigi takdirde bu lider firma bazinda projelendirilip parametrik
+olarak gerceklestirilecektir.  
+1.1. Requirements Overview  
+Tarim Destek Platformu, tarim ekosisteminde faaliyet gdésteren lider firmalar, tarim alaninda
+ihtisaslasmis bankalar, devlet kurumlari ve tarim 6rgiitlerinin birlikte is yaptiklar1 paydaslarini tek
+bir platformda toplayarak, hem finansal hem de operasyonel faaliyetlerini bu ortak platform
+uzerinden yurtitmelerini saglar.  
+1.2. Stakeholders  
+Role Erisim bilgileri bu rolden beklentiler  
+Main Firm Kayseri Seker, Caykur, ... Ana firma’nin Smart Farm’ kullanilmasindaki
+amac; ham madde ihtiyacini karsilayan
+ciftcilerini destekleyip tiim stireci
+yonetebilmektir. Ayrica tiretim sonrasi olusan
+ham madde attigini yine bu sistem tizerinden
+tedarikci tipli faydalanacilarina satabilir.  
+Beneficiary Ciftci, Tiiccar Ciftci, ticcar, tedarkci kendi is alanlari igin ana
+firmanin sagladig1 firsatlara daha kolay
+ulasabilecek. Orn: ciftci tarlasi icin giibre destegi
+alabilecek veya yapacagi harcamalar icin
+destekli kredilere basvurabilecek.  
+Financal Bankalar, Faktoring Firmalari, Daha ¢ok misteriye ulasma imkani saglayacak.
+Institution ve Ayrica ana firmanlarin kefil olabilecegi paketler
+ile riskini minimize edecek.  
+Suppliers Gubre, mazot tedarikcileri, ... Kurumsal firmalar ile galisma imkani ve marka
+bilinirligini artirma firsati.  
+Page 4:
+1.3. Definition of Problem or Requirement  
+¢ Ana firmalarin faydalanicilarina sundugu imkanlar1 dijital bir platformda yonetme ihtiyaci.
+¢ Faydalanicilarin ana firmalarin veya bankalarin firsatlarina erisim zorlugu.
+¢ Tedarikcilerin daha kolay misteri bulma ihtiyaci  
+¢ Bankalarin sundugu firsatlari daha genis bir kitleye daha kolay sunma ihtiyaci.  
+1.4. Definition of Solution  
+¢ Smartfarm uygulamas! ile
+° Ana firma faydalanicilarini dijital bir ortamda destekler
+° Faydalanicilar Ana firma firsatlarina uzaktan erisimi
+° Tedarikciler trtinlerini daha giivenli bir ortamdan satis  
+e Bankalarin kredi tirtinlerini ve 6zel firsatlarini ana firmalarin giivencesi ve araciligi ile
+ciftcilere sunmasi saglanmistir.  
+1.5. Quality Goals  
+Performance efficiency Score
+Time behaviour 3
+Resource utilization 3
+Capacity 3
+Compatibility Score
+Co-existence 5
+Interoperability 5
+Usability Score  
+Appropriateness recognizability 5  
+Learnability 5
+Operability 5
+User error protection 5
+User interface aesthetics 4
+Accessibility 5
+Reliability Score
+Maturity 5
+Availability 5  
+Page 5:
+Reliability
+Fault tolerance  
+Recoverability  
+Security
+Confidentiality
+Integrity
+Non-repudiation
+Accountability  
+Authenticity  
+Maintainability
+Modularity
+Reusability
+Analysability
+Testability
+Modifiability  
+Authenticity  
+Portability
+Adaptability
+Installability  
+Replaceability  
+Score  
+a wo wn  
+Score  
+Page 6:
+2. Architecture Constraints  
+2.1. Overview  
+Constraints Description  
+ARCH-01-C Sistem modiiler, parametrik ve dlceklenebilir bir
+yaplya, anlasilir ve agik bir kuruluma sahip
+olmalidir.  
+ARCH-01-S-1 Micro servis mimarisi esas alinmuistir.  
+ARCH-02-C Uygulama mimarisi, sunum, is ve veri olmak  
+uzere 3 katmanli olmalidir.  
+ARCH-02-S-1 Onyiiz sayfalari micro-ui’da bulunup, servisler
+ile backend’e erismektedir. Veriler veritabina
+backend tarafindan islenmektedir.  
+ARCH-03-C Kullanicilarin istemleri apigateway tizerinden
+micro servislere gelmeledir.  
+ARCH-03-S-1 Plateau ApiGateway kullanilmistir.  
+ARCH-04-C Kullanicini sagladigi token tizerindeki profili
+cercevesinde sistem icinde hareket etmelidir.  
+ARCH-04-S-1 Kullanici identity-provider’dan gecip elde ettigi
+token, kabuk tarafindan tim api requestlerin
+header’ina eklenerek, gtivenlik saglanmistir.  
+ARCH-05-C Merkezi bir sekilde tim konteynirlar
+yonetilebilmelidir.  
+ARCH-05-S-1 Uygulama, Plateau framework’ti ve devops hatt1
+araciligiyla hazirlanmistir.  
+ARCH-06-C Microservisler relational database tiirti bagimsiz
+gelistirilmelidir.  
+ARCH-06-S-1 Uygulama, Plateau framework’tiniin  
+destekledigi MYSQL,MSSQL,Oracle ve Postgresql
+relational database’lerle galisabilecek sekilde
+gelistirilmistir.  
+ARCH-07-C Cloud hizmet verilecegi icin server masraflarin1
+diisiirmek icin multi - tenancy mimari
+kullanilmalidir. Ms’ler bu sekilde
+gelistirilmelidir.  
+ARCH-07-S-1 Basta Identity-provider ve ApiGateway olmak
+uzere tim servisler multi-tenancy yapisina
+uygun olarak tasarlandi veya gtincellemeler
+yapuldi.  
+Page 7:
+Constraints  
+ARCH-08-C  
+ARCH-08-S-1  
+ARCH-09-C
+ARCH-09-S-1
+ARCH-10-C  
+ARCH-10-S-1
+ARCH-11-C  
+ARCH-11-S-1  
+ARCH-12-C  
+ARCH-12-S-1  
+2.2. Performance Goals  
+Metrics  
+Name(s) of the service(s)
+Number of threads(users)
+Ramp-up Period (seconds)
+Duration (seconds)  
+Loop Count  
+Description  
+Turkiye disindaki tilkelere satis hedefi
+oldugundan labellar localization yapisini
+kullanmalidir.  
+Metadata ms’i ve kabukta yer alan
+globalLocalizaiton kullanilmistir.  
+Tim kayitlar loglanmalidir
+Postgresql audit yapisi kullanilmistir.  
+Kullanicilara bildirimler notification ms
+kullanilarak atilmalidir. Sms provider ve smtp
+server’a notification ms erismelidir.  
+Plateau Notificaiton ms’i kullanilmistir.  
+Gelistirme ortami kaynak kodlari, minimum
+%70 birim test kapsama oranina sahip olacak,
+kodlarin stili taraflarca mutabik kalinarak
+belirlenecek ve kod kalitesi SonarQube ¢iktilari
+goz Ontinde bulundurularak ¢éztimlenecektir.
+SonarQube c¢iktularin derecelendirmesini (A-E)
+yaplyorsa, A derecesi saglanacaktir. Bulgularin
+agirhklari ve kod satir sayisi izerinden bir
+formiilasyonla aracin 6nerdigi “A” derecesi
+saglanacaktir. Araclarda en yiiksek gtivenlik ve
+kalite opsiyonlari secilecektir. Bug, blocker veya
+major bulgu olmayacaktir.  
+Backend kod kalitesi sonar raporlari ile takip
+edilmektedir.  
+Agik bankacilik api’lerinin sahibi olan bankanin
+belirttigi giivenlik standartlarina uyulmas1
+gerekmektedir.  
+Ana firmalardan bu gereksinimler talep
+edilecektir.  
+Description
+fafapplicaiton
+500  
+60 seconds
+600 seconds  
+5  
+Page 8:
+Metrics
+TPS
+Minimum CPU & RAM  
+Max Response Time (miliseconds)
+Max Service Up Time (miliseconds)  
+Method - EndPoint - 1  
+Metrics  
+Name(s) of the service(s)
+Number of threads(users)
+Ramp-up Period (seconds)
+Duration (seconds)  
+Loop Count  
+TPS  
+Minimum CPU & RAM  
+Max Response Time (miliseconds)
+Max Service Up Time (miliseconds)  
+Method - EndPoint - 1  
+Metrics  
+Name(s) of the service(s)
+Number of threads(users)
+Ramp-up Period (seconds)
+Duration (seconds)  
+Loop Count  
+TPS  
+Minimum CPU & RAM  
+Max Response Time (miliseconds)
+Max Service Up Time (miliseconds)  
+Method - EndPoint - 1  
+Description
+100  
+1000m (milicores) - (1 core = 1 CPU = 1 AWS
+vCPU = 1 GCP Core) 1000 mebibytes(Mi) -
+(1.048.576 megabytes)  
+300 ms
+2000 ms  
+POST /api/v1/application/startapplicationprocess  
+Description
+fafdisbursement
+500  
+60 seconds  
+600 seconds  
+5  
+100  
+1000m (milicores) - (1 core = 1 CPU = 1 AWS
+vCPU = 1 GCP Core) 1000 mebibytes(Mi) -
+(1.048.576 megabytes)  
+200 ms
+1500 ms  
+POST /api/v1/disbursement
+/startdisbursementprocess  
+Description
+fafproduct
+500  
+60 seconds
+600 seconds
+5  
+100  
+1000m (milicores) - (1 core = 1 CPU = 1 AWS
+vCPU = 1 GCP Core) 1000 mebibytes(Mi) -
+(1.048.576 megabytes)  
+4500 ms
+5000 ms  
+GET /api/v1/product/getbeneficiaryproducts  
+Page 9:
+3. System Scope and Context  
+Bussines Context diagram for Smartfarm Core System  
+SmartFarm
+[system]  
+FEROS re
+pre Eley)  
+Patol ame
+Raporlama  
+vart Farm Main Firm Admin  
+Pee id  
+ulate laa)  
+Vendor ve finsal
+kuruluslarin
+tanimlanmasi,
+nin Mail gonderimi beneficiary
+eval a) yéneti
+protokollerin ve  
+7 . b destek paketlerinin
+Temlik kredi hazirlanmasi,  
+bilgilerini alir. (Kota ie b St i
+ve kredi tutari) asvuru yonetimi.  
+eye
+Financial Institution Pre en eS Pre en eS  
+To eee a
+faila-larell- lM alien tela cian)  
+Smartfarm is kapsami yukardaki semada anlatulmistir.  
+Page 10:
+4. Solution Strategy  
+4.1. Teknolojik Unsurlar (Technology at a Glance)  
+Technology (Technoloji)
+Web
+Mobil  
+Gecitler (Gateways or BFF)
+Giivenlik (Security)
+iletisim (Communication)  
+Onbelek (Cache)  
+Veritabani (Databases)
+VT betikleri (DB scripts)  
+VT Nesne ile fliskisel
+Haritalama (DB ORM)  
+Yazilim dili (Languages)  
+Mesajlasma (Messaging)  
+10  
+Tanimi (Description)
+Quick ile yazildi.
+Native Android,IOS  
+ApiGateway
+Plateau IAM.
+Rest API  
+RA.0012.Shared Cache -
+Eventual Consistency Cache
+Aside  
+PostgreSql
+Liquibase  
+Hibernate  
+Java  
+Versiyon
+1.2.182  
+10S-14, Android-13 (Imece
+mobil icine embeded
+bulunuyor)  
+3.1.5
+ke22-v1.14.1  
+11.13.0  
+17  
+Page 11:
+5. Building Block View (Context and Scope)  
+Seu es  
+Data Plateau ry  
+Vendor User
+erie)  
+Prater  
+System Context diagram for Smartfarm Core System  
+SmartFarm
+[system]  
+(rbetcintst) (Unk iad Eee ates Ee eaatets  
+ee aea cle) Beneficiary User (Farmer)  
+lanes  
+Seu a  
+HTTP/REST.  
+Coo mou
+Financial Institution oe Sule
+elo Sag  
+ae Mtv  
+5.1. Whitebox Overall System (Context and Scope)  
+System Context diagram for Smartfarm Core System  
+Creer Te  
+HTTP/REST|  
+SmartFarm
+[System]  
+Financal Institution  
+ree)
+@
+Td  
+Admin User  
+Jam et 1000 la neve al  
+Bree
+Data Plateau  
+Raporlama  
+HTTP/RES  
+Financial Institution roe ear red roe al te  
+Tas Meee ile lig Se  
+Financial Institution System  
+a1  
+Page 12:
+5.2. Building Block View (level 1)  
+Block View Level-1 diagram for Smartfarm  
+SmartFarm
+[System]  
+Financal Institution
+UI T—T a  
+Suppliers User Pela iam e_ig  
+Smart Farm Main Firm Admin  
+[HTTPS]  
+Web UI
+[System]  
+[HTTPS]
+'  
+I  
+'  
+'  
+[HTTPS] '
+' I  
+' «WhiteBox»«container»  
+1
+1  
+1  
+1  
+'  
+1  
+1
+{____» UI '
+[fafsmartfarm-init-qui] '
+I  
+\  
+1  
+I  
+1  
+1  
+1  
+[HTTPS] [HTTPS]  
+[HTTPS]  
+«WhiteBox»«system»
+Mobil  
+«WhiteBox»«container»
+Internal UI
+[fafsmartfarm-qui]  
+Native Android,lOS  
+Bee
+phe hat 18]  
+1
+1
+1
+'
+1
+1
+'
+1
+1
+1
+'
+1
+1
+1
+1
+1
+1
+1
+'
+1
+1
+1
+\ Raporlama
+1  
+Ce eee td
+Financial Institution re ee MS ed ere ee Sree  
+ae ge) ee
+Financial Institution System  
+5.3. Building Block View (level 2)  
+12  
+Page 13:
+Block View Level-2 diagram for Smartfarm  
+SmartFarm
+[system]  
+= Financal Institution ; =
+Suppliers User Admin User Beneficiary User  
+art Farm Main Firm Admin is  
+artFarm
+System]  
+!
+!
+!
+[HTTPS]| [system] |
+1
+'
+«WhiteBox»«container» 1
+ad Ul |
+[HTTPS, [fafsmartfarm-init-qui] '
+1
+vine a ' «WhiteBox»«container» '
+' Internal UI \
+Native AndroidiOS =| ifetsmaltiarn aa) '
+'
+'
+'  
+Ser MS Te
+Pry e-Bedt-1 at 10)  
+«container»
+Apigateway  
+EI}
+_ ist] oleae)  
+Sere elated  
+raat Let)  
+lava]  
+Creel ed
+Financial Institution Cre eS Te Prone ea reS
+Seed e le Seg  
+Financial Institution System  
+5.4. Building Block View (level 3)  
+13  
+Page 14:
+Block View Level-3 diagram for Smartfarm  
+SmartFarm  
+Plateau MS.  
+Erpcodomain,contract,
+[REST  
+SmartFarm
+[system]  
+Notificaiton|
+IRESTI  
+Vendor, quotation
+(EST)  
+Erpcodomain
+(REST  
+Geto)  
+ioe  
+mate  
+iigis!  
+Erpcadomain
+REST)  
+HTTP/nEsT|  
+i  
+TATE REST)  
+5.9. Service & Caching Architecture  
+Herhangi bir ms’de cache yapisi kullaniimamistir  
+14  
+eae  
+Page 15:
+6. Runtime  
+View  
+Smartfarm trtintintin 5 6nemli akisi mevcuttur.  
+6.1. Registration  
+¢ Manuel Onboarding  
+Login Oncesi Kayit Ol Ekra  
+Kullanici Yaratma |  
+ye  
+{ Telefon Numarasi Girilir
+{ OTP SMS Dogrulamasi Yapilir |  
+Se:  
+{ Sifre Belirlenir  
+a  
+Hukuk Metinleri Onaylanir |  
+dt  
+ni FAFOnboarding  
+¢ Toplu Onboarding  
+Ana Firma Toplu Kisi Yukleme Ekrant  
+{ana Fema Kulanicis Sistem Login our )  
+¥  
+Fkrandan Omek Sablon indir )
+{inainten sabion kuraina Uyqun sokdde Doiduruiur }  
+¥  
+Sablon Sisteme vallenr )  
+rn  
+( stetem Taratindan Ginlen wigler Kontrol Edilr |  
+a  
+Basan Kaytlar Sisteme Yuklenir |  
+Notification  
+a  
+[ steteme vuklenen Faydalanvcilara Onboarding Link! SMS Yoluyla lei)  
+po  
+| Bilgiler faydalanici tarafindan doldurulur |  
+|  
+| Faydalanici tarafindan profil secimi yapilir |  
+es 2a  
+| Faydalanici tarafindan profil bilgilieri ve detay bilgiler alinir  
+—  
+| Bilgiler kaydedilir  
+Iki Asamali Dogrulama Ekranlari  
+FAFWorkFlow FAFProfile  
+jy
+| Faydalanici Onayt |
+——— |}  
+)  
+| Faydalanici sisteme onboard olur |  
+6  
+FAFOnboarding FAFProfile  
+[oy  
+(Gast tater vod ra ori)  
+SS  
+(site petirienir )  
+ye  
+Hukuk Metinleri Onaylanir )  
+Faydalanici Ekraruna Profi Blgisi Secih Olarak Getirir |  
+Oo  
+(sk Bigler faydalanntarafindan doldurutr )  
+Biller kaydedilir  
+a  
+((Faydatarvar sisteme onboard olur  
+)  
+6  
+15  
+Page 16:
+6.2. Application  
+¢ Profillerin , ana firma kisitlarina gore ilgili destek paketlerini kullanmak icin sistem tizerinden  
+basvurmalar1 islemidir.  
+Destek Paketi Liste Ekrani  
+| Faydalanici eslestigi destek paketlerini gériir ||  
+rs rs  
+Basvurulacak Destek paketi secilir |  
+6.3. Disbursement  
+¢ Temlik Kredisi Siireci.  
+Destek Paket Ekrani FafProfile  
+(Foyesaru treat cestek pater iteler
+((Geseuusunu yopar)  
+[ Faydatani-Kota Eslestrmesi api}  
+¢ Basvurulu Avans paketi kullanimi.  
+Basvurularim Ekrani  
+c ~
+( Faydelanici Onaylanmis Avans BasvurulariniListeler |  
+Oy  
+Hesabima Aktar Butonuna Basar  
+oy  
+(callarerTarafindan Ekrandan Hosap Billi - BAN Seclir)  
+ee  
+| Talep Ana Firma Terafine Faydalanici Odemelerine Otomatik Olarak Dustirilur ||  
+Destek Paketi Basvuru Ekrani  
+{ Basvuru bilgileri girilir |  
+FatWorkfiow  
+Belge MUduru tarafindan basvurunun ik adm! oneyant |  
+ee  
+‘Ana Firma Yell tarafndan final bapwiru onaylanir  
+FAFApplication  
+Basvuru alinir |  
+dt  
+—  
+{ Basvuru onaylandi statiisiine déner |  
+— eee  
+Kullandirim Ekrant  
+( FaysstamesTarafinden nay Sona altve Eling Bana Temi Linkine Tikonie  
+Faydalanici Odemeleri Ekrani  
+¢ Basvurusuz Avans paketi kullanimi.  
+16  
+7 v. ,
+| Anafirma faydalanici listesinden bir veya daha fazia secim yepar |  
+“eon_—  
+ig Bankes! Sistemine Kullanict Girisi Vapar. Odeme Yapacagi Hesabi Secer, Ode Butonuna Tiklar )|  
+NT  
+(Sati satir hangi édemenin gerceklestidi bilgisi kullaniciya gésteriir |  
+a  
+FAFWorkflow  
+po  
+{ Basvuru anafirma onayina diiser |
+p>  
+is Bankast  
+a  
+(clan Ekran Gzerinden Vaplan Kredi Sapwurusu Subeye Yériendini  
+Xk  
+FafBankintegration  
+fy
+(Gerkann healt pion tka)  
+a  
+[ Secilen Faydalanicilann Hesaplarine Odeme Yapilr ||  
+eee  
+( akioet sorguianir }
+po  
+Page 17:
+Destek Paketi Ekran!
+(‘na Firma vei Taratnden Bapuursu2 vans Turonde Destek Paka! Olugturlar  
+eee  
+(eet yudeme sablonu sistemden incntr
+‘urline Uygun Deldruian Excel Oosyan Seta Yoklenir )  
+Yaklonen Exel Dosyasindak Bier Sistem Taratindan Kontrol Ear  
+¥  
+‘aratan Desk Paks Onaya Génderir  
+FafWorkflow  
+Faydalanici Gdemeleri Ekrant  
+(cnaye conderien Desek Pate na rma Vets Taratndancnasan  
+¢ Ayni Yardim paketi kullanim..  
+Destek Paketi Ekran!
+‘ana Firma Yeti! Tasindon ayn Varden Torunde Destek Pati Olgturd|  
+¥v  
+Destek Pat lusturlurcen Tedankl Bg Secir  
+¥  
+(Caretta bastekPakat onaya Gide  
+6.4. Quota  
+¢ Kota Birlestirme Stireci.  
+Ana Firma Kota Birlestirme Ekrani  
+(Ana Firma Yethilst Kota Birestr Butonuna Thier )  
+a ns  
+((Talep Eden ve Kefi Faydalane Secimi Yapar )  
+ye  
+kota kta Gi vapir)  
+eS  
+(ree raydaerscian sus onayne Gandeni  
+dt  
+FafWorkflow  
+lonaya Gander Dastek Paka Ana Fim Yeti Tarsincln Gnaen  
+rs
+‘na Fema Yeti Foytalancrn Bapairasmu Onaar  
+Faydalanici Mobil Tarayict  
+a  
+( Ms lation Talep Eden ve kafl Faydalariciar ieriteli Unke Tkayarak Staci Onayla  
+¥  
+((anatrn Kataric DestekPakatleristesindan Odeme Yaprak ited Pak Seger)  
+I  
+Is Banka SatemineKullanc cing! Yanan. Odere Yapacady asa Sacer, Od Guterun Tks  
+———  
+(sot sstrhang exemenin gercelestii igs kllanicya gSstenir  
+———e  
+Faydalanici Ekrant  
+Fajdslan yn Yarden Dastek Paketine Basin Yapar
+oy  
+avin Ana Fra Tarsfina Onaya Ger )  
+| ye
+(Falta opalenn Elrond Ap ardinTomin Ebi  
+a
+Faden Sapvrciann Sejfasinds fyi Yarn Paketenn Sorgdar )  
+OO  
+( Psket Deteyna Tikadiinds Yaplan fuilsndinmin Deteylanna Eris )  
+——  
+FafBankintegration  
+OY
+Bankanmn hevaloletapler tuketir
+v
+Excel Yklenen Faytalanann Heraplanna Ode Yap  
+¥  
+[Akt sorgulanr  
+‘Tedarikei Ekrant  
+Faydalaer Teaare estat Naltasna Ger
+¥  
+llaneidan TEA Bg Tenn Eder ve Ssteme Gig Yapar  
+¥
+Faydalaneya Tarn yn varden okdarngTutarey Gerrsoler
+¥  
+yd Tuten Tear Blane  
+¥  
+“edaric Faydalaricya Sistem Uzerden SMS Gonderere Tut Kulandne  
+¥  
+(Ted! stetome tulanmma Dai Belge! Yer  
+(Festa  
+FafWorkflow FafProfile
+yp
+(Sires ana Fra Vettist Taraindan onajane
+(onayanan surece Dar Kota Transfer sistem Yorafnden Yopir )  
+‘Ana Firma Yetbiisi Blestinien Keta Bilgisini Ekrandan Gbrinttleyebil  
+é  
+6.5. Profile Authorization  
+¢ Profil Yetkilendirme Siireci.  
+17  
+Page 18:
+Yetki Tenumiama Ekrant
+(len ears ina Fa nin Prt Sie Yet  
+Manvel Onboarding  
+18  
+(stars onsen ei Tamanna Sevag Prt Sap Ana Fa ain apna Uae  
+Faydalante Ekranlars  
+el cinelene reir Yop epi oie Sap an fs Yn myn or}  
+‘Ana Firma Ekranlart  
+aap Sgr rai ete citar)  
+¥  
+Farsi Hone annals re irs loin at lv ae A Paarl Grab)  
+¥  
+3  
+Page 19:
+7. Deployment View  
+Yaziim ekibi tarafindan gelistirilen uzman ms’lerdeki kod parcasi master’a commitlendiginde,
+devops pipeline’) product reposu sayesinde otomatik olarak int ortamina deploye islemini
+gerceklestirir. Int ortamindaki testleri sonrasi kullanici kabul testlerinin yapiulabilmesi icin solution
+reposu tizerinen demo ortamina kurulum gerceklesir.  
+Deployment View for Emtia  
+Google Container Registry
+[system]  
+Ms's Ms' a] | me's A
+| image | | ol  
+Kubernetes
+[system]  
+Pod lamauthorization Pod lamusers  
+iamauthorization laa)  
+it Mi  
+1
+Pod Other Micro-Services Pod FAF X Pod IdentityProvider  
+identityProvider  
+tage ell Aig alld  
+Wile  
+iv  
+eres ~  
+7.1. Sistem Topolojisi  
+19  
+Page 20:
+A Google Anthos Platform ig , docker Linux "  
+y spring ystgreSQL
+y AP aers  
+Prese ion SERVICE  
+LAYER  
+DATA STORAGE
+LAYER  
+Hizmet STKE  
+Prod  
+Kubernetes Hizmetleri
+Anthos vCPU  
+vCPU  
+PTF mS eel Cle  
+7.3. Ortam Kurulumlar1
+* Uretim icin devops new pipeline hatti kullanilmistir. Product-emtia reposu tizerinden tiretim
+ortami konfigiire edilmistir.  
+¢ Diger projelerde oldugu gibi prod ortamin disaster makineleri de yiiklenici firma tarafindan
+saglanacaktir.  
+* Uretim ortaminda testlerimiz tamamlandiginda DEMO ortamina Solution-EMTIA resposu ve
+Deploye-GKE job’: ile kurulum yapmaktayiz. Product-Emtia’daki ms konfigurasyonlarinin
+biyuk bir béliimtini oldugu gibi kullanmaktayiz. Degistirdigimiz Konfigiirasyonlar;  
+° app_config/application.yaml : identity-provider url’leri  
+° app_config/apigateway.yaml : identity-provider url’leri  
+20  
+Page 21:
+°  
+°  
+°  
+°  
+app_config/iamusers.yaml : identity-provider urlleri
+app_config/iamauthorization.yaml : identity-provider urlleri
+app_config/notificaiton.yaml : smtp server bilgileri,ssms-provider bilgileri  
+values/product-values.yaml : ms’lerin release versiyonlari,qui versiyonlar1  
+21  
+Page 22:
+8. Cross-cutting Concepts  
+8.1. Domain concepts  
+¢ Mevzuattaki karmasik stirecler microservis mimarisi ile bir birlerinden ayristirulmistir.  
+8.2. User Experience concepts (UX)  
+¢ Kullanic1 deneyimi, Softtechte yer alan uzman ekip ile tasarlanmis ve gelismeye devam
+etmektedir.  
+¢ Faydalanicilar rahat bir kullanim sunabilmek icin kimi zaman performans concern’timiizle
+celisebiliyoruz.  
+8.2.1. user Interface  
+¢ Web: Plateau Quick
+¢ Mobile : Native IOS & Android  
+8.2.2. Internationalization/Localization  
+Plateau RA.0009.Server-Side Localization  
+8.3. Safety and security concepts  
+Plateau - Security  
+22  
+Page 23:  
+External Service  
+8.4. Architecture and design patterns  
+RA.0021.Microservice Integration Patterns - API Gateway Pattern  
+8.4.1. Initialization and reset.  
+Plateau  
+8.4.2. Memory management.  
+Plateau  
+8.5. "Under-the-hood"  
+8.5.1. Persistency
+Plateau (Spring)  
+Veri saklama (persitency) sorular1  
+Veri saklama ve erisimi icin referans mimari
+kullanilyor mu? Hangisi?  
+Cevap  
+Proje genelinde anlik olarak veri db’den
+okunmustur fakat sik degismeyen datalarda
+cache yapisi kullanilmistir. Kullanilan mimari;
+RA.0012.Shared Cache - Eventual Consistency
+Cache Aside  
+23  
+Page 24:
+Veri yazma ve okuma ayrimini gerektiren hiz Hiz gereksinimi bulunmamaktadir.
+gereksinimi var m1? Varsa gereksinim nasil
+saglanmis?  
+Ozel nitelikli kisisel veri ya da miisterinin islem Ozel nitelikli veri saklamiyoruz.
+yapmasini saglayan veri kullaniliyor mu?  
+Kullaniltyorsa hangi sifreleme yontemi  
+kullanilmaktadir?  
+8.5.2. Transaction Handling
+Plateau (Spring)  
+8.5.3. Session Handling  
+Plateau  
+8.5.4. Communication and Integration  
+Plateau (REST)  
+8.5.5. Exception and Error Handling  
+Plateau  
+8.5.6. Parallelization and Thread-handling  
+Plateau  
+8.5.7. Validation  
+Plateau  
+8.5.8. Batch  
+Plateau  
+8.5.9. Reporting  
+Data Plateau  
+8.6. Development Concepts  
+8.6.1. Build-test-deploy  
+Devops new pipeline  
+24  
+Page 25:
+8.6.2. Code Generation  
+Plateau,Quick  
+8.6.3. Migration  
+Liquibase  
+8.6.4. Configuration  
+Plateau  
+8.7. Operational Concepts
+8.7.1. Administration  
+8.7.2. Management
+RA.0002.Load-Balancing Hybrid Services in Kubernates  
+[Load Balancing Hybrid Services in Kubernates] | ../images/Load-Balancing Hybrid Services in  
+25  
+Page 26:
+26  
+Kubernates.png  
+8.7.3. Monitoring
+RA.0007.Monitoring: Business & Technical Metric Generation and Alerting  
+[businesss tecnical metric generation and alerting.drawio] | ../images/businesss-tecnical-metric-  
+Page 27:
+generation-and-alerting.drawio.png
+8.7.4. Logging
+RA.0001.Centralized Logging  
+Audit Logging, Uygulama loglari nasil kurgulandi? * Postgresql pgaudit extension kullanilacaktir.
+Devops ekibi tistiinde calisiyor.  
+8.7.5. Tracing  
+RA.0008.Monitoring-Tracing  
+27  
+Page 28:
+9. Design Decisions  
+D6kimaninizin_ icindeki help d6dkiimanina referans  (include::../../../helps/xyz.adoc[]=)
+gosteren tanimini comment etmelisiniz.  
+9.1. HELP : Cross-cutting Concepts - Design Decision
+Tum 6nemli mimari kararlar asagidaki template’e uygun olarak kayit altina alinmalidir.  
+ADR Template  
+9.1.1. kaydin numaras1(0001). title of decision | kararin basligi  
+Date | Tarih: 2022-02-07 (we propose to always use such a timestamp!)  
+9.1.2. Status | Durum  
+Accepted  
+9.1.3. Context | Baglam  
+The issue motivating this decision, and any context that influences or constrains the decision. Bu
+secimi niye yaplyoruz? bu secimi etkileyen olaylar nelerdir? Su anda nasil bir ortamda bu karar
+aliniyor?  
+9.1.4. Decision | Karar  
+The change that we’re proposing or have agreed to implement. Sistem tizerinde yapmak istedigimiz
+degisiklik nedir?  
+9.1.5. Consequences | Sonuclar  
+What becomes easier or more difficult to do and any risks introduced by the change that will need
+to be mitigated. Bu yaptigmiz secimin sonuclari nelerdir?  
+9.2. ADRs (architecture decision record)  
+9.2.1. ADRO1 - Kullanilacak Database Secimi  
+28  
+Page 29:
+29  
+Page 30:
+Tarih
+2022-04-22  
+30  
+Durum  
+Karar vermede
+sona gelindi  
+Baglam  
+Projenin basinda lisans
+maliyeti olmadigi ve
+yaygin kullanimindan
+dolay1 MySQL tercih
+edilmisti. Son kullanici
+loglari ise Plateau domain  
+audit yapisi ile tutulacakti.  
+Fakat hem domain
+auditteki sorunlar hem de
+sadece end user’in degil
+dba loglari da denetimler
+sirasinda incelenmek
+istenece@i bilgisine
+ulastigimiz icin, hemen
+diger alternatifler  
+incelenmeye baslanmistir.  
+Karar  
+Hentiz
+tam
+karar1
+verem
+esekte,
+3 DB
+arasin
+da
+(MySQ
+L,SQLS
+erver,P
+ostgreS
+QL)
+lisans
+maliyet
+ien
+diistik
+olan
+SQLSer
+ver
+tercih
+edilece
+k gibi
+duruyo
+r. Bu
+db’ler
+arasin
+daen
+pahalis
+1,
+kullan
+lan her
+core
+igin
+lisans
+talep
+eden
+SQlSer
+ver’dir.
+Fakat
+Is
+Bankas
+rnin
+lisans1
+uzerin
+den
+kullan  
+ma  
+Sonuclar  
+SQLserver ve MySQL'deki
+lisans maliyetinden
+dolayi,PostgreSQL audit
+eklentisi kullanilmasina
+karar verilmistir.  
+Page 31:
+9.2.2. ADRO2 - Ana Firma ERP Sistemi Entegrasyonu  
+31  
+Page 32:
+32  
+Page 33:
+Tarih
+2022-04-22  
+Durum  
+Gelistiriliyor  
+Baglam  
+Ana firma ERP sistemleri
+kullanicinin ekrandan
+girecegi bazi alanlarin
+otomatik sistemden
+alinmasini saglayacaktir.  
+Karar Sonuclar  
+Ekrand Beklemeye alindi.
+an
+girildig
+i
+zaman
+verileri
+db’ye
+isleyen
+ms
+olan
+FAFPro
+file’in
+direkt
+dis bir
+sisteme
+erisme
+si
+ms’in
+yapisin
+1
+karmas
+iklastir
+acagl
+icin;
+FAFExt
+ernalin
+tegrati
+on ms’i
+gelistir
+ilmeye
+baslan
+mustir.
+Bu ms,
+yaygin
+kullan
+lan
+ERP
+sisteml
+erinin
+(Oracle
+EBS,SA
+P) ve
+muhas
+ebe  
+33  
+Page 34:
+9.2.3. ADRO3 - Tek dh, birden fazla sema  
+Tarih Durum Baglam  
+2022-07-01 Intortamindatest Turis projesindeki
+edildi. postgresql modeli (her  
+ms’e bir db), dataplateau
+tarafinda dblink kullanim1
+gerektirdi. Bu durum
+performans sorunlarina
+neden olacagindan, devops
+hat ekibinden sqlserver ve
+mysql’de oldugu gibi tek
+database her ms icin de bir
+gema yapisi talep edildi.  
+9.2.4. ADR04 - Temlik Kredileri  
+Tarih Durum Baglam  
+2023-11-01 Tamamlandi Ciftcilerin kullanidg1
+temlik kredilerini,
+Softtech’in gelistridigi
+DigikKolay tritinti ile
+kullandirilmas1
+hedeflenmektedir.  
+9.2.5. ADROS5 - Toplu Odeme  
+34  
+Karar  
+Sonuclar  
+Devops Prod’da kullaniliyor  
+hat
+ekibini
+n
+calism
+asi ve
+Ertan
+Galiba’
+nin
+destekl
+emesi
+ile
+gelistir
+me  
+yapildi.  
+Karar
+ilgi
+ekiple
+gorusti
+Idi ve
+kullan
+dirima
+uygun
+oldugu
+belirle
+ndi.  
+Sonuclar  
+Prod’da kullaniliyor  
+Page 35:
+Tarih
+2024-04-01  
+Durum  
+Beklemede  
+Baglam  
+Ciftcilere yapilacak avans
+6demelerinin toplu
+yapilmasi gerekmektedir.
+Banka’nin bunun icin bir
+servisi bulunmuyor.  
+Karar Sonuclar  
+Banka -
+nydo
+kullan
+Imasin1
+onerm
+ekte
+ama
+hentiz
+bir
+karar
+cikmad
+1.  
+35  
+Page 36:
+10. Quality Requirements  
+To be  
+Kaynak kodlari, minimum %70 birim test
+kapsama oranina sahip olacaktir.  
+SonarQube kod kalitesi derecelendirilmesinde A
+derecesi saglanacaktir  
+Checkmarx taramasinda high bulgu
+bulunmayacaktir.  
+NexusIQ imaj taramalarinda kritik agik
+bulunmayacaktir.  
+Veri s6zliigit hazirlanmali  
+Uygulama gelistiriciler kullanilan teknoloji ve
+yazilim diline hakimdirler.  
+36  
+As is  
+%70 tistti  
+A  
+Duzenli takip edilmektedir.  
+0  
+Tim backend developerlarimiz Plateau
+framework’iine asinadir, Frontend
+developerlarimiz ise Quick Editor kullunimina
+hakimdir  
+Page 37:
+11. Risks and Technical Debts  
+¢ Timeout sorunu  
+° Toplu onboarding stirecimiz belli bir sayinin tstiinde kullanici geldiginde Identity provider
+tarafindan gateway timeout almaktayiz. Simdilik 2000’den fazla kullanici yaratirtmamaya
+calisiyoruz.  
+37  
+Page 38:
+38  
+12. Glossary  
+Term
+FAF  
+Faydalanici  
+Definition
+Facilitating Access to Finance  
+Ciftgiler  
+Page 39:
+13. Guvenlik (Security)  
+13.1. Genel sorular  
+Genel sorular  
+Parcalarin tst diizey
+aciklamasini igeren uygun
+sekilde belgelenmis bir mimari
+diyagraminiz ve fark
+bilesenlerin nasil
+yerlestirildigini ve emniyete
+alindigini gésteren bir ag
+baglanti diyagraminiz var mi?
+yazilim bileseninin hangi
+béliimtintin DMZ kiimesinde vb
+oldugunu belirtin.  
+Uygulama icin gerekli
+bilesenler: Uygulamay1
+destekleyen isletim sistemi
+nedir, donanim gereksinimi vb.  
+Port ve Servis gereksinimi: Bir
+uygulama, diger uygulama ile
+de iletisim kurabilir. Uygulama
+icin hangi baglanti noktalarinin
+ve hizmetlerin acik olmasi
+gerektigini belirleyin.  
+Bilesen Ayrimi: Uygulamanin
+bilesenleri birbirinden
+ayrilmalidir. Ornegin,
+uygulama sunucusu ve
+veritabani sunucusu aynl
+makinede bulunmamalidir.
+Mevcut mimarinizde bunu
+diisiintiyor musunuz?  
+Agik metin protokoliinii devre
+disi birakin: Acik metin
+servislerini calistiran portlar
+(HTTP, FTP vb.) kapatilmalh ve
+uygulamanin hicbir boliumti
+icin kullanilmamalidir. Bu
+gereksinim icin bir kontrol
+noktaniz var m1?  
+Cevap  
+* Emtia Platformu Javail ve Node.Js kullanilabilen herhangi bir
+ortamda ayaga kalkabilir.  
+* Linux * Docker * Kubernates * Ingress * Herhangi bir relational
+database  
+Saticilarin ERP sistemleri uygulamamiza istek atmakta. Bunun
+icin 443 portu kullanilmaktadir.  
+Evet veritabani icin farkli bir sunucu kullanilmakata.  
+Kapalidir.  
+39  
+Page 40:
+13.2. Girdi Kontrolii sorular1  
+Girdi Kontrolii sorular1  
+Uygulamanin kullanici girisini
+dogrulayip dogrulamadigini
+veya girisi oldugu gibi isleyip
+islemedigini kontrol ediyor
+musunuz?  
+Servislerde bir kullanicinin
+dogrulamayi atlayabilecegi
+herhangi bir giivenlik ac¢igi olup
+olmadigini kontrol ediyor
+musunuz?  
+En iyi uygulama olarak
+dogrulama tiim katmanlara
+yani is katmani, veri katmani
+vb. Uygulanmalidir. Bu agidan
+degerlendirdiniz mi?
+Dogrulamanin istemci ve
+sunucu lizerinde de uygulanip
+uygulanmadigini kontrol ediyor
+musunuz?  
+Arka ucta parametrelestirilmis
+sorgu kullanarak uygulamanin
+SQL Injection gtivenlik acgigina
+karsi glivenli olup olmadigini
+kontrol ediyor musunuz?  
+Parametreler tizerinde
+herhangi bir kodlama veya
+kriptografik prosedtir
+kullaniyorsaniz (6rn: Bsae64),
+guivenlik ekibine
+uygulamanizin kodlama veya
+kriptografik prosedtirler
+kullandigini bildirdiniz mi?  
+Cevap  
+* Evet, tim servis parametreleri validasyonlara tabi tutulur.  
+*Plateau framework’ti saysinde servis parametreleri XSS
+filtersinden gecmektedir. Checkmarks taramalarinda xss bulgusu
+ciktigi durumlarda, servise ek xss filtreleri uygulanmakta.  
+*Validasyon yuktinti daha cok server tarafina yikmis
+durumdayiz, On yiizde daha cok gérsel validasyonlar
+bulunmakta.  
+*Native query kullanilmadigi icin boyle bir risk bulunmuyor.  
+* Document microservice’nin attachment component’1 ve
+servisleri kullanilmaktayd1. Bulgu testlerinde kullanici
+kontroliintin yapilmadigi gézlemlenmisti. Biz de bu durum icin
+ara bir validasyon servisi yazarak yetki sorunlarinin 6niine
+gectik.  
+13.3. Konfigiirasyon yonetimi sorular1  
+40  
+Page 41:
+Konfigtirasyon yonetimi Cevap  
+sorular1
+Uygulama icin gerekli tim * MS versiyonlarinin ve kullandiklari Plateau kutiiphanelerinin
+bilesenlerin ve paketlerin guncelligi yakindan takip edilmektedir.  
+guncel oldugundan ve bunlara
+en son yamalarin
+uygulandigindan emin misiniz?  
+Veritabani baglanti dizesi, * Bu bilgiler deployment hatti disinda kullaniimamaktadir.
+sifreleme anahtari, yonetici  
+kimlik bilgileri gibi hassas  
+verileriniz veya kodda agik  
+metin olarak saklanmamas1  
+gereken baska herhangi bir sir  
+var m1?  
+GET protokoli, verileri sorgu * Hasas bilgi barindiran get servisi yazmamaya dikkat ediyoruz.
+dizesinde gonderir. Bir GET  
+isteginde bulunan hassas  
+bilgilere tarayici gecmisinden  
+veya giinliiklerinden  
+erisilebilir. GET Http Metodu  
+kullanan rest API’lerinizi bu  
+acgidan kontrol ediyor  
+musunuz?  
+13.4. istisna YOnetimi ve Denetimi, Giinliize Kaydetme
+Sorular1  
+istisna Yonetimi ve Denetimi, Cevaplar
+Gunlige Kaydetme Sorular1  
+. Minimum bilginin * Ms’lerdeki hata mesajlari kullaniciyi en az bilgi ile dogru bir
+gorunttilendigi merkeziistisna sekilde yOnlendirecek sekilde hazirlanmuistir.  
+yonetiminin yerinde olup  
+olmadigini kontrol ediyor  
+musunuz?  
+Farkli giinliik diizeyi uygulama_ * MS’ler icin spesifik log leveli belirlenmemistir. Hibernate
+ve platform diizeyi icin de loglari kapatilmistir.  
+gunllige kaydetmenin  
+etkinlestirilip  
+etkinlestirilmedigini kontrol  
+ediyor musunuz?  
+41  
+Page 42:
+istisna Yonetimi ve Denetimi, Cevaplar
+Gunlige Kaydetme Sorular1  
+Uygulamanizin kullanici kimlik * Log’larda kullanici sifresi veya finansal bilgiler
+bilgileri, parola karmalari, bulunmamaktadir.  
+kredi karti ayrintilari vb. gibi  
+hassas verilere sahip oldugunu  
+kontrol ediyor musunuz?  
+42  
+Page 43:
+14. Architectural RoadMap  
+14.1. Architectural Roadmap  
+Agri - Access to Finance Roadmap  
+Milestone 2024.91.02 2024 93-04 2025 91-02 Por KOney |  
+Peek)
+icuea eee
+freee ee
+imece Mobil i0S& Android Multi-Banking Availability (Tech wise)  
+woe) Cie ensue ac)  
+Technology pasta  
+Cee ecu
+& for packages IAM Identity Number Login  
+Performance eI  
+Prem tees  
+errr Cea neue oes
+VTE nen tn Gren) reene Wenn ents)  
+eee eee)
+enc nae een aa  
+rere ce mi elon ecu  
+rrr ere re el ecu Ieee u een ec ceants
+Product Feature cus Peay uss
+Oe eR
+Multiple Onboarding Mobile
+Improvements Integration  
+Peace asd Bree tead
+roc fos)  
+Cue cataract IRE
+reece ens  
+Customer
+eee
+Experience Sree ren  
+eect
+(meen
+Tooltip Integration  
+14.2. Transition Architecture  
+$u anki mimarinin ilerde de degisecegini diistinmedigimizden, gecis mimarimiz bulunmuyor.  
+14.3. Target Architecture  
+ilerisi icin hedeflenen mimari bulunmuyor.  
+43
+Introduction to 0065#Containerized uygulamaları da kapsayan batch / workflow çözümü oluşturulması:
+_Detaylar:_|  
+Gündeme getiren:  
+|  
+Tarih:  
+---|---|---  
+Bu gündem maddesi 07.08.2024 tarihli "MYH Senkronizasyon" toplantısında
+yaşanan gelişmelerin devamı olarak oluşturulmuştur.  
+Söz konusu toplantıda alınan not:  
+|  **Başlık**|  **Tanım**|  **Durum/Aksiyon**
+---|---|---
+Batch'lerin İzlenmesi| Kriz masalarında gündem olan batch'lerimizin toplu
+vaziyette görüntülenmesi|  
+* Ödemeler ekibinin bir olayında gündeme gelmişve genel çapta Softtech içinde konuşulmuştur.
+* ESP dışı batch'ler veya on-demand hallerde bulk yapılan işler de mevcuttur. ESP'den aratma ve bulma geliştirici tarafında kolay olmamaktadır.
+* Genel bir görünüm lüzumludur. Bunun yerine batch olmak/olmamak kriterleri ve yöntem dahil belirsizlikler yerine, Ödemeler domain'inden başlayarak ve oraya özel bir izleme ile başlanması ve deneyim elde edilmesi düşünülebilir.
+* Plateau workload'ları için ESP'nin kullanılabilmesi için CA (ESP Vendor'u) firması ile yapılan çalışmaların statüsü tekrar alınacaktır.
+* Alternatif araçlar bakılacaksa, gereksinimler ve stratejik hedeflerimiz çerçevesinde ve ürün sürdürülebilirliği olabilecek örneklerin değerlendirilmesi söz konusu olabilir.  
+Ayrıca daha önce çalışılan,  
+0040#Plateau ile batch yazılabilir mi, openshift'te batch iş çalıştırılabilir
+mi? - Mimari Yetkinlik Merkezi - Confluence (softtech.com.tr)  
+konusu ile yakından ilgilidir.  
+**_Notlar / Gelişmeler:_**
+1-|  
+* Konunun aslında izleme bağlamında ortaya çıktığı anlaşıldı.
+* Her batch ESP'den tetiklenmiyor bu bakımdan workflow açısından çözüm de gerekiyor
+* Bu bağlamda openshift batchleri de gündeme geldi.
+* "ESP ağacındaki 100 işten 90-95 i near online işler yani ESP kullanım durumuna uymuyor" (İbrahim Aslan) kendi domainindeki analiz sonucu. -> batch iş tiplerini doğru sınıflamak gerekir.
+* "Tanım" üzerinde anlaşmamız lazım. (*)
+* Hangi yönlerini/aspectlerini yönetmemiz gerektiği konusunda anlaşmamız lazım.
+* "Urfa su başladı".. (aziz)
+* Alınacak/alınmayacak bir tool söz konusu imiş.  
+(*)Şu mantıkta bir sınıflama yöntemi izleyebiliriz. (boyutlar ve o boyuttaki
+özellikler):  
+Çalışma geniş katılımlı komisyon üzerinden yürütülecek.  
+0023#BatchİşlerÇalışmaKomisyonu - Mimari Yetkinlik Merkezi - Confluence
+(softtech.com.tr)  
+| Not ekleyen: Ufuk Öktemer |  
+Tarih: 13 Aug 2024  
+|  
+* Best practice:
+* SpringEvet kullanımı olduğu bilgisi verildi (@hüseyin.kacar),
+* Yener'den bilgi:
+* Openshift'in cronjob, batchjob özellikleri kullanılabilir (deployment.yaml'a yazılıyor)
+* loglama, izleme vb. yetenekleri sorgulanmalı.
+* Prensip setine ihtiyaç var. Bunu çıkarmalıyız.
+* "A job process is one-off, whereas a batch process groups a number of items together and processes them at once. For example, a lot of people read email as soon as it comes into their inbox (job processing) whereas waiting a few hours and reading a group of emails together (batch processing) can be more efficient." (Halil İbrahim Sünter)  
+|  
+Rabın Dal  
+|  
+27 Aug 2024  
+|  
+örnek bazı job tipleri :  
+triggered job/batch
+fixed Time/Date batch
+repeated batch  
+|  
+Rabın Dal  
+|  
+27 Aug 2024  
+image-2024-8-13_13-12-8.png  
+Application software  
+‘Supporting software ‘Banking  
+Hardware-dependent  
+System "stools  
+Medicine  
+small medium big  
+Standard software  
+Individual software  
+diffusion rate
+vs. specialization
+Introduction to 0023#BatchİşlerÇalışmaKomisyonu:
+Başlık| Açıklama
+---|---
+Üyeler|  
+Ufuk Öktemer , Aziz Goktepe , İbrahim Aslan , Rabın Dal , Cengiz Koç , Huseyin
+Kacar , Mustafa İlker Kurtman , Ömer Çetin  
+Amaç| Batch iş mevhumunun tanımlanması, sınıflanması ve hangi yönleri ile
+yönetileceğinin belirlenmesi, yönetim için tooling / teknoloji önerilmesi
+Hedef Bitiş Tarih|  
+tbd  
+Çıktı Tipi  
+(ADR-RA-BestPractice)  
+|  
+Çıktının Linki|  
+Kullanılan Kaynaklar  
+(Books-links-etc)  
+|  
+Komisyon Toplantıları|  
+| Tarih| Toplantının Amacı| Aksiyon
+---|---|---  
+13 Aug 2024  
+| MY Hizalanma|  
+İşbu çalışma komisyonunun kurulmasına karar verildi  
+Toplantı gündem linki:  
+0065#Containerized uygulamaları da kapsayan batch / workflow çözümü
+oluşturulması - Mimari Yetkinlik Merkezi - Confluence (softtech.com.tr)  
+13 Aug 2024 \- | Offline Çalışma|  
+"Batch" olarak nitelendirdiğimiz uygulamaları hangi özelliklerine göre nasıl
+sınıflayabiliriz?  
+Örnek:  
+\--- @ Komisyon üyeleri, bu bölüme önerilerinizi yazabilirsiniz ---  
+| Özellik| Sınıflar
+---|---
+Runtime Ortamı| Mainframe, Application Server, Openshift Pod ..
+Tetiklenme Yöntemi| Müşteri eylemi, Ürün içi (Spring event), Ürün içi (Plateau
+Scheduler), ESP..
+Çalışma Sıklığı| <5 dk.da bir - - - - > Günde 1 - 2 - - - - > > Ayda 1
+Yeniden Başlatılma| yeniden başlatılır, baştan başlatılır, gerek yoktur
+Runtime Paylaşımı| Bağımsız, Diğer batchlerle (ortak), Diğer batchlerle
+(ürün), Online işlerle, Mainframe
+İzleme Gereksinimi| Kritik - - - - - - - - - > Önemsiz
+İşlenen Kayıt Sayısı| Masif - - - - - - - - - > Tekil
+İşlem Süresi| ? - - - - - - - - - > ?  
+|  
+\--- ---  
+27 Aug 2024 |
+| BT - Yener OpenShift üstündeki "cron job", "batch job" gibi özellikleri
+ifade etmiş ve kullanımlarının düşünülebileceğini belirtmiş.  
+Sonuç Raporları (Opsiyonel)|  
+Karar Toplantısı|  
+| Tarih| Sonuç
+---|---  
+01 Jan 2022  
+| Need Research  
+01 Jan 2022  
+| Accepted  
+image-2024-8-13_13-37-54.png  
+Application software  
+‘Supporting software ‘Banking  
+Hardware-dependent  
+System "stools  
+Medicine  
+small medium big  
+Standard software  
+Individual software  
+diffusion rate
+vs. specialization
+Introduction to 0066#Microsoft .net destek sıkıntısı ve modernleşme ihtiyacı hakkında:
+_Detaylar:_|  
+Gündeme getiren: @Eser Yürüyen  
+|  
+Tarih: 14 Aug 2024  
+---|---|---  
+Eser Yürüyen'in 14 Ağustos 2024 - 17:49 tarihli e-posta mesajı:  
+* * *  
+_Merhaba,_  
+_Bugün Microsoft temsilcisinden öğrendiğimzi kadarı ile, .net 4 major
+versiyonunda sadece 4.8 üzerinde çalışan yazılımlar için artık Microsoft’a
+case açılabilecekmiş._  
+_Bu durum bankamız bünyesindeki inhouse softtech yazılım envanterinin çok
+büyük bir yüzdesi için case açılamama riski anlamına gelmektedir. Bazı
+projeler için dönüşümlerin planlanmaya başladığını biliyoruz._  
+_Canlıda verilen hizmetlerin riskli duruma düşmemesi için, .net tabanlı
+uygulamalarımızın modernleşmesini değerlendirmenizi rica ederiz. Aşağıdaki
+dönüşümlerden en az birini tercih edilmesi için acil desteklerinizi rica
+ederiz._  
+*  _Mevcut sunucularda .net 4.8 kurulması ve yazılımların 4.8 ile uyumlu çalışmasının sağlanması ve test edilmesi_
+*  _Mevcut sunucularda .net 6 kurulması ve yazılımların 6 ile uyumlu çalışmasının sağlanması ve test edilmesi_
+*  _Mevcut sunucularda .net 8 kurulması ve yazılımların 8 ile uyumlu çalışmasının sağlanması ve test edilmesi_
+*  _Plateau .net core destekliyorsa, softtech lisans gelirini arttıracak, Microsoft lisans maliyetini düşürecek şekilde .net core microservis dönüşümü planlanması_  
+_Bu alternatiflerden herhangi biri seçildiğinde , 32 bit mimaride çalışan
+uygulamaların, 64 bit mimari dönüşümünü de değerlendirebilirseniz seviniriz._  
+_Saygılarımla,_  
+* * *  
+Daha sonraki bir yazışmada ' _önceliği “işcep”, “kartlı sistemler”,
+“krediler”, “tane önyüz” gibi patladığında ses getirecek ürünlere/sistemlere
+vermemiz_ ' hatırlatmasını da yaptı  
+**_Notlar / Gelişmeler:_**
+1-|  
+4.6.1 ve sonrası diye ikiye ayrılıyor -> Build sunucuları üst versiyonu
+desteklemiyor  
+4 x x üzerinde uyumsuzluk durumu artıyor (doğal olarak)  
+LTS lere bakmak gerek, buna göre uygun bir hedef sürüm belirlemek lazım.  
+.Net Framework'ün sonuncusu .Net 8  
+Cengiz Koç: MCM'i yakın zamanda **4.5** ten **4.8** e geçirdiler -> "çok büyük
+bir iş çıkmadı" görüşü var.  
+* kod değişikliği çok çıkmadı, 1 ay int ortamında 2 hafta uat'de kalındı
+* Prodda 2 sunucuyu ayırıp izlendi,
+* Sonra kademeli geçiş (BT ile koordineli gitmek gerekiyor, buildde, kurulumda ve geliştirmede x 2 maliyet)
+* Toplamda 3 ay sürdü.
+* Bu çalışma sonucunda -> Runtime yüklendi, build sunucularında da yüklendi  
+BT kendi başına PROD'a runtime kurmuyor, on demand hareket ediyor, ekibin
+talepte bulunması gerekiyor.  
+UAT'a 4.8 kuruldu (Aziz)  
+Sunucuya 4.8 runtime kurulması ancak kodun (eğer çalışıyorsa) eski versiyonda
+kalması kurtarır mı?  
+* yorumlar: BT kendini kurtarır ancak kod ile ilgili case açılamayabilir (Faik Bey [Microsoft temsilcimiz] belki ilgilenir, ancak onu aşarsa yurt dışına giderse, red alınabilir)  
+SDF.net 4.6.2 -> bunun da yükseltilmesi gerekecek. (Banka Framework ekibi mi?
+Ekipler Forklamış, belki de böyle bir framework yok)  
+Rabın, Kübra ve Aziz:  
+* Ödemeler -> .Net 4.8
+* ÜrünHesap Yönetimi -> .Net 4.8
+* Akil de 4.8 i hedefler  
+4.8 in uzun süre destekleneceği açıklanmıi Microsoft tarafından.  
+4.6.1 2022'de bitmiş.  
+4.6.2 -> 2027 de bitecek denmiş. Ancak buradaki sorun case açmak olabilir.  
+Aksiyonlar:  
+**Repo taraması ile tespit edelim.**  
+*  **csproj'un içinde versiyon bilgisi alınabilir. Webconfiglerde de target framework var, bu iki bilgi repo taramasında kullanılabilir**  
+**Ekip liderleri to da, direktör + mimarlar ccde bilgilendirme maili
+atabiliriz**  
+*  **..**  
+**Eski versiyonları build sunuculardan kaldırma? (drastic measure)**  
+**Eser ile iletişime geçilerek biraz daha detay öğrenilecek.**  
+|  
+Not ekleyen:  
+Ufuk Öktemer  
+|  
+Tarih: 20 Aug 2024  
+|  
+Danışmandan Aziz'in 21 Aug 2024 tarihinde attigi maile cevabi bekleniyor. Min.
+gecilmesi gereken versiyon bilgisi belirlendikten sonra repo taramasi
+yapilacak  
+|  
+Rabın Dal  
+|  
+27 Aug 2024
+Introduction to 2024.08.15 - GMPORTALING db - Organizasyon şemasının emekli edilmesi:
+Konu Başlığı| GMPORTALING db - Organizasyon şemasının emekli edilmesi
+---|---
+Konu Açıklaması|  
+Bilgi Sihirbazı Uygulaması'nın teknik altyapısının yenilenmesi projesi
+kapsamında; eski uygulamanın kullandığı MSSQL veritabanının emekli edilmesi
+gerekecektir. Yeni uygulama devreye alındığında eski uygulamanın kullandığı
+MSSQL veritabanına veri güncellemesi yapılmayacaktır. Bu nedenle
+**GMPortalING** veritabanının **Organizasyon** şemasına doğrudan erişen
+ekiplerin, kullandıkları stored procedure, view ve tabloları tespit etmeye
+ihtiyacımız bulunmaktadır.  
+Veritabanına doğrudan erişen ekipler için **_OrganizationUnitService_** 'te
+geliştirmeler yapılacak, şema ondan sonra kapatılacaktır.  
+Talep Geliş Tarihi| 14.08.2024
+Geliş Amacı|  
+Görüş ve Destek Alma  
+SMK Sunumu  
+|  
+BilgiSihirbazi Faz-1 SMK…  
+SMK Video Kayıt|  
+video1323750429.mp4  
+Talep Durumu|  
+Toplantı Notları|  
+Paydaş tespit etme yöntemi -> DB yetkili kullanıcıları  
+1- Yetkili DB kullanıcıları -> UK -> Ekip  
+2- Bazı userlardan UK'ya ekibe erişilemedi.  
+3- Sunucu Hostname üzerinden de destek istenebilir. (seydi alkan) - Network
+dinlenerek belirlenebilir.  
+usrABM için ABM ekibi kod içinde bulamamalarına rağmen erişim görünüyor.  
+4- Veri tabanı ekipleri ile iletişime geçilerek,  
+* inactif kullanıcıların disable edilmesi (kullanım durumunda DB adminlere alert düşüyor)
+* user'ın DB lerdeki yetkisinin kaldırılması (alert düşmüyor, "uygulama sahibinin şarlaması" beklenecek)
+* Bir haftalık profiler açılması, erişim bilgilerinin elde edilmesi. (uzun zamanda bir çalışan işleri kaçırabiliriz)  
+Rabın Dal:  
+* Mail ile duyuru yöntemi denendi mi? (Çeşitli gruplara )
+* Boss içindeki ilgili dağılımı biliniyor, Rabın ilgililerin erişim bilgilerini Ezgi'lerin ekibine bildirecek.
+* usrZiyaret -> Emekli edildi  
+Aziz Göktepe:  
+* Sunucuya instana kurulması
+* BT den Burak Tufan
+* Toplanan verilerden free text search yapılıyor.
+* Hostname bazlı çıkarım yapılabilir.  
+Hüseyin Kacar:  
+* Şube bilgileri organization unit servisinden alınıyor, yeni servisler bunun yerini mi alacak?
+* Evet ancak ileriki aşamalar için düşünülüyor. Şu aşamada amacımız o değil.  
+Çözüm Aksiyonları:  
+1. Mimari iletişim
+2. Repo taramasında kodda, configde, xl dictionnaries -> usrxxx user bilgisini aramak
+3. instana (aziz)
+4. boss un içide detay iletişim bilgisi (rabın)
+5. Sunucu Hostname üzerinden de destek istenebilir. (seydi alkan) - Network dinlenerek belirlenebilir. Network ekibi ile görüşülmeli.
+6. Konuyu biraz daha yakından takip ederek ekibimizi destekleyeceğiz.
+1. Boss özelinde Rabın ile çalışılacak
+7. Daha önce db upgrade için yapılan repo taramasında bulunan 12 uygulama da "olağan şüphelilier" olarak değerlendirilerek iletişime geçilebilir.  
+Kabaca deadline'lar:  
+* Eylül itibarı ile testlere başlamak, Ekim sonunda geçiş.
+* Şu anda takvimin gerisinde kalınmaya başlandı.  
+Alınan Kararlar|  
+Çözüm Aksiyonları:  
+1. Mimari iletişim (Mimari Yönetişim)
+2. Repo taramasında kodda, configde, xl dictionnaries -> usrxxx user bilgisini aramak (Mimari Yönetişim)
+3. Sunuculara instana kurulumu ve veri analizi (Kurumsal Uygulamalar)
+4. Boss un içide detay iletişim bilgisi sağlanması ve BOSS özelinde çalışma (Rabın Dal + Kurumsal Uygulamalar)
+5. Network ekibi ile iletişime geçilmesi, Network dinlenerek Sunucu - Hostname üzerinden yapılacak tespitler doğrultusunda ilgilili ekiplerden destek istenmesi (Kurumsal Uygulamalar)
+6. Konuyu biraz daha yakından takip ederek ekibimizi destekleyeceğiz. (Mimari Yönetişim)
+7. Daha önce db upgrade için yapılan repo taramasında bulunan 12 uygulama da "olağan şüphelilier" olarak değerlendirilerek iletişime geçilebilir. (Mimari Yönetişim - Kurumsal Uygulamalar)  
+BilgiSihirbazi Faz-1 SMK Sunum.pptxBilgi Sihirbazı Uygulaması MSSQL Veri tabanı Emekli Edilmesi Giriş ve Amaç (Introduction and Goals) Bilgi Sihirbazı uygulaması, Banka Şube tanımlarını ve çalışma saatlerini yöneten uygulamadır. Uygulama Kapsamında KMB gerekli şube tanımlarını yapıp, diğer banka uygulamalarına veri sağlamaktadır. Mevcutta bulunan yapıda kullanıcılar localine bir BilgiSihirbazi.exe yi indirip bir uygulama üzerinden tanımlar yapılmaktadır.
+Yeni yapılan geliştirmeler neticesinde mevcut bilgisihirbazı web’e taşınmış olup kullanılan MSSQL database DB2 ya geçilmiştir.
+Eski uygulamanın girmiş olduğu verileri kullanmak isteyen diğer uygulamalar, Bilgi Sihirbazı uygulamasının MSSQL database’ine bağlanarak sorgu çekmektedirler, Database’in emekli edilmesinden kaynaklı olarak bu kullanımı yapan ekiplerin bulunması ve yeni yazmış olduğumuz yeni DB2 veritabanına bağlanan servise entegre olmaları beklenmektedir.
+Bu geliştirmeler doğrultusunda eski veri tabanını kullanan ekiplerin tespiti konusunda Banka Açık Sistem veri tabanı ekipleriyle görüşüldü ve ilgili veri tabanı ve şemaya erişim izni olan veri tabanı kullanıcıları alındı.
+Alınan veri tabanı kullanıcılarından ekiplerin tespiti için genom da tarama yapıldı ve tespit edilen ekipler ile iletişime geçildi.  
+Giriş ve Amaç (Introduction and Goals) Paydaşlar (Stakeholders) Mimari Kısıtlamalar (Architecture Constraints)  Sistem Kapsamı ve Bağlamı (System Scope and Context) Sistem Kapsamı ve Bağlamı (System Scope and Context) ESKİ YAPI YENİ YAPI Eski mimaride veri almak isteyen uygulamalar direct veri tabanına bağlanırken, yenisinde servis üzerinden bilgileri alacaktır. Sistem Kapsamı ve Bağlamı (System Scope and Context) Eski Yeni Çözüm Stratejisi (Solution Strategy) Genel Bakış (Overview)  Yeni geliştirilen web uygulaması ile yeni DB2 veri tabanı beslenecek.  
+MSSQL veri tabanı emekli edilecek.  
+Mevcutta MSSQL veri tabanı kullanan diğer uygulamaların sahipliği tespit edilip, kullanımlarını karşılayacak yeni servisler yazılacak.  
+MSSQL veri tabanını kullanan uygulamaların yeni servise entegrasyonu tamamlandıktan sonra ilgili veri tabanı emekli edilecek.  
+Tüm bileşenler plateau ile geliştirilecek.  
+Çözüm Stratejisi (Solution Strategy) Teknolojik Unsurlar (Technology at a Glance) Yapı Taşı Görünümü (Context and Scope) Yeni Eski MSSQL Veri tabanı Emekli Edilmesi  Yetkisi Tespit edilen DB kullanıcıları MSSQL Veri tabanı Emekli Edilmesi  Yetkisi Tespit edilen fakat son 1 yıldır erişmeyen DB kullanıcıları MSSQL Veri tabanı Emekli Edilmesi  Tespit edilen kullanıclar ve uygulamaların statüsü -1/2 MSSQL Veri tabanı Emekli Edilmesi  Tespit edilen kullanıclar ve uygulamaların statüsü -2/2 Kesişen Kavramlar (Cross-cutting Concepts) Build, Test, Deploy
+• Sürüm yönetimi ve dağıtım süreçleri Bankada ki Plateau (CI/CD) altyapısı ve standartları dahilinde yönetilir.
+Code generation
+• Plateau Developer Guide referansı ile mikro-servislerler geliştirilmektedir.
+Migration
+• Migration ihtiyacı yoktur.
+Exception and Error Handling
+• Platformda bulunan paketlerde hatalar handle edilerek kullanıcıya uygun mesajların gösterilmesi sağlanır.
+Exception and Error Handling
+• Plateau Framework’ünün konsepti uygulanmıştır.
+Disaster Recovery
+• Plateau Framework’ünün konsepti uygulanmıştır.
+Validation
+• Plateau Framework ile validasyonlar sağlanmıştır. Ek olarak önyüzde ve backendde basit validasyon fonksiyonları da eklenecektir. teşekkürler
+Introduction to Parasal İşlem Mini Servisi tasarım onay nihai toplantısı:
+video1043719802.mp4Tarih: 16.08.2024  
+Katılım:  
+image-2024-8-16_12-48-30.pngBe BGoeormrwnGO0KDMBOOD bt  
+fuk Oktemer (Me)
+‘Ozge Kuyu (Host)
+Berkay Bag6z
+‘Cosku Erdem
+Mustafa Kaan Ozen
+Mustafa Keskin
+Aziz Goktepe
+Hakan Ekici
+Hiseyin Kacar
+Ibrahim Aslan
+Mehtap Keskin Bag
+Murat vilmaz
+‘Omer Coskun
+‘Omer Cetin  
+‘Onder Dikbag
+Rabin Dal  
+Ragit Akoglu  
+Talay Akarsu
+Introduction to 0067#Banka sistem ürünleri (kafka, openshift vs) sertifika yönetim süreci:
+_Detaylar:_|  
+Gündeme getiren: Aziz Göktepe  
+|  
+Tarih: 20 Aug 2024  
+---|---|---  
+UAT ortamında 2 ay önce sertifika expire etti. Orada yaşananlardan production
+için öngörüler yapılabilirdi.  
+5 gün kala tüm ekiplerin sürüme zorlanması ve sürüm kolaylıgı saglanmaması,
+risk'in tamamen ekiplere atılması,  
+btmk'da dile getirilmesi , ders çıkarılması  
+İş bankasında sectrail ve conjur gibi iki uygulama var, bunlar birbirlerinin
+görevlerini de kapsayabilecek ama net ayrı işler için kullanılan toollar  
+Sertfika yönetimi için sectrail ->BntPro bir türk firması bu firmadan
+eğitimler alınabiliyor  
+19 Ağustos 2024 SubCA Expiration - Servis Araçları Geliştirme - Bilgi
+Teknolojileri Bölümü - Dashboards - Mirket hata alan uygulamalar izleme için
+kullanılıdı,  
+Uygulama şöyle olmalı:  
+BT genel bir talep açacak,  
+Test onayını kktsini kendi verecek  
+Retrospektif konulu BTMK başvurusu yapalım mı?  
+Root sertifikası kullanım önerisi (Aziz) yapalım mı?  
+* Yazılım içinden sadece rootla bağlandığımda çalışıyor mu?
+* BT ile Mimari Yönetişim birlikte çalışmalı
+* Referans mimari veya Best Practice tarzında dokümante edilip önerilebilir (BT mimariye)  
+Hangi türde sertifikalar bizim sorumluluğumuzda  
+Expire olma sürelerini takip eden bir altyapı var mı? Varsa neden uyarı
+gelmedi  
+Eğer uygulama için sertifikayı Sectrail api ile yaratırken doğru ACIxxxxx yada
+UKxxxx şeklinde **commonname** verdiyseniz bu sayfalardan ne zaman expire
+olabileceğini görebiliyoruz.  
+Sayfada tek tek search edilebilir yada bir defada excele export edilip toplu
+bakılabilir.  
+Bu güzel bir çözüm değil ama 15 gün bir falan bakılması düşünülebilir.  
+Uat:  
+https://10.194.6.11/  
+Prod:  
+https://10.192.199.10/ ( SSL Manager | Dashboard)  
+** _Notlar / Gelişmeler:_**
+1-|
+| Not ekleyen: @| Tarih: //
+Introduction to 0068#Masterplan 2025 Altyapı Dönüşüm İhtiyaçları:
+_Detaylar:_|  
+Gündeme getiren: Ufuk Öktemer  
+|  
+Tarih: 22 Aug 2024  
+---|---|---  
+Nurşen Özabacı 'nın Per 22.08.2024 tarih ve 11:56 saatinde elimize ulaşan
+e-posta mesajı:  
+Merhaba,  
+2024 yılı MP planlaması sırasında ekiplerin efor ayırması gereken altyapı
+dönüşüm ihtiyaçları konusunda yıl içerisinde bir liste oluşturulabilir
+şeklinde görüşmüştük. Ekiplerin **teknolojik dönüşüm, performans iyileştirme,
+prod sorunlarının yüksek eforlu kök çözümü,teknik borç vb. konular nedeniyle
+yapılması gereken dönüşüm veya iyileştirme çalışmaları** konusunda bilginiz
+olan konular var mıdır?  
+Ekiplerden bu maddeler toplanarak sonrasında **BT ve KMB** değerlendirmesine
+iletilecek ve öncelikli bulunan konular MP 2025 kapsamında talep oluşturulacak
+şekilde öncelikli planlanması sağlanacaktır. Özellikle **platform
+ekiplerinin** bu yönde yapması gereken çalışmaların da planlanması için
+Softtech adına bir fırsat olarak bu konu değerlendirilmelidir.  
+**İzlenecek yöntem** konusunda 27 Ağustos Salı günü 09:30-10:30 arasında kısa
+bir görüşme yapabilir miyiz?  
+Teşekkürler  
+** _Notlar / Gelişmeler:_**
+1-|  
+Toplantıda bildiğimiz dönüşüm /iyileştirme / sorun konularını listeledik. Bu
+maddelerin tamamının MP2025 kapsamında gündeme alınmasını takip edeceğiz. Bu
+arada MY ve PBA olarak bizim, geliştirme ekiplerine yol göstermemiz
+gerektiğini düşündüğümüz işleri [*] ile işaretledik. Bu işlerde MP takvimi
+içerisinde ilgili kurul ve çalışma gruplarımız da yer alacaktır.  
+* Tanelerin (Tane Java - GWT) dönüşümü **[*]**
+* Tuba Çolak-> 2025 nar tane
+* (.Net versiyon arttırımı 4.8 üzerine çıkarılması)
+* SDF backend dönüşümü **[*]**
+* .Net versiyon arttırımı 4.8 ve üzerine çıkarılması
+* Edge üzerinden açılan ( Plateau'ya dönüşmüş REST servis sunan Kur, Bildirim vb) önemli servislerin consume edilmesi **[*]**
+* Örneğin - Bildirim v2'ye geçilmesi
+* ABM için de benzer yönlendirme olabilir.
+* DButils / diğer yazılım eforu ile kalıcı olarak çözümlenebilecek tekrarlı sorunlar. **[*]**
+* Şube izleme ve genel monitoring. **[*]**
+* \+ Plateau izleme
+* IMS Offload -> Bilinen işler + Potansiyel işler **[*]**
+* Wola'dan çıkış
+* Bireysel yaklaşan ödemeler
+* IMS maliyetlerini düşürücü tespit edilmiş diğer noktalar
+* IBM MQ'dan çıkış gereksinimi (Pasifik tarafındaki latency nedeni ile sync çözümünün güvenilirliğinin düşük olması)
+* BOM-BOSS decomm.
+* BT Altyapı dönüşüm taleplerinin MP'de erken aşamada görünür kılınması.
+* LDAP'tan Active Directory'ye geçilmesi talebi. (2024 sonu deadline - belki efor istenmeyecek)
+* UserIAM & AppIAM entegrasyonlarının düzenlenmesi ve Nar gibi uygulamaların etkilenmesi ek efor gerekliliği oluşabilir
+* Uyum Bulguları **[*]**
+* Twistlock, Checkmarx, NexusIQ vb. Bu eforlar için bir öngörü ?? (karne hedefleri çerçevesinde)
+* (Güncelliği takip etme eforu - Twistlock gelmeden bile belli oranda güncel Commons versiyonuna çıkma hedefi)
+* Spring Batch sunucularının ayrıştırılması (Kleasabat .. sunucularının dışında bağımsız sunuculara alma)
+* Plateau Batch -> workflow olarak yönetilebilmesi. **[*]**
+* wsp->mpgw dönüşümü istiyor bir de BT bu maddelere girecek
+* (wsp external dp lerden kurumlara gidilen configürasyon yöntemi - aktif aktif olarak çalışma vb için mpgw dönüşümü isteniyor))
+*  ~~Datastage versiyon geçişi. (Eylül 2024 ayı itibarı ile tamamlanması bekleniyor)~~  
+* "Eforu müşteriye yedirme" -> Üründen müşterilerin / paydaşların farklı beklentileri.  
+| Not ekleyen: Ufuk Öktemer |  
+Tarih: 26 Aug 2024  
+2- |  
+Masterplan 2025 Banka Altyapı Dönüşüm İhtiyaçları toplantısı.  
+* Şu anda (yaklaşık)15 maddelik bir iş listemiz var, bunlardan 8 i için "Mimari Kurullar olarak araya girmemiz gerekir" demişiz.
+* Domain mimari kurullardan + ekiplerden de feedback alarak liste mümkün olduğunca tamamlanacak.
+*  **9 Eylül haftasında bu listeyi BT'ye sunmayı hedefliyoruz.**
+*  **BT den işler Eylül sonu bildirilecek**
+*  **Masterpal Ekim'in ilk haftasında eforlama için ekiplere işleri iletmek planı söz konusu**
+* Bu şekilde bankanın genel iş planı içinde yer bulması sağlanacak
+* BT'den talepleri önden iletmelerini isteyelim, son güne kalırsa destek olma şansımız azalır.
+* MY'nin BT taleplerini ön değerlendirme aşaması bu sene uygulanacak.
+* Plateau dönüşümü, en önemli dönüşüm kalemlerimizden biri olabilir.
+* DP, pega, webmethods geçişleri ile Banka'ya lisans maliyet avantajı sağlanacak, KMB bu rakamlar konusunda bilgilendirilmeli.
+* Torba projelerde yeni yapı-> iş birimi talep girişi yaparken. teknik ve yasal konuların bütçesini, feature bütçesinden ayırabilecek.  
+| Ufuk Öktemer |  
+27 Aug 2024  
+3-|  
+* Domain mimarları/Utllerden ek maddeler istenecek (9 Eylül listesine eklenebilsin diye)
+* Oncelikle Domain toplantıları ile gerekli bilgilendirme yapılacak
+* Ek maddeler Gündem sayfasına yeni satırlar şeklinde ekleyen kişinin adı ve tarih ile eklenebilir
+* (0068#Masterplan 2025 Altyapı Dönüşüm İhtiyaçları - Mimari Yetkinlik Merkezi - Confluence (softtech.com.tr))  
+|  
+Rabın Dal  
+|  
+27 Aug 2024  
+4-|  
+* COBOL Uygulamalarında Kullanılan Assembler Programların decom edilmesi (Burak Özmutlu bu konuda BTye talep iletmemeleri için yazışma başlatmış)  
+|  
+Engin İnal  
+Ufuk Öktemer  
+|  
+29 Aug 2024
+Introduction to 0069#DBUtils sunumu:
+_Detaylar:_|  
+Gündeme getiren:  
+|  
+Tarih:  
+---|---|---
+Portföy toplantısında Bülent bey detay toplantı yapılmasını istedi.
+** _Notlar / Gelişmeler:_**  
+|  Kart domaininde sunumda olması gerektiği konuşuldu, İlk dbutils endişeleri
+bu domainden kaynaklanan dbutils taleplerinden başladığı için Bülent Bey'in
+özellikle bu domaine önem verebileceği konuşuldu.|  
+Rabın Dal  
+|  
+27 Aug 2024  
+|  
+Bülent Bey'in asistanı Aylin Aygülhan'dan Bülent Bey'in haftaya uygun olduğu
+saatler istenecek. 31 Aug 2024 a kadar bir randevu alınması planlanıyor.  
+|  
+|  
+|  
+Sunum hazirlanacak ilgililerle paylasilacak  
+* Ibrahim Aslan
+* Aykut Dizdar
+* Ufuk Oktemer
+* Lütfü Ulusoy  
+|  
+|
+Introduction to 0070#Parasal İşlem Mini Servisi (PİMS) Yol Haritası:
+_Detaylar:_|  
+Gündeme getiren:  
+Ufuk Öktemer  
+|  
+Tarih: 27 Aug 2024  
+---|---|---  
+Ağustos 2024 ayı içerisinde yapılan toplantılarda alınan üst düzey mimari
+kararlar sonrasında, PİMS'in hayata geçirilmesine yönelik yol haritası
+kapsamında ele alınan gündem maddeleri bu sayfada kayıt altına alınacaktır.  
+Üst düzey mimari karar toplantıları:  
+0012#Komisyon_TrnxManagement - Mimari Yetkinlik Merkezi - Confluence
+(softtech.com.tr)  
+ADR kayıtları:  
+013.Parasal İşlem Mini Servisi'ne (PİMS) ilişkin kararlar. - Mimari Yetkinlik
+Merkezi - Confluence (softtech.com.tr)  
+** _Notlar / Gelişmeler:_**
+1-|  
+Parasal işlem mini servisi sıradaki adımlar (Mimari CoE - Yönetişim
+Hizalanmaı)  
+* Sıradaki işler:
+* Bizden (MY) beklenen işler
+* Sahiplik ( **PİMS** )
+* PİMS modüllerinin sahibi net
+* Kredide ek hesap mevduatta diğer loanlar ÜHS ekibinde.
+* (Kasa ayrı bir karton olmayabilir, muhasebe'ye dahil olabilir)
+* PİMS'in sahipliği "Hesap yönetimi" ekibinde olmalı (Engin)
+* MY kararı olarak kayıt altına alalım.
+* "Hesap yönetiminin sahibi olan ekip sahiplenmelidir"
+* İsim olarak "PİMS" olabilir, ama ekibin önerisi doğrultusunda değişiklik kapısı açık.
+* Sahiplik ( **SOS** )
+* Gündemimize alalım, hazırlık yapalım, haftaya karar almayı hedefleyelim.
+* İş birimi kimdir? (hesap sıralamasını kim değiştirir, SOS talimatlarını kim yönetiyor) -> Nurşen Suludere bilir mi? KMB nezdinde "SOS'un sahibi kimdir" diye soracağız.
+* Sanki Bireysel bankacılık ürün olabilir (Rabın)
+* İsimlendirme
+* Karar güncellemesi (ADR)
+* İlk işlem seçimi
+* (Pims ekibine sorup karar verelim)
+* Bankamatikten para çekme
+* Virman veya Havale (Banka içi)
+* Capea talep toplayıp bloke koyma işini düşünüyor? Bu işlem hedeflenebilir (Döviz var Hazine ent.gerekiyor)
+* Capera-> Yathes ACH para aktarma işlemi olabilir.
+* Capera'nın ön şartı DB2 geçiş -> IMS decomm. yathes bakiyesinin SCHESAP geçişi.
+* SCHESAP refinement
+* Referans data içindeki farklı tipler çekilecek (Raşitlerden istenecek) ve değerlendirilecek.
+* Nakdi özellik taşıma / taşımama kriteri dikkate alınabilir. Dolayısıyla gayrı nakdi ürünleri dışarıda bırakabiliriz.
+* Modül sahibi ekiplerden beklenen işler
+* İşlev ve veri kapsamı
+* (Kasa ayrı bir karton olmayabilir, muhasebe'ye dahil olabilir - Önder ile konuşulacak)
+* Bloke modülü olarak adreslediğimiz -> rezerve yapısının geliştirilmesi
+* "Bloke" işleminin kendisi de ayrıca gerekiyor mu gerekmiyor mu? Ayrı toplantıda değerlendirilecek.
+* Yatırımı ekledik, gelecek -> yatırım.jar/YatHesSerBak resme eklenebilir.
+* PİMS'i geliştirecek ekipten bekleyebileceğimiz işler (konuşmadık?)
+* Capera'dan bekleyebileceğimiz işler (konuşmadık?)
+* İdari işler (konuşmadık?)
+* Önder ve raşitle beraber toplantıyı bu hafta içinde yapabiliriz.  
+|  
+Not ekleyen: Ufuk Öktemer  
+Rabın Dal  
+|  
+Tarih: 27 Aug 2024  
+2- |  
+PİMS - Olası sonraki adımlar, ilk işlemler, üst düzey tasarım konusunda görüş
+ve yönlendirmeler” toplantısı:  
+* Bu işin Work breakdown structure'unun ve işlerin bağımlılıkları çalışılmalı
+* Core ekip oluşturulup 3 - 4 kişilik çalışılmalı.
+* Oluşan taslak plan oluşmalı, değerlendirilmeli - teyit edilmeli
+* Yarım günlük bir başlangıç mesaisi ile başlanabilir.
+* İteratif bir süreç olacaktır. - > WBS seviyesi giderek detaylanacaktır.
+* (Teknik WBS de ayrı çalışılabilir mi?)  
+* Sahiplik
+* Mimari Yönetişim'in mevcut görüşü açıklandı.  
+* İlk işlem seçimi
+* İçinde döviz olmayan bir işlemle başlayalım
+* (kasa kutusu -> Muhasebe'nin içinde [dublör ve referanslı hesaplar gibi])
+* ACH - ACH virman
+* Kasa - ACH gibi senaryolar
+* "Switchli" yapılar şeklinde tasarlanıp kapatıp açma olanağı düşünülebilir."
+* Müşteri bazlı, hesap bazlı yönlendirme yapılabilir.
+* (önceki çalışmada Kasadan ACH'a senaryosu çıkmıştı)
+* Tüm kutular DB2 "only" olmalı.
+* Eksiklikler ? Taksitli kredi - BCH - Bloke (Eylülde)  
+* Ekim döneminde 2025 planlamasının yapılması gerekiyor. (Ana sorumlu ve diğer ekipler)
+* Sabri Bey'e sunulacak (randevu haftaya)
+* Müşteri deneyimini etkileme  
+* Capera - Fon Backoffice için kullanmak istiyor (İşlem detaylarını değerlendireceğiz)  
+| Ufuk Öktemer |  
+29 Aug 2024
+Introduction to 0071#redis, elasticsearch gibi kendi verileri olan podların aktif-aktif çalışma prensibi:
+_Detaylar:_|  
+Gündeme getiren:  
+|  
+Tarih:  
+---|---|---  
+**_Notlar / Gelişmeler:_**
+1-|
+| Not ekleyen: @| Tarih: //
